@@ -1,0 +1,9 @@
+column,dtype,non_missing,missing,missing_pct,distinct_values
+title,object,244827,1,0.0004,205470
+link,object,244827,1,0.0004,244827
+published_date,object,244828,0,0.0,233640
+is_hourly,bool,244828,0,0.0,2
+hourly_low,float64,102422,142406,58.1657,114
+hourly_high,float64,98775,146053,59.6553,227
+budget,float64,103891,140937,57.5657,768
+country,object,239751,5077,2.0737,212

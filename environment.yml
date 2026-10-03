@@ -1,0 +1,34 @@
+# Pinned analysis environment for the official build.
+#
+#   conda env create -f environment.yml
+#   conda activate jobmarket
+#   pip install -e . --no-deps
+#
+# pyproject.toml keeps compatible version ranges for general use; this file
+# pins Python 3.11 and the exact version of every package that can change a
+# result. It is not a lock of every transitive dependency. The run
+# manifest records every package listed here, and the lineage check fails
+# when the build environment differs from these pins.
+name: jobmarket
+channels:
+  - conda-forge
+  # Only conda-forge: mixing channels can install mismatched builds (for
+  # example a ZeroMQ that crashes Jupyter kernels on Windows).
+  - nodefaults
+dependencies:
+  - python=3.11
+  - pandas=2.2.3
+  - numpy=1.26.4
+  - scipy=1.14.1
+  - scikit-learn=1.5.2
+  - matplotlib=3.9.2
+  - flask=3.0.3
+  - python-pptx=1.0.2
+  - pyarrow=17.0.0
+  - pytest=8.3.3
+  - nbformat=5.10.4
+  - nbclient=0.10.0
+  - ipykernel=6.29.5
+  - pip
+  # Tool, not an analysis package: no version pin, so it never affects results.
+  - jupyterlab

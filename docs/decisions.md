@@ -1,0 +1,349 @@
+# Decision register
+
+Every decision that shapes a result has an entry here: what the project does,
+why, and where the evidence lives. Entries use plain English so any reader can
+check the reasoning.
+
+## Foundation
+
+### D-001 One pipeline produces every generated file
+
+- **What:** `python -m job_market rebuild` reads the raw CSV and writes every
+  processed table. Notebooks, reports, the dashboard and the database read
+  these tables; they never compute their own private versions.
+- **Why:** When each notebook computes its own numbers, two files can show
+  two different answers to the same question. One pipeline gives one answer.
+- **Evidence:** `src/job_market/pipeline.py`, `data/processed/run_manifest.json`.
+
+### D-002 A run manifest records each build
+
+- **What:** Each build writes `run_manifest.json` with four fingerprints
+  (raw data, configuration, this project's own `src/job_market` source code,
+  and the pinned environment file `environment.yml`), the installed package versions, row counts, and the size
+  and SHA-256 hash of every output file. Each build has a `run_id`: a UTC
+  timestamp plus a short hash of the four fingerprints. A change in any of the
+  four marks the build stale. The build, every notebook and the lineage
+  check also confirm that the `job_market` package Python imports is this
+  project's `src/job_market`; if a copied or moved project runs another
+  installed copy, they stop with the instruction `pip install -e . --no-deps`.
+- **Why:** A reader can prove that a number in the report comes from a
+  specific build of specific data with specific code, instead of trusting it.
+- **Evidence:** `src/job_market/manifest.py`, `src/job_market/fingerprint.py`.
+
+### D-003 Generated folders start empty on every build, and only they do
+
+- **What:** `data/interim` and `data/processed` are emptied before each build.
+  The lineage check fails if any file in them is not listed in the manifest.
+  Before anything is deleted, a layout check requires every configured path
+  to lie inside the project root, requires the raw CSV to sit in a
+  sub-folder, and refuses any configuration where a generated folder equals,
+  contains or sits inside a protected path: the configured raw CSV and its
+  folder, the configured notebooks and reports folders, and the standard config,
+  source, tests, docs and app folders. The two generated folders may not
+  overlap, and the manifest must live inside the processed folder.
+- **Why:** An old output file that survives a rebuild looks like current
+  evidence but is not. Starting empty makes that impossible. The layout check
+  makes sure a typing mistake in the configuration can never delete the
+  source data.
+- **Evidence:** `validate_layout` in `config.py`, `reset_generated_dirs` in
+  `pipeline.py`; seventeen unsafe-path tests plus
+  `test_unsafe_configuration_deletes_nothing`.
+
+### D-004 Only empty cells count as missing when the raw file loads
+
+- **What:** The loader turns off the pandas default that treats the text
+  "NA", "None" or "null" as missing.
+- **Why:** "NA" is a real country code (Namibia) and could be a real title.
+  The default silently erases such values. In this dataset the result is the
+  same either way, and the test `test_text_na_is_a_value_not_a_missing_cell`
+  keeps it that way if the data changes.
+- **Evidence:** `read_raw` in `steps/ingest.py`.
+
+### D-005 All daily grouping uses UTC days
+
+- **What:** Every timestamp carries a UTC offset, and all "per day" counts
+  use the UTC calendar day.
+- **Why:** Upwork is global; no single local time zone is more correct. UTC
+  is the source's own zone, so no conversion error is possible.
+- **Evidence:** `parse_timestamps` and `daily_coverage` in `steps/ingest.py`.
+
+### D-006 Analytical outputs are deterministic
+
+- **What:** Analytical outputs are byte-identical for the same raw data,
+  code, configuration and pinned analysis environment. The run manifest is
+  deliberately unique to each build, because it records the `run_id` and the
+  start and finish times. Every CSV and JSON file uses UTF-8, LF line endings
+  and a stable column and key order, and the hashes of configuration, code
+  and `environment.yml` ignore line endings.
+  In `.gitattributes`, the general `* text=auto` rule comes first and the
+  `binary` rules for raw and generated data come last, because Git lets a
+  later rule override an earlier one.
+- **Why:** The same inputs must give the same hashes on Windows and Linux,
+  and a Git checkout must never rewrite the bytes of a hashed file. Two full
+  builds of the 244,828-row source produce identical analytical file hashes.
+- **Evidence:** `src/job_market/io.py`, `.gitattributes`, tests
+  `test_rebuild_is_byte_identical` and
+  `test_git_keeps_hashed_files_byte_identical` (runs `git check-attr`).
+
+### D-007 Saved notebooks are clean, top-to-bottom runs of the current build
+
+- **What:** `python -m job_market run-notebooks` executes each notebook in a
+  new kernel and saves the executed copy, with the build `run_id` in the
+  notebook metadata. The first code cell calls `start()`, which checks the
+  four build fingerprints and the hash of every output file, then prints
+  `RUN_ID: ...`. `project.read_csv()` checks a file's hash again at read
+  time. The notebook check fails if any code cell is not executed, if
+  execution counts are not 1, 2, 3 ... in order, if any cell shows an error,
+  if the first code cell does not call `start()` or print the `run_id`, or if
+  the notebook's outputs come from another build.
+- **Why:** A notebook with unexecuted cells, missing outputs or outputs from
+  an older build is weak evidence. A fresh-kernel run guarantees that every
+  saved output comes from the saved code, in order, with no hidden state.
+- **Evidence:** `src/job_market/notebook.py`, `src/job_market/qa/notebooks.py`,
+  `notebook_status` in `src/job_market/qa/lineage.py`; tests in
+  `tests/test_notebooks.py` and `tests/test_integrity_and_safety.py`,
+  including a real notebook-execution test.
+
+### D-008 A pinned analysis environment produces the official results
+
+- **What:** `environment.yml` pins the Python minor version (3.11) and the
+  exact version of every package that can change a result. The manifest
+  records the exact Python and package versions of each build. Two
+  environments are compared with the pins: the one that builds the outputs
+  (from the manifest) and the one running now. By default a difference is a
+  **warning**: the project still runs with compatible versions, and the
+  manifest records that the build does not match the pins. In **strict
+  mode** (`JOB_MARKET_STRICT=1`), which continuous integration and the final
+  verification use, any difference is an error. Python matches on its minor
+  version (any 3.11.x); every package must match its pin exactly.
+  `pyproject.toml` keeps compatible ranges for general installation.
+- **Why:** A different pandas or scikit-learn version can change numbers
+  slightly, so the official results come from one pinned environment. But a
+  reader who installs with plain `pip` should be able to run the project and
+  see a clear warning, not a wall of errors.
+- **Evidence:** `environment.yml`, `src/job_market/environment.py`,
+  `check_build_environment` and `check_current_environment` in
+  `src/job_market/qa/project_checks.py`, `.github/workflows/ci.yml`.
+
+### D-009 Timestamps parse with one explicit format
+
+- **What:** `published_date` parses as ISO 8601 into UTC. Unparseable values
+  are counted; a file where no value parses stops the build with a clear
+  message.
+- **Why:** A declared format applies one rule to every row. Letting pandas
+  guess can parse different rows by different rules. All 244,828 source
+  values follow the same 25-character ISO 8601 pattern and all parse.
+- **Evidence:** `parse_timestamps` and `require_timestamps` in
+  `steps/ingest.py`; two timestamp tests.
+
+### D-010 Quality gates report failures; they never crash
+
+- **What:** Each lineage check runs inside its own error handler. A check that
+  cannot complete, for example because the raw CSV is missing, becomes an
+  ERROR finding with a plain message, and the remaining checks still run.
+- **Why:** A gate that stops with a Python traceback hides every other
+  problem and reads as a broken tool. A clear list of findings shows exactly
+  what to fix.
+- **Evidence:** `run_lineage_check` in `src/job_market/qa/lineage.py`; test
+  `test_missing_raw_file_is_a_finding_not_a_crash`.
+
+### D-011 The raw dataset is not committed to Git
+
+- **What:** `data/raw/` holds only a `.gitkeep` file in the repository. The
+  README explains where to place the source CSV and gives its SHA-256 hash.
+  The small processed tables and the run manifest are committed, so the
+  saved notebooks and the notebook check work from a fresh clone.
+- **Why:** The CSV is 50.6 MB of third-party data. Keeping it out of Git
+  keeps the repository light, and the hash check proves that anyone who
+  rebuilds uses exactly the same file.
+- **Evidence:** `.gitignore`, `README.md`, `source_sha256` in the manifest.
+
+## Data audit and cleaning (Notebook 01)
+
+### D-012 Every raw row stays; problems become flags
+
+- **What:** The master table `jobs_clean.parquet` has exactly one row per raw
+  row (244,828). The eight raw columns stay unchanged; cleaned values live in
+  new columns. Nothing is filled in and nothing is deleted. Eligibility flags
+  (`valid_job_record`, `eligible_for_text_analysis`,
+  `eligible_for_hourly_rate_analysis`, `eligible_for_budget_analysis`,
+  `eligible_for_timeseries`) say which analysis may use each row.
+- **Why:** Deleting rows hides decisions and cannot be undone by a reader.
+  Flags keep the full audit trail, and each later analysis states exactly which
+  population it uses. A kept row is preserved, not automatically valid for
+  every analysis.
+- **Evidence:** `build_master` in `steps/clean.py`; Notebook 01 section 5;
+  tests `test_every_raw_row_is_kept_and_raw_columns_are_unchanged`,
+  `test_empty_record_is_kept_but_excluded_from_every_analysis`.
+
+### D-013 Day quality decides the time-series window
+
+- **What:** Every UTC calendar day is rated. A *weak hour* has fewer postings
+  than 30% of that day's median hour. A day is `incomplete` when it has fewer
+  postings than 25% of the median day or more than two weak hours;
+  `intraday_gap` with one or two weak hours; otherwise `complete`. The
+  time-series window is the longest unbroken run of days that are not
+  incomplete: **16 February to 23 March 2024 (37 days)**. Days with an intraday
+  gap (17, 18 and 20 February) stay in the window and are flagged.
+- **Why:** Counting jobs per day on a day when the collector was partly
+  offline would show a false drop in demand. The rule is written down, so it
+  is applied the same way to any new data file instead of by eye.
+- **Limit:** Jobs posted outside the window are still real jobs; they stay in
+  every analysis that does not count jobs per day.
+- **Evidence:** `day_quality` in `steps/clean.py`; `day_quality.csv`;
+  Notebook 01 section 2.4; three day-quality tests.
+
+### D-014 Cleaned titles keep meaning; raw titles stay
+
+- **What:** `title_clean` decodes HTML entities (`&amp;` becomes `&`),
+  repairs mojibake (UTF-8 text decoded with a Windows code page, such as
+  `fÃ¼r` for `für`), applies Unicode NFKC normalisation and collapses repeated
+  spaces. Case and punctuation stay ("C++", "UI/UX"). `title_key` (lower case,
+  letters and digits only) is used only to match repeated titles. Titles that
+  stay damaged are flagged.
+- **Why:** The same job title must look the same to every later analysis,
+  but the raw title is the evidence and is never overwritten.
+- **Evidence:** `clean_title`, `repair_mojibake`, `title_key`; title tests in
+  `tests/test_clean.py`.
+
+### D-015 Extreme pay values are flagged, never removed or clipped
+
+- **What:** Hourly jobs whose highest rate is at or above the 99.9th
+  percentile ($500/hour in this data) and fixed-price jobs whose budget is at
+  or above the 99.9th percentile ($100,000) are flagged. Raw values stay.
+- **Why:** Pay data has a long right tail of real, well-paid jobs, so a rule
+  such as IQR would wrongly mark many of them as errors. Some values look like
+  placeholders ($999/hour, $999,999), but the data cannot prove which ones.
+  Each analysis reports its result with and without flagged values.
+- **Evidence:** `add_pay_columns`; Notebook 01 section 2.8.
+
+### D-016 Repeated titles and possible reposts are two different flags
+
+- **What:** `repeated_title_<N>d`: the same `title_key` and the same known
+  country as an earlier posting within N days. `possible_repost_<N>d`: in
+  addition, the same contract type and the same exact, informative pay terms
+  (a fixed budget, or both ends of an hourly range). N is 1, 3 and 7 days; 3 is
+  the primary window. The first posting of a chain is never flagged. A missing
+  country never matches another missing country, and missing pay never counts
+  as the same pay. Values are compared exactly, never rounded.
+- **Why:** Title and country alone flag popular roles: "social media manager"
+  in the United States alone produces hundreds of matches, which is many
+  clients wanting the same role, not one client reposting. Treating those as
+  duplicates would shrink demand for exactly the most popular roles. Matching
+  pay is much stronger evidence of the same client. The gaps between repeats
+  show no natural break, so 3 days is a reasoned choice, and the 1-day and
+  7-day versions test how much it matters.
+- **Evidence:** `add_repeat_columns`, `pay_signature`; `repeat_sensitivity.csv`;
+  Notebook 01 section 2.6; seven repeat tests.
+
+### D-017 Missing pay and missing country are never filled in
+
+- **What:** Budget is empty for every hourly job and hourly rates are empty
+  for every fixed-price job: the field does not apply (structural
+  missingness). Hourly jobs with one or no rate and jobs without a country are
+  genuinely missing values. None of them is imputed; `hourly_mid` exists only
+  when both ends of the range exist.
+- **Why:** An invented salary is not data. Pay analyses use the rows that
+  have the value and state their size.
+- **Evidence:** `add_pay_columns`; Notebook 01 sections 2.1 and 2.2.
+
+### D-018 Title script instead of a language guess
+
+- **What:** `title_script` records which alphabet a title uses (Latin,
+  Cyrillic, Arabic, CJK and others, `mixed` or `none`). No statistical language
+  detection is applied.
+- **Why:** The `langdetect` library was tested on this data during design. On
+  a random sample of 2,000 ASCII-only titles with at least three words, it
+  labelled 7.4% of its high-confidence (probability at least 0.90) answers as
+  non-English, and in a sample of 15 of those labels 14 were wrong, for
+  example "PHP LARAVEL MYSQL Expert" as Catalan and "Social media Manager" as
+  Italian. Short job titles full of product names defeat it, and the full run
+  takes about 20 minutes. The script of a character is an exact property, not
+  a guess.
+- **Limit:** Spanish, German or French titles written in the Latin alphabet
+  are not separated from English ones.
+- **Evidence:** `title_script`; title-script tests.
+
+### D-019 The master table is stored as Parquet
+
+- **What:** `jobs_clean.parquet` stores the master table; small audit tables
+  stay CSV. `pyarrow` is pinned in `environment.yml`. Text columns with only
+  a few distinct values (`title_script`, `iso_week`, `contract_type`,
+  `pay_info`, `day_status`) are stored as categories, which keeps the table
+  small in memory.
+- **Why:** Parquet keeps column types (timestamps with their time zone,
+  true/false flags, categories), so every notebook reads exactly the types the
+  pipeline writes, and it loads far faster than a 245,000-row CSV.
+- **Evidence:** `write_parquet` in `io.py`; test
+  `test_parquet_round_trip_preserves_types`.
+
+## Exploratory market analysis (Notebook 02)
+
+### D-020 Countries need at least 30 pay-eligible jobs for pay display tables
+
+- **What:** Notebook 02 shows country pay summaries only for countries with
+  at least 30 eligible hourly jobs or at least 30 eligible fixed-budget jobs.
+- **Why:** Very small groups can look extreme by chance and make an EDA chart
+  hard to read. The rule only controls display; the rows stay in the data.
+- **Evidence:** Notebook 02 section 3 and its claims check.
+
+### D-021 Pay summaries use the median and IQR first
+
+- **What:** Notebook 02 uses the median as the main pay level and the 25th to
+  75th percentile range (IQR) as the main spread. It also reports mean,
+  quantiles, skewness and kurtosis for context.
+- **Why:** Hourly rates and fixed budgets have long high-value tails. The
+  median and IQR are less affected by rare extreme postings than the mean or
+  a min-max range.
+- **Evidence:** Notebook 02 section 2 and section 3.
+
+### D-022 Sensitivity checks match the metric being studied
+
+- **What:** Pay checks compare results with and without flagged extreme pay;
+  volume and title-demand checks compare with and without possible reposts;
+  time-pattern checks compare with and without intraday-gap days.
+- **Why:** Each risk affects a different kind of result. One blanket filter
+  would either miss the real risk or remove rows for no reason.
+- **Evidence:** Notebook 02 section 6.
+
+### D-023 Missing-pay bias is checked within hourly jobs
+
+- **What:** Hourly jobs with a complete rate range are compared with hourly
+  jobs that have one rate or no rate. The comparison uses country mix, title
+  word count, weekday and over-represented title words, with effect sizes
+  rather than p-values alone.
+- **Why:** Task 1 can only use jobs that state pay. With a large dataset,
+  p-values can be tiny even when a difference is not practically important.
+- **Limit:** Fixed-price jobs in the cleaned table already have a budget, so
+  this missingness check is not needed for fixed budgets.
+- **Evidence:** Notebook 02 section 4.
+
+### D-024 Title-word exploration uses a small explicit stop-word list
+
+- **What:** Reusable text helpers in `src/job_market/text.py` lower-case
+  `title_key`, split on spaces and remove a short, explicit list of filler
+  words (a, an, and, are, at, be, by, for, from, i, in, is, looking, my, need,
+  needed, of, on, or, our, the, this, to, we, with, you, your). "on" and "an"
+  were added after the first count showed "on" among the ten most common
+  words. Words that can carry meaning in a title stay out of the list on
+  purpose: "it" (IT support) and "us" (US-based).
+  Phrases of two or more words are built from the words in their original
+  order, and any phrase that contains a stop word is dropped.
+- **Why:** The first title-word pass should be simple, transparent and easy to
+  test before Notebook 03 builds categories. Removing stop words before
+  pairing words would invent phrases nobody wrote ("web developer needed for
+  wordpress" would give "developer wordpress").
+- **Limit:** `title_key` already strips punctuation, so technical tokens such
+  as `c++` and `.net` can lose information. Notebook 03 must decide how to
+  handle that.
+- **Evidence:** Notebook 02 section 5; `tests/test_text.py`.
+
+### D-025 Daily comparisons use averages per day, never totals
+
+- **What:** Any comparison between weekdays (or other groups of days) divides
+  the number of postings by the number of days in that group.
+- **Why:** The 37-day time-series window contains six Fridays and six
+  Saturdays but only five of every other weekday. Raw totals make Friday look
+  like the busiest day; per day, Friday is below Monday to Thursday.
+- **Evidence:** Notebook 02 section 2.3 (raw total vs average per day) and
+  its claims check.

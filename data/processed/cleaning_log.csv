@@ -1,0 +1,14 @@
+rule_id,problem,evidence,decision,rows_affected
+C01,Empty record,"Title, link and country are all empty in the same row.",Keep the row; valid_job_record = False excludes it from every analysis.,1
+C02,Budget is empty for hourly jobs; rates are empty for fixed-price jobs,"140,937 of 140,937 hourly jobs lack a budget and 103,891 of 103,891 fixed-price jobs lack rates; contract_pay_mismatch is 0.","Structural: the field does not apply to that contract type, so every valid row has one. Never filled in; hourly and fixed-price pay are analysed apart.",244827
+C03,Hourly jobs without a complete rate range,"3,647 have only a low rate and 38,515 have no rate.",Genuinely missing. No midpoint and no imputation; excluded from hourly-rate analysis only.,42162
+C04,Missing country,"5,076 valid jobs have no country.",Kept as missing (never 'Unknown' matched to 'Unknown'); excluded only where country is needed.,5076
+C05,HTML entities in titles,"Titles contain codes such as &amp; and &quot; instead of & and "".",Decoded in title_clean; the raw title is kept.,10130
+C06,Mojibake in titles,"UTF-8 text decoded with a Windows code page, for example 'fÃ¼r' for 'für'.",Repaired in title_clean only when re-encoding the text decodes cleanly as UTF-8; the raw title is kept.,208
+C07,Unrecoverable characters,"Titles contain the Unicode replacement character, or damaged text that no single repair fixes; the original letters are lost at the source.","Flagged (title_has_replacement_char, title_mojibake_unrepaired); the rest of the title stays usable.",33
+C08,Extreme hourly rates,"Highest rate at or above the 99.9% quantile ($500/hr), including placeholder-like values such as $999.",Flagged (extreme_hourly_rate_flag); raw values kept; analyses report results with and without them.,277
+C09,Extreme fixed-price budgets,"Budget at or above the 99.9% quantile ($100,000), including values such as $999,999 and $1,000,000.",Flagged (extreme_budget_flag); raw values kept; analyses report results with and without them.,119
+C10,Incomplete collection days,Days with too few postings or more than 2 weak hours.,Outside the time-series window (2024-02-16 to 2024-03-23); the jobs stay in every non-time-series analysis.,15307
+C11,Days with an intraday gap,One or two hours with almost no postings inside an otherwise normal day.,Kept in the window and flagged (day_status = intraday_gap) for sensitivity checks.,15990
+C12,Repeated titles,Same title key and country as a posting in the previous 3 days.,"Flagged (repeated_title_3d): repeated demand, not a repost estimate.",19714
+C13,Possible reposts,"Same title key, country, contract type and exact pay as a posting in the previous 3 days.",Flagged (possible_repost_3d); never deleted; used for sensitivity checks.,9192

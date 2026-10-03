@@ -1,0 +1,352 @@
+{
+  "config": {
+    "cleaning": {
+      "extreme_quantile": 0.999,
+      "max_weak_hours_for_gap": 2,
+      "min_day_volume_share": 0.25,
+      "primary_repeat_window_days": 3,
+      "repeat_windows_days": [
+        1,
+        3,
+        7
+      ],
+      "weak_hour_share": 0.3
+    },
+    "paths": {
+      "interim_dir": "data/interim",
+      "manifest": "data/processed/run_manifest.json",
+      "notebooks_dir": "notebooks",
+      "processed_dir": "data/processed",
+      "raw_csv": "data/raw/all_upwork_jobs_2024-02-07-2024-03-24.csv",
+      "reports_dir": "reports"
+    },
+    "project": {
+      "name": "job-market-analysis",
+      "random_seed": 42
+    },
+    "schema": {
+      "required_columns": [
+        "title",
+        "link",
+        "published_date",
+        "is_hourly",
+        "hourly_low",
+        "hourly_high",
+        "budget",
+        "country"
+      ]
+    },
+    "taxonomy": {
+      "version": "0.0-unset"
+    }
+  },
+  "counts": {
+    "calendar_days_with_postings": 89,
+    "clean_rows": 244828,
+    "duplicate_links_non_missing": 0,
+    "exact_duplicate_rows": 0,
+    "extreme_budget_threshold": 100000.0,
+    "extreme_hourly_rate_threshold": 500.0,
+    "first_posting_utc": "2023-11-02T09:22:02Z",
+    "fixed_price_rows": 103891,
+    "hourly_rows": 140937,
+    "last_posting_utc": "2024-03-24T14:16:47Z",
+    "missing_link": 1,
+    "missing_title": 1,
+    "negative_numeric_values": 0,
+    "non_finite_numeric_values": 0,
+    "raw_columns": 8,
+    "raw_rows": 244828,
+    "timeseries_window_days": 37,
+    "timeseries_window_end": "2024-03-23",
+    "timeseries_window_start": "2024-02-16",
+    "unparseable_timestamps": 0,
+    "valid_job_records": 244827
+  },
+  "environment": {
+    "executable": "python.exe",
+    "implementation": "CPython",
+    "packages": {
+      "flask": "3.0.3",
+      "ipykernel": "6.29.5",
+      "matplotlib": "3.9.2",
+      "nbclient": "0.10.0",
+      "nbformat": "5.10.4",
+      "numpy": "1.26.4",
+      "pandas": "2.2.3",
+      "pyarrow": "17.0.0",
+      "pytest": "8.3.3",
+      "python-pptx": "1.0.2",
+      "scikit-learn": "1.5.2",
+      "scipy": "1.14.1"
+    },
+    "pins_file": "environment.yml",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "python": "3.11.16"
+  },
+  "environment_matches_pins": true,
+  "excluded_time_series_dates": [
+    "2023-11-02",
+    "2023-11-03",
+    "2023-11-04",
+    "2023-11-05",
+    "2023-11-06",
+    "2023-11-07",
+    "2023-11-08",
+    "2023-11-09",
+    "2023-11-10",
+    "2023-11-11",
+    "2023-11-12",
+    "2023-11-13",
+    "2023-11-14",
+    "2023-11-15",
+    "2023-11-16",
+    "2023-11-17",
+    "2023-11-18",
+    "2023-11-19",
+    "2023-11-20",
+    "2023-11-21",
+    "2023-11-22",
+    "2023-11-23",
+    "2023-11-24",
+    "2023-11-25",
+    "2023-11-26",
+    "2023-11-27",
+    "2023-11-28",
+    "2023-11-29",
+    "2023-11-30",
+    "2023-12-01",
+    "2023-12-02",
+    "2023-12-03",
+    "2023-12-04",
+    "2023-12-05",
+    "2023-12-06",
+    "2023-12-07",
+    "2023-12-08",
+    "2023-12-09",
+    "2023-12-10",
+    "2023-12-11",
+    "2023-12-12",
+    "2023-12-13",
+    "2023-12-14",
+    "2023-12-15",
+    "2023-12-16",
+    "2023-12-17",
+    "2023-12-18",
+    "2023-12-19",
+    "2023-12-20",
+    "2023-12-21",
+    "2023-12-22",
+    "2023-12-23",
+    "2023-12-24",
+    "2023-12-25",
+    "2023-12-26",
+    "2023-12-27",
+    "2023-12-28",
+    "2023-12-29",
+    "2023-12-30",
+    "2023-12-31",
+    "2024-01-01",
+    "2024-01-02",
+    "2024-01-03",
+    "2024-01-04",
+    "2024-01-05",
+    "2024-01-06",
+    "2024-01-07",
+    "2024-01-08",
+    "2024-01-09",
+    "2024-01-10",
+    "2024-01-11",
+    "2024-01-12",
+    "2024-01-13",
+    "2024-01-14",
+    "2024-01-15",
+    "2024-01-16",
+    "2024-01-17",
+    "2024-01-18",
+    "2024-01-19",
+    "2024-01-20",
+    "2024-01-21",
+    "2024-01-22",
+    "2024-01-23",
+    "2024-01-24",
+    "2024-01-25",
+    "2024-01-26",
+    "2024-01-27",
+    "2024-01-28",
+    "2024-01-29",
+    "2024-01-30",
+    "2024-01-31",
+    "2024-02-01",
+    "2024-02-02",
+    "2024-02-03",
+    "2024-02-04",
+    "2024-02-05",
+    "2024-02-06",
+    "2024-02-07",
+    "2024-02-08",
+    "2024-02-09",
+    "2024-02-10",
+    "2024-02-11",
+    "2024-02-12",
+    "2024-02-13",
+    "2024-02-14",
+    "2024-02-15",
+    "2024-03-24"
+  ],
+  "fingerprints": {
+    "code_sha256": "a4d385d133ae607feae9c9fda9a898dd287d51c8da12b2415c4182acbe56d8a9",
+    "config_sha256": "b9e12b7edfc08b0ba4c0d78c795449b57f1ecc270856945e6624eb988c215af7",
+    "environment_sha256": "c5162a7a0ca462e908162a9098e063e870dbef82b231f7cea0ffc2c13f6559b9",
+    "source_sha256": "6513e9a744f15726bdb40d6435a60834e864ace08a75e1d7feb75e10ddb78b11"
+  },
+  "manifest_version": 1,
+  "outputs": [
+    {
+      "bytes": 373,
+      "path": "data/processed/raw_column_profile.csv",
+      "rows": 8,
+      "sha256": "f7fc8cf23741f0e74fefa36d4b7a45cfef6944175ac37f9ae6e5ea6b975a6cea"
+    },
+    {
+      "bytes": 5572,
+      "path": "data/processed/raw_daily_coverage.csv",
+      "rows": 89,
+      "sha256": "e0b856e875048ac0468bdd7783028da2603718923cb6c9b2f3439acea5746d43"
+    },
+    {
+      "bytes": 38856522,
+      "path": "data/processed/jobs_clean.parquet",
+      "rows": 244828,
+      "sha256": "8942acdc2e09088e9edf1a9e4c9390f5b790cd5efbb1add01163e528b4af4b33"
+    },
+    {
+      "bytes": 2760,
+      "path": "data/processed/cleaning_log.csv",
+      "rows": 13,
+      "sha256": "c7a6ed916e902979ce6452cae7687e4d0919c0d1d609f011bfc5e7caa86801bd"
+    },
+    {
+      "bytes": 4671,
+      "path": "data/processed/day_quality.csv",
+      "rows": 144,
+      "sha256": "847da1e3553e05b527863aab3384a1d10187aa265be5867c923146d8336fae5d"
+    },
+    {
+      "bytes": 305,
+      "path": "data/processed/repeat_sensitivity.csv",
+      "rows": 6,
+      "sha256": "467a6ff1b0fbf02e004855229f82a65f71476198025e97a388ca55ca230b40c7"
+    },
+    {
+      "bytes": 227,
+      "path": "data/processed/eligibility_counts.csv",
+      "rows": 5,
+      "sha256": "f94c6171261976f7014fa8dd56d665fa907a4ecd72af58664ec1d6dd19d3a900"
+    }
+  ],
+  "project_version": "1.0.0",
+  "run_finished_utc": "2026-10-03T11:42:14Z",
+  "run_id": "20261003T114153Z-9e69c5b105",
+  "run_started_utc": "2026-10-03T11:41:53Z",
+  "source": {
+    "bytes": 50577682,
+    "columns": [
+      "title",
+      "link",
+      "published_date",
+      "is_hourly",
+      "hourly_low",
+      "hourly_high",
+      "budget",
+      "country"
+    ],
+    "path": "data/raw/all_upwork_jobs_2024-02-07-2024-03-24.csv",
+    "rows": 244828,
+    "sha256": "6513e9a744f15726bdb40d6435a60834e864ace08a75e1d7feb75e10ddb78b11"
+  },
+  "steps": [
+    {
+      "description": "Load the raw CSV, validate the schema, and profile columns and daily coverage.",
+      "metrics": {
+        "calendar_days_with_postings": 89,
+        "duplicate_links_non_missing": 0,
+        "exact_duplicate_rows": 0,
+        "first_posting_utc": "2023-11-02T09:22:02Z",
+        "fixed_price_rows": 103891,
+        "hourly_rows": 140937,
+        "last_posting_utc": "2024-03-24T14:16:47Z",
+        "missing_link": 1,
+        "missing_title": 1,
+        "negative_numeric_values": 0,
+        "non_finite_numeric_values": 0,
+        "raw_columns": 8,
+        "raw_rows": 244828,
+        "unparseable_timestamps": 0
+      },
+      "name": "ingest",
+      "outputs": [
+        {
+          "bytes": 373,
+          "path": "data/processed/raw_column_profile.csv",
+          "rows": 8,
+          "sha256": "f7fc8cf23741f0e74fefa36d4b7a45cfef6944175ac37f9ae6e5ea6b975a6cea"
+        },
+        {
+          "bytes": 5572,
+          "path": "data/processed/raw_daily_coverage.csv",
+          "rows": 89,
+          "sha256": "e0b856e875048ac0468bdd7783028da2603718923cb6c9b2f3439acea5746d43"
+        }
+      ],
+      "seconds": 6.272
+    },
+    {
+      "description": "Clean titles, add time, pay, quality, repeat and eligibility columns; keep every raw row.",
+      "metrics": {
+        "clean_rows": 244828,
+        "extreme_budget_threshold": 100000.0,
+        "extreme_hourly_rate_threshold": 500.0,
+        "timeseries_window_days": 37,
+        "timeseries_window_end": "2024-03-23",
+        "timeseries_window_start": "2024-02-16",
+        "valid_job_records": 244827
+      },
+      "name": "clean",
+      "outputs": [
+        {
+          "bytes": 38856522,
+          "path": "data/processed/jobs_clean.parquet",
+          "rows": 244828,
+          "sha256": "8942acdc2e09088e9edf1a9e4c9390f5b790cd5efbb1add01163e528b4af4b33"
+        },
+        {
+          "bytes": 2760,
+          "path": "data/processed/cleaning_log.csv",
+          "rows": 13,
+          "sha256": "c7a6ed916e902979ce6452cae7687e4d0919c0d1d609f011bfc5e7caa86801bd"
+        },
+        {
+          "bytes": 4671,
+          "path": "data/processed/day_quality.csv",
+          "rows": 144,
+          "sha256": "847da1e3553e05b527863aab3384a1d10187aa265be5867c923146d8336fae5d"
+        },
+        {
+          "bytes": 305,
+          "path": "data/processed/repeat_sensitivity.csv",
+          "rows": 6,
+          "sha256": "467a6ff1b0fbf02e004855229f82a65f71476198025e97a388ca55ca230b40c7"
+        },
+        {
+          "bytes": 227,
+          "path": "data/processed/eligibility_counts.csv",
+          "rows": 5,
+          "sha256": "f94c6171261976f7014fa8dd56d665fa907a4ecd72af58664ec1d6dd19d3a900"
+        }
+      ],
+      "seconds": 13.639
+    }
+  ],
+  "taxonomy_version": "0.0-unset"
+}

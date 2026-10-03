@@ -1,0 +1,35 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+build/
+dist/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Regenerable intermediate data (rebuilt by `python -m job_market rebuild`)
+data/interim/
+
+# Source dataset: placed locally, never committed (see README and D-011)
+data/raw/*
+!data/raw/.gitkeep
+
+# Large generated table (rebuilt by `python -m job_market rebuild`); small
+# audit tables and the run manifest are committed.
+data/processed/*.parquet
+
+# Environment and editor files
+.env
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Personal scratch notebooks for trying things out (never project evidence)
+notebooks/scratch*.ipynb

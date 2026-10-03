@@ -1,0 +1,37 @@
+# Continuous integration: install the pinned environment, run the tests and
+# check the committed notebooks. Strict mode turns any difference from
+# environment.yml into an error, so CI always verifies the official setup.
+# The raw CSV is not in the repository (decision D-011): the tests build a
+# small fixture project instead, and the notebook check reads the committed
+# run manifest.
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -el {0}
+    env:
+      JOB_MARKET_STRICT: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: conda-incubator/setup-miniconda@v3
+        with:
+          environment-file: environment.yml
+          activate-environment: jobmarket
+          miniforge-version: latest
+
+      - name: Install the project
+        run: pip install -e . --no-deps
+
+      - name: Run the tests
+        run: python -m pytest
+
+      - name: Check the committed notebooks
+        run: python -m job_market check-notebooks -v

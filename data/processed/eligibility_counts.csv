@@ -1,0 +1,6 @@
+flag,rows,share_of_all_rows_pct
+eligible_for_text_analysis,244827,100.0
+eligible_for_hourly_rate_analysis,98775,40.34
+eligible_for_budget_analysis,103891,42.43
+eligible_for_timeseries,229520,93.75
+valid_job_record,244827,100.0

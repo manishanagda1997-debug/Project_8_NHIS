@@ -1,0 +1,16 @@
+# Git applies these rules top to bottom, and a later rule overrides an
+# earlier one for the same attribute. The general rule therefore comes
+# first and the binary rules come last, so nothing can override them.
+
+# Text files use LF in the repository and native endings on checkout.
+* text=auto
+
+# Raw data must stay byte-identical on every checkout, because the run
+# manifest verifies its SHA-256 hash. Git never converts these files.
+data/raw/** binary
+# Generated data files are hashed in the manifest too.
+data/processed/** binary
+*.pdf binary
+*.png binary
+*.pptx binary
+*.sqlite binary

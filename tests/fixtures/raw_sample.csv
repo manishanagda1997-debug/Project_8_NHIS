@@ -1,0 +1,7 @@
+title,link,published_date,is_hourly,hourly_low,hourly_high,budget,country
+Python data analyst,https://example.com/a,2024-03-01 09:00:00+00:00,True,20.0,40.0,,United States
+Logo designer,https://example.com/b,2024-03-01 15:30:00+00:00,False,,,150.0,Canada
+SEO &amp; content writer,https://example.com/c,2024-03-02 00:05:00+00:00,True,10.0,,,India
+Virtual assistant,https://example.com/d,2024-03-02 23:55:00+00:00,True,,,,NA
+Full stack developer,https://example.com/e,2024-03-03 06:00:00+00:00,False,,,1000.0,
+,https://example.com/f,2024-03-03 07:00:00+00:00,True,5.0,15.0,,Germany
