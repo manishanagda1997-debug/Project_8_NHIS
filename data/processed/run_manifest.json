@@ -12,8 +12,16 @@
       ],
       "weak_hour_share": 0.3
     },
+    "labels": {
+      "blind_size": 350,
+      "dev_joined_titles": 20,
+      "dev_random": 110,
+      "dev_short_titles": 20,
+      "seed": 20261003
+    },
     "paths": {
       "interim_dir": "data/interim",
+      "labels_dir": "data/labels",
       "manifest": "data/processed/run_manifest.json",
       "notebooks_dir": "notebooks",
       "processed_dir": "data/processed",
@@ -37,7 +45,7 @@
       ]
     },
     "taxonomy": {
-      "version": "0.0-unset"
+      "version": "1.0"
     }
   },
   "counts": {
@@ -73,6 +81,7 @@
       "nbclient": "0.10.0",
       "nbformat": "5.10.4",
       "numpy": "1.26.4",
+      "openpyxl": "3.1.5",
       "pandas": "2.2.3",
       "pyarrow": "17.0.0",
       "pytest": "8.3.3",
@@ -195,9 +204,9 @@
     "2024-03-24"
   ],
   "fingerprints": {
-    "code_sha256": "a4d385d133ae607feae9c9fda9a898dd287d51c8da12b2415c4182acbe56d8a9",
-    "config_sha256": "b9e12b7edfc08b0ba4c0d78c795449b57f1ecc270856945e6624eb988c215af7",
-    "environment_sha256": "c5162a7a0ca462e908162a9098e063e870dbef82b231f7cea0ffc2c13f6559b9",
+    "code_sha256": "3cf9c0d8e0386d353c011ce172179627af37b1bce9807956f25a71d07a8285aa",
+    "config_sha256": "7b443f85563f765df984461ddde94af541ec3b3f48c6e342669505b7abe91c05",
+    "environment_sha256": "984229d962aa79d91e494358a278b9408c261bd92cb6e0abfa2d05719164ebd7",
     "source_sha256": "6513e9a744f15726bdb40d6435a60834e864ace08a75e1d7feb75e10ddb78b11"
   },
   "manifest_version": 1,
@@ -246,9 +255,9 @@
     }
   ],
   "project_version": "1.0.0",
-  "run_finished_utc": "2026-10-03T11:42:14Z",
-  "run_id": "20261003T114153Z-9e69c5b105",
-  "run_started_utc": "2026-10-03T11:41:53Z",
+  "run_finished_utc": "2026-10-03T12:42:31Z",
+  "run_id": "20261003T124213Z-52b6a0b684",
+  "run_started_utc": "2026-10-03T12:42:13Z",
   "source": {
     "bytes": 50577682,
     "columns": [
@@ -299,7 +308,7 @@
           "sha256": "e0b856e875048ac0468bdd7783028da2603718923cb6c9b2f3439acea5746d43"
         }
       ],
-      "seconds": 6.272
+      "seconds": 5.354
     },
     {
       "description": "Clean titles, add time, pay, quality, repeat and eligibility columns; keep every raw row.",
@@ -345,8 +354,8 @@
           "sha256": "f94c6171261976f7014fa8dd56d665fa907a4ecd72af58664ec1d6dd19d3a900"
         }
       ],
-      "seconds": 13.639
+      "seconds": 12.532
     }
   ],
-  "taxonomy_version": "0.0-unset"
+  "taxonomy_version": "1.0"
 }

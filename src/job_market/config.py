@@ -78,7 +78,7 @@ class Settings:
 
 GENERATED_DIR_KEYS = ("interim_dir", "processed_dir")
 # Configured paths that hold source material or deliverables.
-PROTECTED_PATH_KEYS = ("raw_csv", "notebooks_dir", "reports_dir")
+PROTECTED_PATH_KEYS = ("raw_csv", "notebooks_dir", "reports_dir", "labels_dir")
 # Standard folders that hold source material. A generated folder may never
 # equal, contain, or sit inside any protected path.
 PROTECTED_FOLDERS = ("config", "src", "tests", "docs", "app", "reports", ".git")

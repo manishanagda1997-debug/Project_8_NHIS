@@ -15,6 +15,8 @@ processed_dir = "data/processed"
 reports_dir = "reports"
 notebooks_dir = "notebooks"
 manifest = "data/processed/run_manifest.json"
+# Manual labels (inputs written by a person, never generated or deleted by a build)
+labels_dir = "data/labels"
 
 [schema]
 # The raw file must contain exactly these columns, in any order.
@@ -48,6 +50,16 @@ repeat_windows_days = [1, 3, 7]
 primary_repeat_window_days = 3
 
 [taxonomy]
-# The version label changes whenever the category rules change, so every
-# output can state which rule set produces it.
-version = "0.0-unset"
+# The version label changes whenever the category definitions or rules
+# change, so every output can state which rule set produces it. It must equal
+# TAXONOMY_VERSION in src/job_market/taxonomy.py (a test checks this).
+version = "1.0"
+
+[labels]
+# Manual-label samples (decision D-027). Changing any value draws different
+# samples, so never change them after labelling has started.
+seed = 20261003
+blind_size = 350
+dev_random = 110
+dev_short_titles = 20
+dev_joined_titles = 20

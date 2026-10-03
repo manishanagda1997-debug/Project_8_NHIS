@@ -347,3 +347,51 @@ check the reasoning.
   like the busiest day; per day, Friday is below Monday to Thursday.
 - **Evidence:** Notebook 02 section 2.3 (raw total vs average per day) and
   its claims check.
+
+## Job categories (Notebook 03)
+
+### D-026 Job categories describe the work; one primary category per job
+
+- **What:** Taxonomy 1.0 has 22 job-function categories plus Other / Unclear
+  (`src/job_market/taxonomy.py`; definitions, examples and 39 tie-break rules
+  in `docs/labelling_guide.md`). Each job gets exactly one primary category;
+  other categories it also matches are stored as secondary matches. The
+  client's industry (real estate, healthcare, crypto and others) is a separate,
+  optional, multi-label `industry_tag` that never changes demand shares. A
+  title naming two separate pieces of work with no stated priority ("logo and
+  website") is Other / Unclear with both stored as secondary matches.
+- **Why:** Tasks 2 and 3 count demand per category; one job counted twice
+  would push shares above 100%. Industry and job function are different
+  questions: a real-estate virtual assistant does virtual-assistant work.
+  Picking the "more technical" deliverable for two-task titles would inflate
+  technical categories, so those titles are not given an invented winner.
+- **Limit:** About 1-2% of titles are two-task titles (estimated from a
+  draft rule set); if more than 5% of the development titles end up in Other
+  through this rule, the rule is reviewed before freezing.
+- **Evidence:** `docs/labelling_guide.md`; the unmatched-title audit in
+  Notebook 03.
+
+### D-027 Three label sets with separate jobs, and a strict blind test
+
+- **What:** Rule-assigned, high-confidence labels (weak labels) train the
+  fallback classifier. A 150-title development set, labelled by hand, tunes
+  the rules, weights and confidence threshold and compares rules-only with
+  the hybrid. A 350-title blind test set, labelled by hand from the title
+  alone with no predictions visible, is scored once after everything is
+  frozen. The blind set is drawn first as a simple random sample of jobs; the
+  development set comes from the remaining jobs (110 random, 20 short titles,
+  20 titles joining two tasks). No title key appears in both sets. The sample
+  settings live in `config/pipeline.toml` under `[labels]`, and
+  `python -m job_market make-label-sheets` refuses to overwrite existing
+  sheets.
+- **Why:** Data that tunes a system cannot also grade it: the development
+  labels stay out of training, and the blind labels stay out of every
+  decision. Drawing the blind set first keeps it a true random sample of the
+  market, so its accuracy describes the whole dataset.
+- **Rule:** If the taxonomy, rules, model, threshold or tie-break logic
+  changes after blind labelling starts, the blind test is no longer blind and
+  a fresh sample is needed.
+- **Limit:** One person labels both sets (single annotator); rare categories
+  may have too few blind titles for a stable per-category score, in which case
+  a separate diagnostic sample is reported apart from the overall accuracy.
+- **Evidence:** `src/job_market/labels.py`, `tests/test_labels.py`.

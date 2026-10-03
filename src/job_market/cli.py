@@ -5,6 +5,7 @@
     python -m job_market check            lineage check: every artifact matches the current build
     python -m job_market check-notebooks  notebook check only (needs the manifest, not the raw data)
     python -m job_market verify           rebuild, run notebooks, then the lineage check
+    python -m job_market make-label-sheets  draw the blind and development samples as Excel sheets (once)
 
 Every command exits with code 0 on success and 1 on failure, so the same
 commands work in a terminal, in Docker and in continuous integration.
@@ -39,6 +40,7 @@ def main(argv: list[str] | None = None) -> int:
     ):
         cmd = sub.add_parser(name, help=text)
         cmd.add_argument("-v", "--verbose", action="store_true", help="also list passing checks")
+    sub.add_parser("make-label-sheets", help="draw the label samples and write the Excel sheets (refuses to overwrite)")
     args = parser.parse_args(argv)
 
     settings = load_settings()
@@ -67,6 +69,20 @@ def main(argv: list[str] | None = None) -> int:
         run_pipeline(settings)
         notebooks = execute_notebooks(settings)
         return _finish([notebooks, run_lineage_check(settings)], args.verbose)
+    if args.command == "make-label-sheets":
+        from .labels import draw_samples, write_label_sheet
+        from .notebook import start
+
+        project = start(verbose=False)
+        frame = project.read_parquet(
+            "jobs_clean.parquet", columns=["row_id", "title_clean", "title_key", "title_word_count", "eligible_for_text_analysis"]
+        )
+        blind, dev = draw_samples(frame, settings.section("labels"))
+        folder = settings.path("labels_dir")
+        for sample, name in [(dev, "dev_labels.xlsx"), (blind, "blind_labels.xlsx")]:
+            path = write_label_sheet(sample, folder / name)
+            print(f"wrote {settings.relative(path)}: {len(sample)} titles")
+        return 0
     parser.error(f"unknown command {args.command}")
     return 2
 
