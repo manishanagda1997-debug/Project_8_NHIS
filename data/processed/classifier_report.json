@@ -1,10 +1,19 @@
 {
-  "categorizer_version": "0.1-dev",
-  "classifier_threshold": 0.5,
+  "categorizer_version": "1.0",
+  "classifier_threshold": 0.7,
   "classifier_trained": true,
   "distinct_titles": 205289,
-  "holdout_agreement_rule_words_hidden": 0.4949,
-  "holdout_titles": 6804,
+  "fallback_list_matches_proxy_rule": true,
+  "proxy_agreement_all": 0.4886,
+  "proxy_agreement_at_threshold": 0.8376,
+  "proxy_agreement_at_threshold_no_twin": 0.8463,
+  "proxy_agreement_with_guard": 0.8802,
+  "proxy_agreement_with_guard_no_twin": 0.8906,
+  "proxy_masked_texts_also_in_training": 1474,
+  "proxy_predictions_at_threshold": 1835,
+  "proxy_predictions_with_guard": 1603,
+  "proxy_test_titles": 6958,
+  "proxy_title_keys_shared_with_training": 0,
   "weak_label_categories": 22,
-  "weak_labels": 34018
+  "weak_labels": 34816
 }

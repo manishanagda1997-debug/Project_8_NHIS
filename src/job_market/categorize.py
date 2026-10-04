@@ -139,6 +139,8 @@ _add("software_it", 3, "python script", "automation", "automate", "scraper", "sc
      "software development", "software engineer", "programmer", "golang", "rust", "java", "cpp", "csharp", "dotnet",
      "aspnet", "ruby on rails", "rails", "embedded software", "firmware", "qa tester", "qa engineer", "software testing",
      "test automation", "github", "git", "microservice", "saas")
+# T1/T4 decide when the app is mobile or web; an app with no platform is software (decision D-029).
+_add("software_it", 3, r"(?:create|build|develop|make|fix|code)\w* (?:\w+ ){0,4}(?:app|application)", "apify")
 _add("software_it", 2, "python", "developer", "script", "bot", "integration", "software", "coding", "code",
      "programming", "engineer", "it", "cloud", "security", "hack", "migration", "deploy", "bug", "fix error")
 # 4 AI & ML
@@ -173,7 +175,8 @@ _add("design_creative", 3, "graphic design", "graphic designer", "logo", "logo d
      "creative design", "nft art", "digital art", "art", "artist", "drawing", "comic", "manga", "children book illustration",
      "tattoo", "font", "typography", "business card", "letterhead", "magazine layout", "layout design", "indesign",
      "product design mockup", "visual design", "visual artist", "web banner", "email template design", "gif",
-     "facebook cover", "cover photo", "channel art", "youtube banner", "linkedin banner", "menu design")
+     "facebook cover", "cover photo", "channel art", "youtube banner", "linkedin banner", "menu design",
+     "product designer")
 _add("design_creative", 2, "designer", "graphic", "creative", "visual", "image", "design")
 # 7 Video & animation
 _add("video_animation", 3, "video editor", "video editing", "video edit", "edit video", "youtube video",
@@ -183,7 +186,7 @@ _add("video_animation", 3, "video editor", "video editing", "video edit", "edit 
      "video creator", "ugc video", "ugc creator", "video ad", "video content", "faceless youtube", "cinematic",
      "vfx", "color grading", "colour grading", "unboxing video", "promo video", "music video", "wedding video",
      "video shoot", "film", "filmmaker")
-_add("video_animation", 2, "video", "youtube", "tiktok", "clip", "footage", "vlog", "ugc")
+_add("video_animation", 2, "video", "youtube", "tiktok", "clip", "footage", "vlog", "ugc", "trim")
 _add("video_animation", 1, "editor", "editing")
 # 8 Photography
 _add("photography", 3, "photographer", "photography", "photo shoot", "photoshoot", "headshot", "photo editing",
@@ -224,7 +227,8 @@ _add("digital_marketing", 3, "seo", "search engine optimization", "social media 
      "youtube channel manager", "instagram growth", "backlink", "link building", "local seo", "seo audit", "google business profile",
      "gmb", "reputation management", "review management", "marketing")
 _add("digital_marketing", 2, "social media", "instagram", "facebook", "linkedin", "pinterest", "twitter", "marketer",
-     "promotion", "promote", "campaign", "advertising", "advertisement", "traffic", "growth", "content creator", "brand")
+     "promotion", "promote", "campaign", "advertising", "advertisement", "traffic", "growth", "content creator", "brand",
+     "ad", "media outreach", "publicity")
 # 12 Sales & lead generation
 _add("sales_lead_generation", 3, "lead generation", "lead gen", "lead list", "appointment setter", "appointment setting",
      "cold caller", "cold calling", "cold call", "cold email", "cold outreach", "telemarketer", "telemarketing",
@@ -246,7 +250,10 @@ _add("customer_service", 3, "customer service", "customer support", "chat suppor
      "support agent", "support specialist", "support representative", "call center", "call centre", "helpdesk",
      "help desk", "customer success", "customer care", "live chat", "chat agent", "inbound call", "zendesk",
      "freshdesk", "gorgias", "moderator", "chat moderator", "community moderator", "technical support")
-_add("customer_service", 2, "support", "customer", "chatter")
+_add("customer_service", 2, "support", "customer")
+# "chatter" counts only with a stated task (T28/T29); a bare "chatter" is Other (T30).
+_add("customer_service", 3, r"chatter\w* (?:\w+ ){0,5}(?:support|customer|question|inquir\w*)")
+_add("sales_lead_generation", 3, r"chatter\w* (?:\w+ ){0,5}(?:upsell\w*|sell\w*|sale|ppv|convert\w*|conversion)")
 # 15 Accounting & finance
 _add("accounting_finance", 3, "bookkeeper", "bookkeeping", "book keeping", "accountant", "accounting", "quickbooks",
      "xero", "sage", "tax return", "tax preparation", "tax", "payroll", "cpa", "financial statement", "financial model",
@@ -255,14 +262,14 @@ _add("accounting_finance", 3, "bookkeeper", "bookkeeping", "book keeping", "acco
      "invoice", "medical biller", "medical billing", "billing specialist", "financial audit", "auditor", "budgeting",
      "cash flow", "profit and loss", "p l", "vat", "gst", "sale tax", "irs", "1099", "w2", "excel financial",
      "cleaning up the book", "clean up the book", "catch up book", "investment analyst", "equity research",
-     "financial planning", "fp a", "sec filing", "13d")
-_add("accounting_finance", 2, "audit", "finance", "financial", "book", "billing", "accounts", "budget", "expense")
+     "financial planning", "fp a")
+_add("accounting_finance", 2, "audit", "finance", "financial", "book", "billing", "budget", "expense")
 # 16 Legal
 _add("legal", 3, "lawyer", "attorney", "legal", "paralegal", "contract review", "contract drafting", "draft contract",
      "terms and condition", "term of service", "terms of service", "privacy policy", "trademark", "patent",
      "copyright", "company registration", "company formation", "incorporation", "register company", "llc formation",
      "visa", "immigration", "gdpr", "compliance", "notary", "lawsuit", "litigation", "dmca", "bankruptcy",
-     "nda", "legal advice", "legal consultant")
+     "nda", "legal advice", "legal consultant", "sec filing", "13d", "regulatory filing", "compliance filing")
 _add("legal", 2, "contract", "law", "regulation", "license", "licence")
 # 17 Engineering & architecture
 _add("engineering_architecture", 3, "autocad", "auto cad", "cad", "solidwork", "solidworks", "revit", "sketchup",
@@ -272,7 +279,7 @@ _add("engineering_architecture", 3, "autocad", "auto cad", "cad", "solidwork", "
      "architect", "architecture", "architectural", "floor plan", "interior design", "interior designer", "landscape design",
      "technical drawing", "shop drawing", "product engineering", "hvac", "mep", "bim", "3d printing", "3d print",
      "injection mold", "sheet metal", "fea", "cfd", "matlab", "simulink", "plc", "robotics", "drone design",
-     "product development engineer", "industrial design", "permit drawing", "construction drawing", "kitchen design")
+     "product development engineer", "industrial design", "openscad", "permit drawing", "construction drawing", "kitchen design")
 _add("engineering_architecture", 2, "engineering", "mechanical", "electrical", "electronic", "hardware",
      "prototype", "construction", "renovation")
 # 18 Audio & music
@@ -412,7 +419,11 @@ def _has(text: str, pattern: str) -> bool:
 _STRONG_AI = r"chatbot|chat bot|llm|gpt|chatgpt|openai|machine learning|deep learning|ai agent|ai developer|ai engineer|ai model|nlp|computer vision|langchain|rag|fine tune|finetune|genai|generative ai|ai automation|ai integration|ai app|ai tool|ai assistant|ai solution|prompt engineer\w*|voice agent|voice ai|conversational ai|neural network|pytorch|tensorflow|mediapipe|opencv|yolo"
 _AI_AS_TOOL_OUTPUT = ("video_animation", "design_creative", "writing_content", "audio_music", "photography")
 _BUILD_WEB = r"develop\w*|developer|build|builder|wordpress|webflow|wix|shopify|elementor|woocommerce|html|css|php|react|fullstack|frontend|backend|landing page|website|web page|webpage|site|funnel"
-_PAIR_RULES: list[tuple[str, str, str | None]] = [
+_BUILDING = r"build\w*|develop\w*|developer|code|coding|program\w*|backend|frontend|fullstack|saas|api|react|nextjs|django|laravel|php|wordpress|webflow|wix|shopify|html|css|elementor"
+_DATA_TOOL = r"powerbi|tableau|looker|looker studio|data studio|excel|google sheet|spreadsheet|analy\w*|kpi|report\w*|metric"
+# (winner, loser, condition or None for always[, unless]): the loser is removed
+# when both are present, the condition matches and the "unless" pattern does not.
+_PAIR_RULES: list[tuple] = [
     ("mobile_development", "web_development", None),                                       # T1
     ("mobile_development", "software_it", None),                                           # T1
     ("ai_ml", "software_it", _STRONG_AI),                                                  # T2
@@ -420,6 +431,12 @@ _PAIR_RULES: list[tuple[str, str, str | None]] = [
     ("ai_ml", "data_analytics", _STRONG_AI),                                               # T2
     ("ai_ml", "mobile_development", _STRONG_AI),                                           # T2
     ("software_it", "web_development", r"scraper|scraping|scrape|crawler|data extraction"),  # T6: scraping a website is not building one
+    ("design_creative", "web_development", r"illustrat\w*|artist|artwork|art|drawing|icon", _BUILDING),  # T5: art for a website
+    ("web_development", "data_analytics", r"dashboard", _DATA_TOOL),                     # T7: a coded dashboard is a product
+    ("software_it", "data_analytics", r"dashboard", _DATA_TOOL),                         # T7
+    ("web_development", "sales_lead_generation", r"build\w*|develop\w*|developer|backend|frontend|saas|app|api"),  # building a sales product
+    ("software_it", "sales_lead_generation", r"build\w*|develop\w*|developer|backend|frontend|saas|app|api"),
+    ("software_it", "digital_marketing", r"api|sdk|script|integration|automation"),       # building for ads is software
     ("web_development", "software_it", None),                                              # T4
     ("web_development", "design_creative", _BUILD_WEB),                                    # T4 vs T5
     ("design_creative", "web_development", r"figma|ui ux|ui design|ux design|wireframe|mockup|mock up"),  # T5
@@ -440,14 +457,18 @@ _PAIR_RULES: list[tuple[str, str, str | None]] = [
     ("ecommerce_operations", "web_development", r"listing|product upload|upload product|store manager|product research|inventory|fba|etsy|ebay|amazon seller|dropship\w*"),  # T15
     ("web_development", "ecommerce_operations", r"develop\w*|developer|theme|setup|set up|build|builder|website|landing page|liquid|custom code|store design"),  # T4
     ("ecommerce_operations", "admin_virtual_assistance", r"amazon|etsy|ebay|shopify|ecommerce|listing|product upload|upload product|walmart"),  # T15
-    ("digital_marketing", "ecommerce_operations", r"amazon ppc|amazon ad|ppc|ad campaign"),  # T16
+    ("digital_marketing", "ecommerce_operations", r"amazon ppc|amazon ad|ppc|ad campaign|ad|ad manager|advertising|sponsored", r"api|sdk|script|integration|develop\w*|developer|build\w*"),  # T16
+    ("software_it", "ecommerce_operations", r"apify|scrap\w*|crawl\w*|data extraction"),  # T6
     ("customer_service", "admin_virtual_assistance", r"customer service|customer support|chat support|support agent|call center|call centre|helpdesk|help desk|customer success|customer care|live chat"),  # T17
     ("customer_service", "sales_lead_generation", r"customer service|customer support|chat support|support agent|helpdesk|help desk|inbound call"),  # T17
     ("business_project_management", "admin_virtual_assistance", r"project manager|project management|operations manager|operation manager|consultant|business plan|product manager"),  # T18
     ("digital_marketing", "accounting_finance", r"seo|seo audit|google ad|facebook ad|ppc|marketing"),  # SEO/ads audit is marketing
+    ("digital_marketing", "business_project_management", r"pr|public relation|press release|press|media outreach|publicity|pitch\w* (?:\w+ )?media|ad|ppc|seo|social media|campaign|marketing"),  # T13: PR, ads and SEO managers are marketing
+    ("hr_recruiting", "business_project_management", r"recruit\w*|headhunt\w*|talent acquisition|hr|human resource"),  # recruitment consulting is HR
+    ("writing_content", "legal", r"article|blog|post|newsletter|content writer|copywrit\w*"),  # writing about a legal topic
     ("accounting_finance", "business_project_management", r"bookkeep\w*|accountant|accounting|tax|financial model\w*|financial statement|cfo|payroll|valuation"),  # T19
     ("accounting_finance", "data_analytics", r"bookkeep\w*|accountant|accounting|tax|financial model\w*|financial statement|cfo|payroll|valuation|financial analys\w*"),  # T19
-    ("engineering_architecture", "design_creative", r"cad|autocad|solidwork\w*|revit|sketchup|interior design\w*|architect\w*|floor plan|pcb|technical drawing|kitchen design|landscape design"),  # T20
+    ("engineering_architecture", "design_creative", r"cad|openscad|autocad|solidwork\w*|revit|sketchup|interior design\w*|architect\w*|floor plan|pcb|technical drawing|kitchen design|landscape design"),  # T20
     ("photography", "design_creative", r"photographer|photography|photo shoot|photoshoot|retouch\w*|photo edit\w*|edit photo|background removal|headshot"),  # T21
     ("translation_transcription", "writing_content", r"translat\w*|transcri\w*|subtitl\w*|caption\w*|locali[sz]ation"),  # T22
     ("education_tutoring", "writing_content", r"tutor\w*|teach\w*|course|curriculum|lesson|instructor|trainer"),  # T23
@@ -457,6 +478,21 @@ _PAIR_RULES: list[tuple[str, str, str | None]] = [
 ]
 
 
+# Work outside all 22 functions (guide section 5): consumer-style testing and
+# survey or research participation. Technical testing (QA, software tester,
+# test automation) is Software & IT and is never matched here.
+_OUT_OF_SCOPE = (
+    r"mystery shop\w*|secret shopper|paid survey\w*|survey participant\w*|"
+    r"(?:take|complete|fill|answer|do) (?:\w+ ){0,4}survey|"
+    r"participate in (?:a |an |our |the )*(?:survey|study|research)|focus group|"
+    r"beta tester|product tester|usability test\w* participant\w*|user testing participant\w*|"
+    r"test (?:a |an |our |my )?physical product"
+)
+_TECHNICAL_TESTING = r"qa|quality assurance|software test\w*|software tester|test automation|automated test\w*|unit test\w*"
+# Words that alone never say what the work is (T30).
+_NO_FUNCTION = r"chatter"
+
+
 def _apply_ai_as_tool(scores: dict[str, int], text: str) -> None:
     """T3: AI used as a tool for another output -> the output's category wins."""
     if "ai_ml" in scores and not _has(text, _STRONG_AI):
@@ -464,9 +500,29 @@ def _apply_ai_as_tool(scores: dict[str, int], text: str) -> None:
             scores.pop("ai_ml")
 
 
+# T25: "recruitment / recruiting" followed by a job role means the job is that
+# role ("recruiting video editors"). The title stays HR when the word after it
+# names recruitment work itself, or when other HR words appear ("recruiter").
+_RECRUIT_INTRO = r"recruitment|recruiting"
+_RECRUIT_WORK = (
+    r"(?:recruitment|recruiting) (?:process|agency|agencie|consultant|consulting|specialist|coordinator|"
+    r"strategy|strategist|campaign|manager|partner|assistant|team|lead|officer|support|outsourcing|firm|expert)"
+)
+
+
+def _apply_recruitment(scores: dict[str, int], terms: dict[str, list[str]], text: str) -> None:
+    hr_terms = set(terms.get("hr_recruiting", []))
+    if "hr_recruiting" not in scores or len(scores) < 2:
+        return
+    if hr_terms <= {"recruitment", "recruiting"} and not _has(text, _RECRUIT_WORK):
+        scores.pop("hr_recruiting")
+
+
 def _apply_pairs(scores: dict[str, int], text: str) -> None:
-    for winner, loser, condition in _PAIR_RULES:
+    for winner, loser, condition, *unless in _PAIR_RULES:
         if winner in scores and loser in scores and (condition is None or _has(text, condition)):
+            if unless and _has(text, unless[0]):
+                continue
             scores.pop(loser)
 
 
@@ -475,6 +531,7 @@ def _resolve(text: str, min_score: int) -> tuple[dict[str, int], dict[str, int],
     raw, terms = score_text(text)
     scores = {c: s for c, s in raw.items() if s >= min_score}
     if scores:
+        _apply_recruitment(scores, terms, text)
         _apply_ai_as_tool(scores, text)
         _apply_pairs(scores, text)
     return raw, scores, terms
@@ -493,7 +550,7 @@ _MINOR = r"small|minor|quick|simple|also|bonus|optional|basic"
 STRONG_PART_SCORE = 3
 # Pairs settled unconditionally by a tie-break are one piece of work in two
 # technologies ("iOS & mobile game developer", "Python and React developer").
-_SAME_WORK = {frozenset((w, l)) for w, l, condition in _PAIR_RULES if condition is None}
+_SAME_WORK = {frozenset(rule[:2]) for rule in _PAIR_RULES if rule[2] is None}
 
 
 def _part_categories(title: str, min_score: int) -> list[tuple[str, bool]]:
@@ -516,7 +573,12 @@ def categorize_title(title_clean: object, min_score: int = 2) -> RuleResult:
         return RuleResult(None, "no_match")
     raw, scores, terms = _resolve(text, min_score)
     all_matched = _ranked(raw)
+    if _has(text, _OUT_OF_SCOPE) and not _has(text, _TECHNICAL_TESTING):
+        found = re.search(rf"\b(?:{_OUT_OF_SCOPE})\b", text)
+        return RuleResult(OTHER, "rule", 0, [found.group(0)] if found else [], all_matched, dict(scores))
     if not scores:
+        if _has(text, _NO_FUNCTION):
+            return RuleResult(OTHER, "rule", 0, ["chatter"], all_matched, {})
         return RuleResult(None, "no_match", matched_terms=[t for c in all_matched for t in terms[c]])
     best = _ranked(scores)[0]
     secondary = [c for c in all_matched if c != best]

@@ -458,3 +458,64 @@ check the reasoning.
   Settings in `config/pipeline.toml` under `[categorize]`.
 - **Evidence:** `src/job_market/steps/categorize.py`,
   `tests/test_categorize.py`, Notebook 03.
+
+### D-029 Categorizer 1.0: rules tuned on the development labels, guarded fallback, frozen
+
+- **What:** The 150 development labels tune the categorizer once, then it is
+  frozen as `categorizer_version = "1.0"`.
+  - *Rule changes*, each following an existing guide rule and tested with
+    positive and "must not change" examples (`tests/test_categorize.py`): a
+    bare "chatter" is Other (T30), "chatter" with support or selling words is
+    Customer Service or Sales (T28/T29); "recruitment/recruiting" followed by
+    a job role gives that role, while recruitment work itself (process,
+    agency, consultant, specialist, coordinator, strategy, campaign, manager;
+    "recruiter") stays HR (T25); consumer-style testing and survey or
+    research participation is Other, technical testing stays Software (guide
+    section 5); building an app with no stated platform is Software (T1/T4
+    decide mobile and web); art or illustration for a website is Design
+    unless the title says it builds the site (T5); a dashboard is Data when
+    it is a data or reporting output and Web/Software when it is a coded
+    product (T7); PR and running ads are Marketing, building for ads (API,
+    script, integration) is Software (T13/T16); regulatory filings are
+    Legal, writing an article about them is Writing (T24); missing tool words
+    (OpenSCAD, Apify, trim videos). Rule-assigned Other is never a weak label.
+  - *Not changed:* 15 remaining disagreements that are judgement calls
+    ("Facebook verification", "AI influencer", "Practice Manager | CPA");
+    special rules for single titles would turn the development set into an
+    answer sheet. The two-task rule stays: it gives Other for 8 of 150
+    development titles (5.3%), but the development sample deliberately
+    contains 20 joined titles; across all jobs it affects about 2.5%. On the
+    development set it matches the human label for only 2 of 5 titles it
+    fires on, which Notebook 03 reports as a known weakness.
+  - *Fallback classifier:* used only when no rule matches; a guess counts
+    only at probability >= 0.70 and only for a fixed list of 14 categories.
+    Every other guess is Other / Unclear (`below_threshold`,
+    `fallback_blocked`).
+- **Why:** The threshold and the guard come from a *masked proxy test*:
+  weak-labelled titles split by `title_key` (GroupShuffleSplit, 0 keys shared
+  with training), with the rule words hidden, so the test resembles the
+  titles the classifier really meets. At 0.70 the unrestricted fallback
+  agrees with the held-out high-confidence rule labels on 83.8% of 1,835
+  predictions (84.6% on titles whose masked text has no identical twin in
+  training). By category, AI & ML (55%), Photography (52%), Engineering
+  (66%) and Legal (67%) fall below 70% with at least 30 predictions; HR,
+  Education, Business and Audio have fewer than 30 predictions, which is
+  insufficient evidence for a reliable fallback. One general rule (at least
+  30 proxy predictions and at least 70% agreement) selects the 14 allowed
+  categories; with the guard, agreement is 88.0% (89.1% without twins) on
+  1,603 predictions. The list is frozen in `config/pipeline.toml`, not
+  recalculated during a build; each build records whether its own proxy
+  test still selects the same list (`fallback_list_matches_proxy_rule`).
+- **Limit:** Proxy labels are rule labels, not human ground truth, so these
+  numbers design the policy and are not accuracy; proxy agreement and the
+  development agreement come from different populations and are not
+  compared. Development agreement after tuning (83% overall, 91% on titles
+  labelled without hesitation) is optimistic because the rules were tuned on
+  those titles. The final accuracy comes only from the 350 blind labels,
+  scored once.
+- **Rule:** Nothing in the rules, weights, model, threshold or guard changes
+  after blind labelling starts (D-027).
+- **Evidence:** `src/job_market/categorize.py`,
+  `src/job_market/steps/categorize.py`, `classifier_report.json`,
+  `classifier_proxy_by_threshold.csv`, `classifier_proxy_by_category.csv`,
+  `tests/test_categorize.py`, Notebook 03.

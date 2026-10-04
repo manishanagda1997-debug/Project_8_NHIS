@@ -9,6 +9,7 @@ import pytest
 
 from job_market.categorize import categorize_title, category_text, industry_tags, score_text
 from job_market.steps import categorize as step
+from job_market.steps.clean import title_key
 from job_market.taxonomy import CATEGORY_IDS, OTHER
 
 from conftest import REPO_ROOT
@@ -172,7 +173,7 @@ def _training_frame() -> pd.DataFrame:
 def test_categorize_jobs_end_to_end():
     frame = _training_frame()
     settings = dict(CONFIG, min_weak_labels_per_category=5, max_char_features=5000)
-    jobs, model, report = step.categorize_jobs(frame, settings, seed=7)
+    jobs, model, report, proxy = step.categorize_jobs(frame, settings, seed=7)
     assert model is not None and report["classifier_trained"]
     assert list(jobs.columns) == list(step.OUTPUT_COLUMNS)
     assert len(jobs) == len(frame)                                # every job keeps one row
@@ -187,18 +188,132 @@ def test_categorize_jobs_end_to_end():
     assert (jobs["taxonomy_version"] == "1.0").all()
     assert (jobs["categorizer_version"] == CONFIG["categorizer_version"]).all()
     assert report["categorizer_version"] == CONFIG["categorizer_version"]
+    assert report["proxy_title_keys_shared_with_training"] == 0
+    assert list(proxy["by_threshold"]["threshold"]) == list(step.PROXY_THRESHOLDS)
 
 
 def test_categorize_jobs_without_enough_weak_labels():
     frame = pd.DataFrame({"row_id": [1, 2, 3], "title_clean": ["Logo designer", "Canvas project", None]})
-    jobs, model, report = step.categorize_jobs(frame, CONFIG, seed=7)
+    jobs, model, report, _ = step.categorize_jobs(frame, CONFIG, seed=7)
     assert model is None and report["classifier_trained"] is False
     assert jobs["category_method"].tolist() == ["rule", "below_threshold", "no_text"]
     assert jobs["primary_category"].tolist() == ["design_creative", OTHER, OTHER]
 
 
 def test_category_summary_shares_add_up():
-    jobs, _, _ = step.categorize_jobs(_training_frame(), dict(CONFIG, min_weak_labels_per_category=5), seed=7)
+    jobs, _, _, _ = step.categorize_jobs(_training_frame(), dict(CONFIG, min_weak_labels_per_category=5), seed=7)
     summary = step.category_summary(jobs)
     assert summary["jobs"].sum() == len(jobs)
     assert summary["share_of_all_jobs"].sum() == pytest.approx(1.0, abs=1e-5)
+
+
+# ------------------------------------------------------------------ dev-review rules (decision D-029)
+# Each change has positive cases and "must not change" cases, so a fix for one
+# title cannot quietly break a neighbouring kind of title.
+
+
+@pytest.mark.parametrize(
+    ("title", "expected"),
+    [
+        # T25: recruitment + a job role -> that role; recruitment work itself -> HR
+        ("Recruitment Product Designer", "design_creative"),
+        ("Recruiting Video Editors", "video_animation"),
+        ("Recruitment WordPress Developer", "web_development"),
+        ("Recruiting Python Developer", "software_it"),
+        ("Recruitment Process Consultant", "hr_recruiting"),
+        ("Recruitment Specialist", "hr_recruiting"),
+        ("Recruitment Coordinator", "hr_recruiting"),
+        ("Recruitment Strategy Consultant", "hr_recruiting"),
+        ("Recruitment Agency Consultant", "hr_recruiting"),
+        ("Recruitment Campaign Manager", "hr_recruiting"),
+        ("Recruiter", "hr_recruiting"),
+        ("Technical Recruiter", "hr_recruiting"),
+        ("IT Recruiter", "hr_recruiting"),
+        # Outside the 22 functions; technical testing stays software
+        ("Paid Product Tester", OTHER),
+        ("Mystery Shopper", OTHER),
+        ("Mobile App Beta Tester", OTHER),
+        ("Take our 5 minute survey", OTHER),
+        ("QA Tester", "software_it"),
+        ("Software Tester", "software_it"),
+        # T28-T30: chatter
+        ("Experienced OnlyFans Chatter", OTHER),
+        ("Chatter for customer support", "customer_service"),
+        ("Chatter to upsell PPV content", "sales_lead_generation"),
+        # App with no platform -> software; platform or pure design decides otherwise
+        ("Create a construction management app", "software_it"),
+        ("Figma UI for construction app", "design_creative"),
+        ("Android construction app", "mobile_development"),
+        ("Build an AI app", "ai_ml"),
+        ("Build a web app", "web_development"),
+        # T5: art for a website is design; building the site is web
+        ("Website Illustrator/Visual Artist", "design_creative"),
+        ("Build a WordPress website with illustrations", "web_development"),
+        # T7: dashboard as a data output -> data; as a coded product -> web/software
+        ("Power BI Dashboard", "data_analytics"),
+        ("Tableau dashboard", "data_analytics"),
+        ("Excel dashboard", "data_analytics"),
+        ("Analyse data and build dashboard", "data_analytics"),
+        ("SaaS Dashboard Developer", "software_it"),
+        ("Build a cold email SaaS - dashboard and backend", "web_development"),
+        # T13/T16: PR and running Amazon ads -> marketing; building for ads -> software
+        ("Amazon PPC Specialist", "digital_marketing"),
+        ("Manage Amazon ads", "digital_marketing"),
+        ("Amazon advertising campaign", "digital_marketing"),
+        ("Perpetua Ads Amazon Account Manager", "digital_marketing"),
+        ("Amazon Ads API Developer", "software_it"),
+        ("Amazon product listing", "ecommerce_operations"),
+        ("Professional PR Coach to Pitch Big Media", "digital_marketing"),
+        ("Public relations specialist", "digital_marketing"),
+        ("Business coach", "business_project_management"),
+        # T24: regulatory filings -> legal; writing about them -> writing
+        ("SEC Filing Assistance", "legal"),
+        ("13D Sec Filing", "legal"),
+        ("Article About SEC Filings", "writing_content"),
+        ("Write a contract", "legal"),
+        # Missing tool words
+        ("Shoe design in Openscad Pro", "engineering_architecture"),
+        ("Need Developer with Apify scraping", "software_it"),
+        ("Trim videos for Instagram", "video_animation"),
+    ],
+)
+def test_dev_review_rules(title, expected):
+    assert category(title) == expected
+
+
+def test_other_from_rules_is_never_a_weak_label():
+    rules = step.rule_table(pd.Series(["Mystery shopper visit for a bakery in a small town"]), 2)
+    assert rules["rule_category"].iloc[0] == OTHER
+    assert step.weak_labels(rules, min_score=0, max_per_category=10, seed=1).empty
+
+
+def test_proxy_split_never_shares_a_title_key():
+    labels = pd.DataFrame({"title_clean": ["Logo design", "logo design!!", "LOGO DESIGN", "Video editor", "video editor.",
+                                           "Bookkeeper", "Web developer", "SEO expert", "Data entry", "Translator"]})
+    for seed in range(10):
+        train, test = step.proxy_split(labels, 0.3, seed)
+        train_keys = set(train["title_clean"].map(title_key))
+        assert not train_keys & set(test["title_clean"].map(title_key))
+
+
+def test_fallback_guard_sends_blocked_categories_to_other():
+    rules = pd.DataFrame(
+        {
+            "category_text": ["abc", "def", "ghi"],
+            "rule_method": ["no_match"] * 3,
+            "rule_category": [None] * 3,
+            "classifier_category": ["web_development", "hr_recruiting", "hr_recruiting"],
+            "classifier_probability": [0.9, 0.9, 0.5],
+        }
+    )
+    out = step.decide(rules, threshold=0.7, allowed=["web_development"])
+    assert out["category_method"].tolist() == ["tfidf_classifier", "fallback_blocked", "below_threshold"]
+    assert out["primary_category"].tolist() == ["web_development", OTHER, OTHER]
+
+
+def test_frozen_fallback_list_is_valid():
+    allowed = CONFIG["fallback_categories"]
+    assert len(allowed) == len(set(allowed)) == 14
+    assert set(allowed) <= set(CATEGORY_IDS) - {OTHER}
+    assert CONFIG["categorizer_version"] == "1.0"
+    assert CONFIG["classifier_threshold"] == 0.7

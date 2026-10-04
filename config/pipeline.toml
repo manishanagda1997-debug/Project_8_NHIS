@@ -75,7 +75,7 @@ dev_joined_titles = 20
 # The taxonomy (the category list and definitions) is frozen at 1.0; the
 # categorizer (rules, weights, model, threshold) has its own version. It stays
 # "0.x-dev" until the freeze, then becomes "1.0".
-categorizer_version = "0.1-dev"
+categorizer_version = "1.0"
 # A category needs at least this many rule points (weights 3/2/1).
 min_rule_score = 2
 # Weak labels for the classifier: rule score at least this high and no other
@@ -91,5 +91,28 @@ holdout_share = 0.2
 classifier_c = 4.0
 max_iter = 2000
 max_char_features = 200000
-# Below this probability a classifier guess becomes Other / Unclear (provisional).
-classifier_threshold = 0.5
+# Below this probability a classifier guess becomes Other / Unclear (decision D-029).
+classifier_threshold = 0.7
+# The fallback classifier may only assign these categories (decision D-029).
+# Chosen once on the grouped, masked proxy test at the threshold above: a
+# category qualifies with at least 30 proxy predictions and at least 70%
+# agreement. The list is fixed here, never recalculated during a build. Rules
+# can still assign all 22 categories.
+fallback_min_proxy_predictions = 30
+fallback_min_proxy_agreement = 0.7
+fallback_categories = [
+    "accounting_finance",
+    "admin_virtual_assistance",
+    "customer_service",
+    "data_analytics",
+    "design_creative",
+    "digital_marketing",
+    "ecommerce_operations",
+    "mobile_development",
+    "sales_lead_generation",
+    "software_it",
+    "translation_transcription",
+    "video_animation",
+    "web_development",
+    "writing_content",
+]
