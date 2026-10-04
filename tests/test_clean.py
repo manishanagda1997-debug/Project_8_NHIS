@@ -18,9 +18,10 @@ from job_market.steps.clean import (
 from job_market.steps.ingest import parse_timestamps
 
 RULES = {
+    "reference_day_share": 0.5,
+    "reference_quantile": 0.9,
+    "min_day_ratio": 0.9,
     "weak_hour_share": 0.3,
-    "max_weak_hours_for_gap": 2,
-    "min_day_volume_share": 0.25,
     "extreme_quantile": 0.999,
     "repeat_windows_days": [1, 3, 7],
     "primary_repeat_window_days": 3,
@@ -90,6 +91,29 @@ def test_title_key_ignores_case_punctuation_and_emoji_but_keeps_letters():
     assert title_key("UI/UX designer") == "ui ux designer"
     assert title_key("\u0420\u0430\u0431\u043e\u0442\u0430 SEO") == "\u0440\u0430\u0431\u043e\u0442\u0430 seo"
     assert title_key(None) == ""
+
+
+@pytest.mark.parametrize(
+    ("title", "key"),
+    [
+        ("C++ Developer", "c++ developer"),
+        ("C# Developer", "c# developer"),
+        ("C Developer", "c developer"),
+        ("A+ Content", "a+ content"),
+        ("Audio + Video", "audio video"),
+        ("Branding + Logo", "branding logo"),
+        ("Node.js Developer", "node js developer"),
+        ("C#/.NET", "c# net"),
+        ("#hiring now", "hiring now"),
+        ("aws_data engineer", "aws data engineer"),
+    ],
+)
+def test_title_key_keeps_plus_and_hash_only_when_attached(title, key):
+    assert title_key(title) == key
+
+
+def test_c_family_titles_are_not_one_repeat_key():
+    assert len({title_key("C++ Developer"), title_key("C# Developer"), title_key("C Developer")}) == 3
 
 
 @pytest.mark.parametrize(
@@ -224,33 +248,77 @@ def stamps(day_hours):
     return pd.Series(values)
 
 
+def three_weeks(changes=None, saturday=10):
+    """21 days from Monday 4 March 2024, 10 postings per hour (Saturdays:
+    ``saturday`` per hour), with per-day hour overrides in ``changes``."""
+    days = {}
+    for offset in range(21):
+        date = pd.Timestamp("2024-03-04") + pd.Timedelta(days=offset)
+        base = saturday if date.dayofweek == 5 else 10
+        hours = {h: base for h in range(24)}
+        hours.update((changes or {}).get(date.strftime("%Y-%m-%d"), {}))
+        days[date.strftime("%Y-%m-%d")] = hours
+    return stamps(days)
+
+
+def status_of(table, date):
+    return table.set_index(table["date"].dt.strftime("%Y-%m-%d")).loc[date, "status"]
+
+
 def test_day_quality_statuses_and_window():
-    ts = stamps(
+    ts = three_weeks(
         {
-            "2024-03-01": {h: 0 for h in range(10)},  # ten empty hours: incomplete
-            "2024-03-02": {},
-            "2024-03-03": {5: 0},  # one empty hour: intraday gap
-            "2024-03-04": {},
-            "2024-03-05": {1: 0, 2: 1, 3: 0},  # three weak hours: incomplete
-            "2024-03-06": {},
+            "2024-03-05": {h: 0 for h in range(12, 22)},  # ten empty hours: 58% of a Tuesday -> incomplete
+            "2024-03-12": {5: 0},  # one empty hour: 96% of a Tuesday -> intraday gap
+            "2024-03-20": {1: 0, 2: 1, 3: 0},  # three weak hours: 88% of a Wednesday -> incomplete
         }
     )
-    table = day_quality(ts, RULES).set_index(pd.Index(["01", "02", "03", "04", "05", "06"]))
-    assert list(table["status"]) == ["incomplete", "complete", "intraday_gap", "complete", "incomplete", "complete"]
-    assert list(table["in_timeseries_window"]) == [False, True, True, True, False, False]
+    table = day_quality(ts, RULES)
+    assert status_of(table, "2024-03-04") == "complete"
+    assert status_of(table, "2024-03-05") == "incomplete"
+    assert status_of(table, "2024-03-12") == "intraday_gap"
+    assert status_of(table, "2024-03-20") == "incomplete"
+    window = table.loc[table["in_timeseries_window"], "date"].dt.strftime("%Y-%m-%d")
+    assert (window.min(), window.max()) == ("2024-03-06", "2024-03-19")   # longest run without incomplete days
+
+
+def test_quiet_weekday_is_compared_with_the_same_weekday():
+    # Saturdays are half as busy as other days every week: that is normal, not missing data.
+    table = day_quality(three_weeks(saturday=5), RULES)
+    assert set(table["status"]) == {"complete"}
+    assert table["completeness_ratio"].eq(1.0).all()
+
+
+def test_damaged_day_does_not_judge_itself():
+    # 14 of 24 hours collapse to 2 postings. Against its own median hour the day
+    # would look fine (its median hour is 2); against normal Thursdays 14 hours are weak.
+    ts = three_weeks({"2024-03-14": {h: 2 for h in range(14)}})
+    row = day_quality(ts, RULES).set_index("date").loc[pd.Timestamp("2024-03-14")]
+    assert row["weak_hours"] == 14
+    assert row["status"] == "incomplete"
+    assert row["completeness_ratio"] == pytest.approx((14 * 2 + 10 * 10) / 240, abs=1e-4)
 
 
 def test_calendar_day_without_postings_breaks_the_window():
-    ts = stamps({"2024-03-01": {}, "2024-03-02": {}, "2024-03-04": {}})
+    ts = three_weeks()
+    ts = ts[ts.dt.strftime("%Y-%m-%d") != "2024-03-13"]
     table = day_quality(ts, RULES)
-    assert len(table) == 4  # 3 March is added as an empty day
-    assert table["status"].iloc[2] == "incomplete"
-    assert list(table["in_timeseries_window"]) == [True, True, False, False]
+    assert len(table) == 21  # 13 March is added back as an empty day
+    assert status_of(table, "2024-03-13") == "incomplete"
 
 
 def test_low_volume_day_is_incomplete():
-    ts = stamps({"2024-03-01": {}, "2024-03-02": {h: 1 for h in range(24)}, "2024-03-03": {}})
-    assert day_quality(ts, RULES)["status"].iloc[1] == "incomplete"
+    ts = three_weeks({"2024-03-07": {h: 1 for h in range(24)}})
+    assert status_of(day_quality(ts, RULES), "2024-03-07") == "incomplete"
+
+
+def test_sparse_early_days_are_not_reference_days():
+    early = pd.Series([pd.Timestamp("2024-02-01 10:00", tz="UTC"), pd.Timestamp("2024-02-08 10:00", tz="UTC")])
+    ts = pd.concat([early, three_weeks()], ignore_index=True)
+    table = day_quality(ts, RULES)
+    assert not table.loc[table["date"] < pd.Timestamp("2024-03-04"), "reference_day"].any()
+    assert status_of(table, "2024-02-01") == "incomplete"
+    assert status_of(table, "2024-03-04") == "complete"
 
 
 # ------------------------------------------------------------ master table

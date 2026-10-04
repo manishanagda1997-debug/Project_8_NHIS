@@ -47,8 +47,6 @@ MOJIBAKE = re.compile(
 )
 HTML_ENTITY = re.compile(r"&(?:[A-Za-z]+|#\d+|#x[0-9A-Fa-f]+);")
 EMOJI = re.compile("[\U0001F000-\U0001FAFF\u2600-\u27BF\uFE0F]")
-NON_WORD = re.compile(r"[^\w]+")
-UNDERSCORE = re.compile(r"_+")
 
 
 # ------------------------------------------------------------------ titles
@@ -98,17 +96,22 @@ def clean_title(raw: Any) -> tuple[str | None, bool, bool]:
     return (text or None), had_entities, repaired
 
 
-def title_key(clean: str | None) -> str:
-    """Matching key for repeated titles: lower case, letters and digits only.
+# A key token: letters/digits, optionally followed by "+" or "#" (c++, c#, a+, 5+).
+KEY_TOKEN = re.compile(r"[^\W_]+[+#]*")
 
-    "Logo Design!!" and "logo design" share the key ``logo design``. Emoji and
-    punctuation drop out; letters of every alphabet stay.
+
+def title_key(clean: str | None) -> str:
+    """Matching and word-count key (decision D-014): lower case, letters and
+    digits, and "+" or "#" only when attached to the end of a word.
+
+    "Logo Design!!" -> "logo design", "Node.js" -> "node js",
+    "C++ Developer" -> "c++ developer" (not "c developer"), "C# / .NET" ->
+    "c# net", "Audio + Video" -> "audio video". Emoji and other punctuation
+    drop out; letters of every alphabet stay.
     """
     if not clean:
         return ""
-    key = NON_WORD.sub(" ", clean.casefold())
-    key = UNDERSCORE.sub(" ", key)
-    return " ".join(key.split())
+    return " ".join(KEY_TOKEN.findall(clean.casefold()))
 
 
 @lru_cache(maxsize=None)
@@ -191,30 +194,62 @@ def add_time_columns(frame: pd.DataFrame, timestamps: pd.Series) -> pd.DataFrame
 
 
 def day_quality(timestamps: pd.Series, rules: dict[str, Any]) -> pd.DataFrame:
-    """Rate every UTC calendar day between the first and last posting.
+    """Rate every UTC calendar day between the first and last posting (decision D-013).
 
-    A day is ``incomplete`` when it has fewer postings than
-    ``min_day_volume_share`` of the median day, or more than
-    ``max_weak_hours_for_gap`` weak hours. A weak hour has fewer postings than
-    ``weak_hour_share`` of that day's median hour (an empty hour is weak).
-    A day with one or two weak hours is ``intraday_gap``; otherwise it is
-    ``complete``. Calendar days without any posting count as incomplete.
+    Each day is compared with *normal days of the same weekday*, never with
+    itself: a day that loses most of its postings would also lower its own
+    average and hide the damage. Comparing like with like also handles the
+    natural weekend dip (Saturday is compared with Saturdays).
+
+    1. Reference days: days with at least ``reference_day_share`` of a full
+       collection day (the ``reference_quantile`` of daily postings). This
+       only separates the main collection period from the sparse early
+       weeks; every day, reference or not, is then rated by steps 2-3.
+    2. Daily completeness = postings / median postings of reference days with
+       the same weekday. Below ``min_day_ratio`` the day is ``incomplete``.
+    3. Hourly completeness = postings in an hour / median of the same weekday
+       and the same UTC hour on reference days. An hour below
+       ``weak_hour_share`` is weak. A day that is not incomplete but has weak
+       hours is ``intraday_gap``; otherwise it is ``complete``.
+
+    Calendar days without any posting count as incomplete.
     """
     valid = timestamps.dropna()
     day = valid.dt.tz_localize(None).dt.normalize()
     calendar = pd.date_range(day.min(), day.max(), freq="D")
     hours = pd.crosstab(day, valid.dt.hour).reindex(index=calendar, columns=range(24), fill_value=0)
     postings = hours.sum(axis=1)
-    median_hour = hours.median(axis=1)
-    weak = hours.lt(rules["weak_hour_share"] * median_hour.to_numpy()[:, None]).sum(axis=1)
-    low_volume = postings < rules["min_day_volume_share"] * postings[postings > 0].median()
+    weekday = pd.Series(calendar.dayofweek, index=calendar)
+
+    full_day = postings.quantile(rules["reference_quantile"])
+    reference = postings >= rules["reference_day_share"] * full_day
+    if not reference.any():
+        reference = postings > 0
+    day_median = postings[reference].groupby(weekday[reference]).median()
+    expected_day = weekday.map(day_median)
+    ratio = (postings / expected_day).fillna(0.0)
+
+    hour_median = hours[reference].groupby(weekday[reference]).median()
+    expected_hours = hour_median.reindex(weekday.to_numpy()).set_axis(calendar)
+    # An hour is judged only where the reference median is above zero.
+    weak = (hours.lt(rules["weak_hour_share"] * expected_hours) & expected_hours.gt(0)).sum(axis=1)
+
     status = np.where(
-        low_volume | (weak > rules["max_weak_hours_for_gap"]),
+        ratio < rules["min_day_ratio"],
         "incomplete",
         np.where(weak > 0, "intraday_gap", "complete"),
     )
     table = pd.DataFrame(
-        {"date": calendar, "postings": postings.to_numpy(), "weak_hours": weak.to_numpy(), "status": status}
+        {
+            "date": calendar,
+            "weekday": calendar.day_name(),
+            "postings": postings.to_numpy(),
+            "same_weekday_median": expected_day.to_numpy(),
+            "completeness_ratio": ratio.round(4).to_numpy(),
+            "weak_hours": weak.to_numpy(),
+            "reference_day": reference.to_numpy(),
+            "status": status,
+        }
     )
     table["in_timeseries_window"] = _longest_usable_run(table["status"])
     return table
@@ -455,7 +490,7 @@ def cleaning_log(frame: pd.DataFrame, days: pd.DataFrame, thresholds: dict[str, 
         (
             "C10",
             "Incomplete collection days",
-            f"Days with too few postings or more than {rules['max_weak_hours_for_gap']} weak hours.",
+            f"Days with less than {rules['min_day_ratio']:.0%} of the median postings of the same weekday.",
             f"Outside the time-series window ({window['date'].min():%Y-%m-%d} to {window['date'].max():%Y-%m-%d}); "
             "the jobs stay in every non-time-series analysis.",
             int((frame["valid_job_record"] & ~frame["in_timeseries_window"]).sum()),
@@ -463,7 +498,7 @@ def cleaning_log(frame: pd.DataFrame, days: pd.DataFrame, thresholds: dict[str, 
         (
             "C11",
             "Days with an intraday gap",
-            "One or two hours with almost no postings inside an otherwise normal day.",
+            f"A normal-volume day with at least one hour below {rules['weak_hour_share']:.0%} of the same weekday and hour.",
             "Kept in the window and flagged (day_status = intraday_gap) for sensitivity checks.",
             int((frame["day_status"] == "intraday_gap").sum()),
         ),

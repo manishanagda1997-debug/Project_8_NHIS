@@ -34,14 +34,19 @@ required_columns = [
 # UTC days. This rule lives in code (see decision D-005), not in a setting.
 
 [cleaning]
-# Day quality (decision D-013). A weak hour has fewer postings than this share
-# of the day's median hour; an empty hour is always weak.
+# Day quality (decision D-013). Every day is compared with normal days of the
+# same weekday, never with itself.
+# Reference days: at least this share of a full collection day, where a full
+# day is this quantile of daily postings. This only separates the main
+# collection period from the sparse early weeks.
+reference_day_share = 0.5
+reference_quantile = 0.9
+# A day with less than this share of the median postings of its weekday is
+# incomplete. Normal days in this data score 0.93-1.10; damaged days 0.86 or less.
+min_day_ratio = 0.9
+# An hour with less than this share of the median for the same weekday and UTC
+# hour is weak; a normal-volume day with weak hours has an intraday gap.
 weak_hour_share = 0.3
-# A day with more weak hours than this is incomplete; with 1..this many it has
-# an intraday gap and stays in the time-series window, flagged.
-max_weak_hours_for_gap = 2
-# A day with fewer postings than this share of the median day is incomplete.
-min_day_volume_share = 0.25
 # Extreme pay values are flagged at or above this quantile (decision D-015).
 extreme_quantile = 0.999
 # Repeat and repost windows in days (decision D-016). The primary window is a
@@ -63,3 +68,28 @@ blind_size = 350
 dev_random = 110
 dev_short_titles = 20
 dev_joined_titles = 20
+
+[categorize]
+# Job-function categories (decision D-028). Values marked "provisional" are
+# chosen on the development labels and then frozen before the blind test.
+# The taxonomy (the category list and definitions) is frozen at 1.0; the
+# categorizer (rules, weights, model, threshold) has its own version. It stays
+# "0.x-dev" until the freeze, then becomes "1.0".
+categorizer_version = "0.1-dev"
+# A category needs at least this many rule points (weights 3/2/1).
+min_rule_score = 2
+# Weak labels for the classifier: rule score at least this high and no other
+# category left after the tie-breaks.
+weak_label_min_score = 5
+# Very large categories are sampled down to this many distinct titles.
+weak_label_max_per_category = 4000
+# A category with fewer weak labels than this is left out of training.
+min_weak_labels_per_category = 20
+# Share of weak labels held out to check how well the classifier copies the rules.
+holdout_share = 0.2
+# Logistic regression settings.
+classifier_c = 4.0
+max_iter = 2000
+max_char_features = 200000
+# Below this probability a classifier guess becomes Other / Unclear (provisional).
+classifier_threshold = 0.5

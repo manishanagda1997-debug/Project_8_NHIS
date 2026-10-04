@@ -47,3 +47,12 @@ def test_count_ngrams_over_many_titles():
     counts = count_ngrams(["logo design", "logo design for a cafe", None], 2)
     assert counts["logo design"] == 2
     assert counts["design for"] == 0
+
+
+def test_programming_tokens_with_plus_and_hash_survive():
+    from job_market.steps.clean import title_key
+
+    key = title_key("Senior C++ and C# developer for A+ content")
+    assert tokenize(key) == ["senior", "c++", "c#", "developer", "a+", "content"]
+    assert list(ngrams(key, 2)) == ["senior c++", "c# developer", "a+ content"]
+    assert count_ngrams([title_key("C++ dev"), title_key("C dev")])["c++"] == 1

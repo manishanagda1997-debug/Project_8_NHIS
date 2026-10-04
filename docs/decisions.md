@@ -178,33 +178,60 @@ check the reasoning.
 
 ### D-013 Day quality decides the time-series window
 
-- **What:** Every UTC calendar day is rated. A *weak hour* has fewer postings
-  than 30% of that day's median hour. A day is `incomplete` when it has fewer
-  postings than 25% of the median day or more than two weak hours;
-  `intraday_gap` with one or two weak hours; otherwise `complete`. The
-  time-series window is the longest unbroken run of days that are not
-  incomplete: **16 February to 23 March 2024 (37 days)**. Days with an intraday
-  gap (17, 18 and 20 February) stay in the window and are flagged.
+- **What:** Every UTC calendar day is compared with normal days of the
+  **same weekday**. *Daily completeness* = the day's postings / the median
+  postings of the same weekday; below 90% the day is `incomplete`. *Hourly
+  completeness* = postings in one UTC hour / the median for the same weekday
+  and hour; below 30% the hour is weak. A day that is not incomplete but has
+  weak hours is `intraday_gap`; otherwise it is `complete`. The medians come
+  from *reference days* (at least half the postings of a full collection
+  day, where a full day is the 90th percentile of daily postings), which only
+  keeps the sparse early weeks out of the medians. The time-series window is
+  the longest unbroken run of days that are not incomplete: **16 February to
+  23 March 2024 (37 days)**. Days with an intraday gap (17, 18 and 20
+  February) stay in the window and are flagged.
 - **Why:** Counting jobs per day on a day when the collector was partly
-  offline would show a false drop in demand. The rule is written down, so it
-  is applied the same way to any new data file instead of by eye.
-- **Limit:** Jobs posted outside the window are still real jobs; they stay in
-  every analysis that does not count jobs per day.
-- **Evidence:** `day_quality` in `steps/clean.py`; `day_quality.csv`;
-  Notebook 01 section 2.4; three day-quality tests.
+  offline would show a false drop in demand. Comparing a day with *itself*
+  (its own median hour) lets a badly damaged day hide its damage: 15 February
+  has 26% of a normal Thursday's postings and 18 weak hours against normal
+  Thursdays, but only 4 against its own median hour. Comparing with the same
+  weekday also handles the natural weekend dip. In this data, normal days
+  reach 0.93-1.10 of their weekday median and damaged days 0.86 or less, so
+  the 90% cut-off sits in a clear gap.
+- **Change:** Replaces the first rule (weak hour against the day's own
+  median, incomplete below 25% of the median day or with more than two weak
+  hours). The window and the flagged days are identical under both rules; the
+  new rule gives the stronger reason.
+- **Limit:** About six days per weekday form each median, so the medians are
+  robust to one damaged day per weekday, not to many. Jobs posted outside the
+  window are still real jobs; they stay in every analysis that does not count
+  jobs per day.
+- **Evidence:** `day_quality` in `steps/clean.py`; `day_quality.csv` (with
+  `completeness_ratio`); Notebook 01 sections 2.4-2.5; day-quality tests in
+  `tests/test_clean.py`.
 
 ### D-014 Cleaned titles keep meaning; raw titles stay
 
 - **What:** `title_clean` decodes HTML entities (`&amp;` becomes `&`),
   repairs mojibake (UTF-8 text decoded with a Windows code page, such as
   `fÃ¼r` for `für`), applies Unicode NFKC normalisation and collapses repeated
-  spaces. Case and punctuation stay ("C++", "UI/UX"). `title_key` (lower case,
-  letters and digits only) is used only to match repeated titles. Titles that
+  spaces. Case and punctuation stay ("C++", "UI/UX"). `title_key` is the
+  lower-case version with letters and digits, plus a `+` or `#` attached to
+  the end of a word: "C++ Developer" -> `c++ developer`, "C# Developer" ->
+  `c# developer`, "Audio + Video" -> `audio video`, "Node.js" -> `node js`.
+  It matches repeated titles and feeds the title-word analysis. Titles that
   stay damaged are flagged.
 - **Why:** The same job title must look the same to every later analysis,
-  but the raw title is the evidence and is never overwritten.
+  but the raw title is the evidence and is never overwritten. A key of
+  letters and digits only would merge "C++", "C#" and "C" developers into one
+  repeat key and one word; one key with attached `+`/`#` fixes repeats and
+  word counts together, instead of keeping two nearly identical keys.
+- **Change:** The first key dropped every symbol. It merged 37 keys (159
+  jobs); the fix changes 4 repeated-title flags and 2 possible-repost flags
+  (3-day window). It only splits keys, never merges them, so the existing
+  label samples stay valid (no title key can newly appear in both).
 - **Evidence:** `clean_title`, `repair_mojibake`, `title_key`; title tests in
-  `tests/test_clean.py`.
+  `tests/test_clean.py` and `tests/test_text.py`.
 
 ### D-015 Extreme pay values are flagged, never removed or clipped
 
@@ -395,3 +422,39 @@ check the reasoning.
   may have too few blind titles for a stable per-category score, in which case
   a separate diagnostic sample is reported apart from the overall accuracy.
 - **Evidence:** `src/job_market/labels.py`, `tests/test_labels.py`.
+
+### D-028 Hybrid categorization: rules first, a classifier only for the rest
+
+- **What:** `src/job_market/categorize.py` builds a matching text from
+  `title_clean` (technical tokens protected, punctuation removed, simple
+  plurals reduced; rule patterns pass through the same normalization), scores
+  every category with weighted patterns (3 specific phrase, 2 clear word, 1
+  generic word; a category needs 2 points), and applies the tie-break table of
+  the labelling guide. A title is split at "and", "&", "+" and " / "; two
+  parts with strong evidence (3+ points) for different functions are two
+  separate tasks (Other / Unclear), unless one part is marked minor ("a small
+  logo") or the two categories are one piece of work in two technologies
+  (iOS + mobile game, Python + React). Titles with no rule match go to a
+  TF-IDF (words 1-2, characters 3-5) + logistic regression classifier trained
+  only on weak labels (rule score 5+, no competing category, distinct titles,
+  at most 4,000 per category). Below the probability threshold the job is
+  Other / Unclear. The categorizer has its own version
+  (`categorizer_version`, "0.1-dev" until the freeze, then "1.0"), separate
+  from the taxonomy version: the taxonomy (category list and definitions) is
+  frozen at 1.0 before labelling, while the rules, model and threshold are
+  still tuned on the development labels. Output: `job_categories.parquet`, one row per job, joined
+  on `row_id`; `jobs_clean.parquet` is not changed.
+- **Why:** Rules are transparent: every category can be traced to the words
+  that matched. The classifier is only needed where rules are silent. The
+  rule words are hidden from the classifier's training text, because the
+  classifier is only used on titles that contain no rule word; trained on the
+  full text it learns the rule words and is unsure on exactly the titles it
+  exists for (in a trial, 33% of unmatched titles reached probability 0.5
+  with the words hidden, about 10% without).
+- **Limit:** The classifier's agreement with the rules on held-out weak
+  labels (about 0.49 with the rule words hidden) is not accuracy. Accuracy
+  comes only from the human labels: the threshold and any rule changes are
+  chosen on the development set and frozen before the blind test (D-027).
+  Settings in `config/pipeline.toml` under `[categorize]`.
+- **Evidence:** `src/job_market/steps/categorize.py`,
+  `tests/test_categorize.py`, Notebook 03.

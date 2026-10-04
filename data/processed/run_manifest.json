@@ -1,10 +1,23 @@
 {
   "config": {
+    "categorize": {
+      "categorizer_version": "0.1-dev",
+      "classifier_c": 4.0,
+      "classifier_threshold": 0.5,
+      "holdout_share": 0.2,
+      "max_char_features": 200000,
+      "max_iter": 2000,
+      "min_rule_score": 2,
+      "min_weak_labels_per_category": 20,
+      "weak_label_max_per_category": 4000,
+      "weak_label_min_score": 5
+    },
     "cleaning": {
       "extreme_quantile": 0.999,
-      "max_weak_hours_for_gap": 2,
-      "min_day_volume_share": 0.25,
+      "min_day_ratio": 0.9,
       "primary_repeat_window_days": 3,
+      "reference_day_share": 0.5,
+      "reference_quantile": 0.9,
       "repeat_windows_days": [
         1,
         3,
@@ -50,13 +63,19 @@
   },
   "counts": {
     "calendar_days_with_postings": 89,
+    "categorizer_version": "0.1-dev",
+    "classifier_threshold": 0.5,
+    "classifier_trained": true,
     "clean_rows": 244828,
+    "distinct_titles": 205289,
     "duplicate_links_non_missing": 0,
     "exact_duplicate_rows": 0,
     "extreme_budget_threshold": 100000.0,
     "extreme_hourly_rate_threshold": 500.0,
     "first_posting_utc": "2023-11-02T09:22:02Z",
     "fixed_price_rows": 103891,
+    "holdout_agreement_rule_words_hidden": 0.4949,
+    "holdout_titles": 6804,
     "hourly_rows": 140937,
     "last_posting_utc": "2024-03-24T14:16:47Z",
     "missing_link": 1,
@@ -65,11 +84,18 @@
     "non_finite_numeric_values": 0,
     "raw_columns": 8,
     "raw_rows": 244828,
+    "share_below_threshold": 0.0733,
+    "share_no_text": 0.0,
+    "share_rule": 0.8656,
+    "share_tfidf_classifier": 0.036,
+    "share_two_tasks": 0.0251,
     "timeseries_window_days": 37,
     "timeseries_window_end": "2024-03-23",
     "timeseries_window_start": "2024-02-16",
     "unparseable_timestamps": 0,
-    "valid_job_records": 244827
+    "valid_job_records": 244827,
+    "weak_label_categories": 22,
+    "weak_labels": 34018
   },
   "environment": {
     "executable": "python.exe",
@@ -204,8 +230,8 @@
     "2024-03-24"
   ],
   "fingerprints": {
-    "code_sha256": "3cf9c0d8e0386d353c011ce172179627af37b1bce9807956f25a71d07a8285aa",
-    "config_sha256": "7b443f85563f765df984461ddde94af541ec3b3f48c6e342669505b7abe91c05",
+    "code_sha256": "d93a463b4bc6727281773d6d9e1dda605e90eac8a9bee45347e6633fb5252ca9",
+    "config_sha256": "5ba79e7402ea70eaf9412564c98249b311d6f4894bb10358673d6b22f0112af2",
     "environment_sha256": "984229d962aa79d91e494358a278b9408c261bd92cb6e0abfa2d05719164ebd7",
     "source_sha256": "6513e9a744f15726bdb40d6435a60834e864ace08a75e1d7feb75e10ddb78b11"
   },
@@ -224,40 +250,57 @@
       "sha256": "e0b856e875048ac0468bdd7783028da2603718923cb6c9b2f3439acea5746d43"
     },
     {
-      "bytes": 38856522,
+      "bytes": 38859219,
       "path": "data/processed/jobs_clean.parquet",
       "rows": 244828,
-      "sha256": "8942acdc2e09088e9edf1a9e4c9390f5b790cd5efbb1add01163e528b4af4b33"
+      "sha256": "f0302e02f4dda4a3119b969b0653efb2a9ff40c9ed54373265d5326fd10f98d7"
     },
     {
-      "bytes": 2760,
+      "bytes": 2784,
       "path": "data/processed/cleaning_log.csv",
       "rows": 13,
-      "sha256": "c7a6ed916e902979ce6452cae7687e4d0919c0d1d609f011bfc5e7caa86801bd"
+      "sha256": "6efb6501061f7c5a879bf6bad58b8139bd09e420ed944220198bf8bb79656073"
     },
     {
-      "bytes": 4671,
+      "bytes": 8691,
       "path": "data/processed/day_quality.csv",
       "rows": 144,
-      "sha256": "847da1e3553e05b527863aab3384a1d10187aa265be5867c923146d8336fae5d"
+      "sha256": "e9f3d9695558aac34b3c54436e8efc68cf3115dab28a4d79b8ec6982566e4203"
     },
     {
       "bytes": 305,
       "path": "data/processed/repeat_sensitivity.csv",
       "rows": 6,
-      "sha256": "467a6ff1b0fbf02e004855229f82a65f71476198025e97a388ca55ca230b40c7"
+      "sha256": "85323167f7b2a96ea530f6914e9202a23859b7cf3e4934ac3b21ac87fc5824d0"
     },
     {
       "bytes": 227,
       "path": "data/processed/eligibility_counts.csv",
       "rows": 5,
       "sha256": "f94c6171261976f7014fa8dd56d665fa907a4ecd72af58664ec1d6dd19d3a900"
+    },
+    {
+      "bytes": 4865036,
+      "path": "data/processed/job_categories.parquet",
+      "rows": 244828,
+      "sha256": "60ae7885a43aedc6370802972abb037cb9a87ca5d28b395232a65a71513dd341"
+    },
+    {
+      "bytes": 2007,
+      "path": "data/processed/category_summary.csv",
+      "rows": 47,
+      "sha256": "9b5945d6bf40e07d7df28bae850b6bedef4a7cd8b0ae29b11c9a579350666e92"
+    },
+    {
+      "bytes": 259,
+      "path": "data/processed/classifier_report.json",
+      "sha256": "a9fe6ce6bd445ffc16ce58e2c99a758f197df12df86d8ed8f8bac4f8fe77c816"
     }
   ],
   "project_version": "1.0.0",
-  "run_finished_utc": "2026-10-03T12:42:31Z",
-  "run_id": "20261003T124213Z-52b6a0b684",
-  "run_started_utc": "2026-10-03T12:42:13Z",
+  "run_finished_utc": "2026-10-04T04:04:55Z",
+  "run_id": "20261004T040145Z-13c5c2aa53",
+  "run_started_utc": "2026-10-04T04:01:45Z",
   "source": {
     "bytes": 50577682,
     "columns": [
@@ -308,7 +351,7 @@
           "sha256": "e0b856e875048ac0468bdd7783028da2603718923cb6c9b2f3439acea5746d43"
         }
       ],
-      "seconds": 5.354
+      "seconds": 4.978
     },
     {
       "description": "Clean titles, add time, pay, quality, repeat and eligibility columns; keep every raw row.",
@@ -324,28 +367,28 @@
       "name": "clean",
       "outputs": [
         {
-          "bytes": 38856522,
+          "bytes": 38859219,
           "path": "data/processed/jobs_clean.parquet",
           "rows": 244828,
-          "sha256": "8942acdc2e09088e9edf1a9e4c9390f5b790cd5efbb1add01163e528b4af4b33"
+          "sha256": "f0302e02f4dda4a3119b969b0653efb2a9ff40c9ed54373265d5326fd10f98d7"
         },
         {
-          "bytes": 2760,
+          "bytes": 2784,
           "path": "data/processed/cleaning_log.csv",
           "rows": 13,
-          "sha256": "c7a6ed916e902979ce6452cae7687e4d0919c0d1d609f011bfc5e7caa86801bd"
+          "sha256": "6efb6501061f7c5a879bf6bad58b8139bd09e420ed944220198bf8bb79656073"
         },
         {
-          "bytes": 4671,
+          "bytes": 8691,
           "path": "data/processed/day_quality.csv",
           "rows": 144,
-          "sha256": "847da1e3553e05b527863aab3384a1d10187aa265be5867c923146d8336fae5d"
+          "sha256": "e9f3d9695558aac34b3c54436e8efc68cf3115dab28a4d79b8ec6982566e4203"
         },
         {
           "bytes": 305,
           "path": "data/processed/repeat_sensitivity.csv",
           "rows": 6,
-          "sha256": "467a6ff1b0fbf02e004855229f82a65f71476198025e97a388ca55ca230b40c7"
+          "sha256": "85323167f7b2a96ea530f6914e9202a23859b7cf3e4934ac3b21ac87fc5824d0"
         },
         {
           "bytes": 227,
@@ -354,7 +397,46 @@
           "sha256": "f94c6171261976f7014fa8dd56d665fa907a4ecd72af58664ec1d6dd19d3a900"
         }
       ],
-      "seconds": 12.532
+      "seconds": 10.947
+    },
+    {
+      "description": "Give every job one job-function category: keyword rules first, a TF-IDF classifier for the rest.",
+      "metrics": {
+        "categorizer_version": "0.1-dev",
+        "classifier_threshold": 0.5,
+        "classifier_trained": true,
+        "distinct_titles": 205289,
+        "holdout_agreement_rule_words_hidden": 0.4949,
+        "holdout_titles": 6804,
+        "share_below_threshold": 0.0733,
+        "share_no_text": 0.0,
+        "share_rule": 0.8656,
+        "share_tfidf_classifier": 0.036,
+        "share_two_tasks": 0.0251,
+        "weak_label_categories": 22,
+        "weak_labels": 34018
+      },
+      "name": "categorize",
+      "outputs": [
+        {
+          "bytes": 4865036,
+          "path": "data/processed/job_categories.parquet",
+          "rows": 244828,
+          "sha256": "60ae7885a43aedc6370802972abb037cb9a87ca5d28b395232a65a71513dd341"
+        },
+        {
+          "bytes": 2007,
+          "path": "data/processed/category_summary.csv",
+          "rows": 47,
+          "sha256": "9b5945d6bf40e07d7df28bae850b6bedef4a7cd8b0ae29b11c9a579350666e92"
+        },
+        {
+          "bytes": 259,
+          "path": "data/processed/classifier_report.json",
+          "sha256": "a9fe6ce6bd445ffc16ce58e2c99a758f197df12df86d8ed8f8bac4f8fe77c816"
+        }
+      ],
+      "seconds": 173.758
     }
   ],
   "taxonomy_version": "1.0"

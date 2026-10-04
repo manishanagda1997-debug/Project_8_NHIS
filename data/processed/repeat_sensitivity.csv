@@ -1,7 +1,7 @@
 flag,window_days,rows_flagged,share_of_valid_rows_pct,share_with_short_title_pct
-repeated_title_1d,1,13128,5.36,45.35
-possible_repost_1d,1,6143,2.51,23.86
-repeated_title_3d,3,19714,8.05,46.41
-possible_repost_3d,3,9192,3.75,25.07
-repeated_title_7d,7,24790,10.13,47.52
-possible_repost_7d,7,11351,4.64,26.82
+repeated_title_1d,1,13125,5.36,45.36
+possible_repost_1d,1,6141,2.51,23.87
+repeated_title_3d,3,19710,8.05,46.41
+possible_repost_3d,3,9190,3.75,25.07
+repeated_title_7d,7,24784,10.12,47.51
+possible_repost_7d,7,11349,4.64,26.82

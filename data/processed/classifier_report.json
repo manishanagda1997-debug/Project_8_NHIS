@@ -1,0 +1,10 @@
+{
+  "categorizer_version": "0.1-dev",
+  "classifier_threshold": 0.5,
+  "classifier_trained": true,
+  "distinct_titles": 205289,
+  "holdout_agreement_rule_words_hidden": 0.4949,
+  "holdout_titles": 6804,
+  "weak_label_categories": 22,
+  "weak_labels": 34018
+}

@@ -53,7 +53,19 @@ class Project:
 
     @property
     def counts(self) -> dict[str, Any]:
+        """Headline numbers of every step, merged into one dictionary."""
         return self.manifest["counts"]
+
+    def step_metrics(self, *names: str) -> dict[str, Any]:
+        """Headline numbers of the named steps only, for example ``"ingest", "clean"``."""
+        known = {step["name"]: step for step in self.manifest["steps"]}
+        missing = [name for name in names if name not in known]
+        if missing:
+            raise KeyError(f"build {self.run_id} has no step named {', '.join(missing)}")
+        merged: dict[str, Any] = {}
+        for name in names:
+            merged.update(known[name]["metrics"])
+        return merged
 
     def output_entry(self, name: str) -> dict[str, Any]:
         """Return the manifest entry for a processed file, or raise if it is not a build output."""
