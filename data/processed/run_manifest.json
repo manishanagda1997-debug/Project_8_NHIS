@@ -43,6 +43,16 @@
       ],
       "weak_hour_share": 0.3
     },
+    "forecast": {
+      "damping_phi": 0.9,
+      "final_days": 7,
+      "first_train_days": 14,
+      "horizon_days": 14,
+      "range_lower": 0.1,
+      "range_upper": 0.9,
+      "stable_change_pp": 0.1,
+      "tested_horizon_days": 7
+    },
     "labels": {
       "blind_size": 350,
       "dev_joined_titles": 20,
@@ -125,6 +135,7 @@
     "clean_rows": 244828,
     "complete_weeks": "2024-W08, 2024-W09, 2024-W10, 2024-W11",
     "countries_with_enough_jobs": 91,
+    "demand_model": "weekday_mean",
     "dev_accuracy": 0.8333,
     "dev_labels": "scored",
     "dev_labels_sha256": "0c7924e2d1a8567d8ae1daf752a841129788f90cb4011aebdc46e760184560f1",
@@ -134,11 +145,15 @@
     "extreme_budget_threshold": 100000.0,
     "extreme_hourly_rate_threshold": 500.0,
     "fallback_list_matches_proxy_rule": true,
+    "first_forecast_day": "2024-03-24",
     "first_posting_utc": "2023-11-02T09:22:02Z",
     "fixed_price_rows": 103891,
+    "forecast_development_days": 30,
+    "forecast_final_days": 7,
     "hourly_keywords": 322,
     "hourly_rated_jobs": 98775,
     "hourly_rows": 140937,
+    "last_forecast_day": "2024-04-06",
     "last_posting_utc": "2024-03-24T14:16:47Z",
     "missing_link": 1,
     "missing_title": 1,
@@ -162,6 +177,7 @@
     "share_rule": 0.8656,
     "share_tfidf_classifier": 0.0117,
     "share_two_tasks": 0.025,
+    "signals_model": "weekday_mean",
     "timeseries_window_days": 37,
     "timeseries_window_end": "2024-03-23",
     "timeseries_window_start": "2024-02-16",
@@ -306,8 +322,8 @@
     "2024-03-24"
   ],
   "fingerprints": {
-    "code_sha256": "9ee549f9596fe0903448042e0e82aedb75aba0095e06ca9017349039ab37c578",
-    "config_sha256": "3543220d524c4b61374a52cd67a27ab3a537289177db4fef7c1034abe7bbb800",
+    "code_sha256": "59f7d00b2a07ebd42561f1fbcb711cca714a6d6f84c47bab0554b9212af2ee7f",
+    "config_sha256": "fea6d6fb72f6e083cd17d6b33ed7aca91d55d42d1dc289824e8046d3180febed",
     "environment_sha256": "16395497efe48498ffe44d037ec2020318fdbc12dca3fd624ff97cdb6db099ce",
     "source_sha256": "6513e9a744f15726bdb40d6435a60834e864ace08a75e1d7feb75e10ddb78b11"
   },
@@ -503,12 +519,60 @@
       "path": "data/processed/remote_series_trends.csv",
       "rows": 4,
       "sha256": "bd6c801ddeae6f1182d9367d0d7f5ccfc85318d08741a8676ea43bc79e5c2a99"
+    },
+    {
+      "bytes": 383,
+      "path": "data/processed/forecast_model_choice.csv",
+      "rows": 8,
+      "sha256": "f32f675e7af4872a0d1044bf8eb6afb4646368bc61bcf00a91019d8485529739"
+    },
+    {
+      "bytes": 6818,
+      "path": "data/processed/forecast_backtest_by_series.csv",
+      "rows": 108,
+      "sha256": "841202c053605c7fbf9e46617b984a3cd5c75e0b9a1341bcb60a08a9b9390810"
+    },
+    {
+      "bytes": 358,
+      "path": "data/processed/forecast_backtest_14d.csv",
+      "rows": 8,
+      "sha256": "62e3f71961a6cdd1a92c6fcd6708d2e3e7a8a96459dac8188e3a75d165b3ed8f"
+    },
+    {
+      "bytes": 7487,
+      "path": "data/processed/forecast_final_evaluation.csv",
+      "rows": 108,
+      "sha256": "10625133760a0a8513370edb5fd050b46343064fc063ec57b6e35b1561dfbdc7"
+    },
+    {
+      "bytes": 23684,
+      "path": "data/processed/forecast_demand_daily.csv",
+      "rows": 336,
+      "sha256": "622b5053678383db2ef7956f61aad62456ee01447ac8e261773531061f487632"
+    },
+    {
+      "bytes": 4405,
+      "path": "data/processed/forecast_demand_outlook.csv",
+      "rows": 24,
+      "sha256": "73f2fd30bdaeebbf60e737ddd598a88625238a1fe1514caffd540fe277cc0bb5"
+    },
+    {
+      "bytes": 2243,
+      "path": "data/processed/forecast_signals_daily.csv",
+      "rows": 42,
+      "sha256": "995fde05d9f04eb753e00e01b1cde13b57cc6db965036427227ecbe161668efb"
+    },
+    {
+      "bytes": 372,
+      "path": "data/processed/forecast_signals_outlook.csv",
+      "rows": 3,
+      "sha256": "ee5b2694cfac4e9910821b86f4352b7f6f14dff66b6d767aa8bde9dc1ae6e01d"
     }
   ],
   "project_version": "1.0.0",
-  "run_finished_utc": "2026-10-04T11:55:55Z",
-  "run_id": "20261004T114941Z-01ed78f29b",
-  "run_started_utc": "2026-10-04T11:49:41Z",
+  "run_finished_utc": "2026-10-04T12:32:01Z",
+  "run_id": "20261004T122311Z-98262faf0c",
+  "run_started_utc": "2026-10-04T12:23:11Z",
   "source": {
     "bytes": 50577682,
     "columns": [
@@ -559,7 +623,7 @@
           "sha256": "e0b856e875048ac0468bdd7783028da2603718923cb6c9b2f3439acea5746d43"
         }
       ],
-      "seconds": 5.102
+      "seconds": 5.619
     },
     {
       "description": "Clean titles, add time, pay, quality, repeat and eligibility columns; keep every raw row.",
@@ -605,7 +669,7 @@
           "sha256": "f94c6171261976f7014fa8dd56d665fa907a4ecd72af58664ec1d6dd19d3a900"
         }
       ],
-      "seconds": 11.448
+      "seconds": 22.173
     },
     {
       "description": "Give every job one job-function category: keyword rules first, a TF-IDF classifier for the rest.",
@@ -666,7 +730,7 @@
           "sha256": "a1302994d11854a7fb2fe2e12714af445c842c84d798bcbae4ea1b46ccfa51ed"
         }
       ],
-      "seconds": 206.912
+      "seconds": 327.593
     },
     {
       "description": "Score the job categories against the development and blind human labels.",
@@ -705,7 +769,7 @@
           "sha256": "6480da504e9a9b3791288f15a9cda3410226ab897fd35b6c358ca15cfe04bd77"
         }
       ],
-      "seconds": 1.458
+      "seconds": 1.669
     },
     {
       "description": "Keyword-pay associations (Task 1) and client-country hourly rates (Task 4).",
@@ -755,7 +819,7 @@
           "sha256": "44488f725673fa57444a8cb1ef350d188be99104acb939d8a9f5ca40c676606c"
         }
       ],
-      "seconds": 105.861
+      "seconds": 117.693
     },
     {
       "description": "Emerging categories and keywords (Task 2); geography, engagement and work-arrangement signals (Task 7).",
@@ -827,7 +891,70 @@
           "sha256": "bd6c801ddeae6f1182d9367d0d7f5ccfc85318d08741a8676ea43bc79e5c2a99"
         }
       ],
-      "seconds": 42.82
+      "seconds": 52.21
+    },
+    {
+      "description": "Short-horizon demand forecasts (Tasks 3, 8) and online-hiring signal forecasts (Task 7).",
+      "metrics": {
+        "demand_model": "weekday_mean",
+        "first_forecast_day": "2024-03-24",
+        "forecast_development_days": 30,
+        "forecast_final_days": 7,
+        "last_forecast_day": "2024-04-06",
+        "signals_model": "weekday_mean"
+      },
+      "name": "forecast",
+      "outputs": [
+        {
+          "bytes": 383,
+          "path": "data/processed/forecast_model_choice.csv",
+          "rows": 8,
+          "sha256": "f32f675e7af4872a0d1044bf8eb6afb4646368bc61bcf00a91019d8485529739"
+        },
+        {
+          "bytes": 6818,
+          "path": "data/processed/forecast_backtest_by_series.csv",
+          "rows": 108,
+          "sha256": "841202c053605c7fbf9e46617b984a3cd5c75e0b9a1341bcb60a08a9b9390810"
+        },
+        {
+          "bytes": 358,
+          "path": "data/processed/forecast_backtest_14d.csv",
+          "rows": 8,
+          "sha256": "62e3f71961a6cdd1a92c6fcd6708d2e3e7a8a96459dac8188e3a75d165b3ed8f"
+        },
+        {
+          "bytes": 7487,
+          "path": "data/processed/forecast_final_evaluation.csv",
+          "rows": 108,
+          "sha256": "10625133760a0a8513370edb5fd050b46343064fc063ec57b6e35b1561dfbdc7"
+        },
+        {
+          "bytes": 23684,
+          "path": "data/processed/forecast_demand_daily.csv",
+          "rows": 336,
+          "sha256": "622b5053678383db2ef7956f61aad62456ee01447ac8e261773531061f487632"
+        },
+        {
+          "bytes": 4405,
+          "path": "data/processed/forecast_demand_outlook.csv",
+          "rows": 24,
+          "sha256": "73f2fd30bdaeebbf60e737ddd598a88625238a1fe1514caffd540fe277cc0bb5"
+        },
+        {
+          "bytes": 2243,
+          "path": "data/processed/forecast_signals_daily.csv",
+          "rows": 42,
+          "sha256": "995fde05d9f04eb753e00e01b1cde13b57cc6db965036427227ecbe161668efb"
+        },
+        {
+          "bytes": 372,
+          "path": "data/processed/forecast_signals_outlook.csv",
+          "rows": 3,
+          "sha256": "ee5b2694cfac4e9910821b86f4352b7f6f14dff66b6d767aa8bde9dc1ae6e01d"
+        }
+      ],
+      "seconds": 3.237
     }
   ],
   "taxonomy_version": "1.0"

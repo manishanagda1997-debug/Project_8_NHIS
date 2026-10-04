@@ -612,3 +612,44 @@ check the reasoning.
   change cannot be ruled out.
 - **Evidence:** `src/job_market/trends.py`, `steps/trends.py`,
   `tests/test_trends.py`, `trend_*.csv`, `remote_*.csv`, Notebook 05.
+
+### D-033 Short-horizon forecasts (Tasks 3, 7 and 8)
+
+- **What:** Because the reliable history contains only 37 days, the forecast
+  is limited to a short 14-day horizon; longer-range forecasts are not
+  supported by enough history. Days 1-7 are the primary forecast; days 8-14
+  are an extended outlook with greater uncertainty. The first 30 days are the
+  development period; the final seven days are a reserved final forecast
+  evaluation window: they are not used for model fitting or model selection
+  (they are not blind in the sense of the taxonomy labels, because Notebook 05
+  already described all 37 days).
+- **Models:** Four models fixed before any evaluation: seasonal naive (same
+  weekday last week), weekday mean (last 14 days), straight trend with
+  weekday effects, and damped trend with phi = 0.9 set in configuration.
+  One winner per series family, chosen by mean seasonal MASE in a
+  rolling-origin backtest (origins after 14 to 23 development days, horizon
+  7): the demand family (total jobs and the 23 category shares) and the
+  Task 7 signal family (hourly share, North American client share, HHI).
+  No category gets its own model. A 14-day check with the few possible
+  origins is secondary only.
+- **Metrics:** MAE, seasonal MASE (scale = in-sample mean absolute change
+  versus seven days earlier) and Relative MAE (model MAE / seasonal-naive
+  MAE on the same days; below 1 beats the baseline). No MAPE.
+- **Coherence:** Category jobs = total forecast x shares, with shares clipped
+  to [0, 1] and rescaled to sum to 1, so the 22 categories plus Other add up
+  to the total every day; counts cannot be negative. Signals are clipped to
+  their valid range.
+- **Ranges:** 80% empirical forecast ranges from backtest errors at each
+  horizon; beyond the tested 7 days they widen by sqrt(h / 7), a stated
+  assumption. Task 3 ranks categories by expected jobs per day and flags
+  neighbours whose ranges overlap as similarly high-demand.
+- **Task 8:** The recent observed share (average of the final 7 days) is
+  compared with the forecast next-7-day and 14-day averages from the better
+  trend model. A direction is reported only if that model beat the seasonal
+  baseline in development (Relative MAE < 1); otherwise "no reliable
+  direction". Changes below 0.1 pp (0.001 for HHI) are "stable".
+- **Limit:** Seven final days are one small check, days 8-14 are less directly
+  validated, and five weeks cannot capture seasonality beyond the week. For
+  total jobs the seasonal baseline beat the other models in the final window.
+- **Evidence:** `src/job_market/forecast.py`, `steps/forecast.py`,
+  `tests/test_forecast.py`, `forecast_*.csv`, Notebook 06.

@@ -1,0 +1,9 @@
+family,model,mase,relative_mae,origins
+demand,weekday_mean,0.827477,1.040383,3
+demand,seasonal_naive,0.865842,1.0,3
+demand,damped_trend,0.927392,1.109958,3
+demand,trend_weekday,1.07034,1.318856,3
+signals,weekday_mean,0.491467,0.998962,3
+signals,seasonal_naive,0.518138,1.0,3
+signals,damped_trend,0.672013,1.330809,3
+signals,trend_weekday,0.990758,1.987539,3

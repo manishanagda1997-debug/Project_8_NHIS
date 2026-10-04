@@ -150,3 +150,22 @@ keyword_overlap = 0.8
 # New or notable terms counted per week only (too rare for trend inference).
 watch_terms = ["sora", "gemini", "claude", "devin", "midjourney", "llm", "ai agent", "gpt", "chatgpt",
                "vision pro", "tiktok shop", "faceless", "ugc"]
+
+[forecast]
+# Short-horizon forecasts (decision D-033). Every value is fixed before any
+# evaluation is run.
+# Forecast length; days 1-7 are the primary forecast, 8-14 an extended outlook.
+horizon_days = 14
+tested_horizon_days = 7
+# Reserved final forecast evaluation window: the last 7 days of the window,
+# used neither for fitting nor for model choice.
+final_days = 7
+# Shortest training history in the rolling-origin backtest (two full weeks).
+first_train_days = 14
+# Damped trend: each day ahead keeps this share of the previous day's trend.
+damping_phi = 0.9
+# 80% empirical forecast ranges from backtest errors.
+range_lower = 0.1
+range_upper = 0.9
+# A share change below this (percentage points) is called "stable".
+stable_change_pp = 0.1

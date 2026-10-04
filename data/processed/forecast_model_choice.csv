@@ -1,0 +1,9 @@
+family,model,mase,relative_mae,chosen
+demand,weekday_mean,0.770539,1.008879,True
+demand,damped_trend,0.821476,1.008729,False
+demand,trend_weekday,0.841973,1.040031,False
+demand,seasonal_naive,0.8594,1.0,False
+signals,weekday_mean,0.5596,0.959198,True
+signals,damped_trend,0.604712,1.00665,False
+signals,seasonal_naive,0.605596,1.0,False
+signals,trend_weekday,0.632667,1.049172,False

@@ -1,0 +1,4 @@
+series,recent_value,forecast_1_7,forecast_1_14,trend_model,trend_model_relative_mae,trend_forecast_1_14,direction
+hourly_share,0.56698,0.565127,0.565127,damped_trend,1.084385,0.558937,no reliable direction
+north_america_share,0.464792,0.46251,0.46251,damped_trend,1.031821,0.465364,no reliable direction
+hhi,0.191724,0.189727,0.189727,damped_trend,0.903745,0.19127,stable
