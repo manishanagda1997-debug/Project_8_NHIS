@@ -1,1 +1,4 @@
-method
+method,mean_ndcg,mean_precision,profiles,winner
+keyword,0.952688,0.933333,12,False
+tfidf_word,0.971402,0.95,12,False
+tfidf_hybrid,0.984596,0.966667,12,True

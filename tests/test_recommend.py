@@ -179,3 +179,22 @@ def test_relevance_sheet_round_trip(tmp_path):
     book["relevance"]["D3"] = 0
     book.save(path)
     assert read_relevance_sheet(path)["relevance"].tolist() == [2, 0]
+
+
+def test_related_keywords_refinement_rules():
+    titles = pd.Series(["react native app", "react developer", "react app expert", "flutter app", "flutter expert"])
+    market = pd.Series(["react website"] * 2 + ["logo design"] * 18 + ["app expert"] * 5)
+    pay = pd.DataFrame({"keyword": ["react", "expert", "app developer", "flutter developer", "app"],
+                        "country_category_pct": [5.0, 12.0, 3.0, 4.0, 2.0], "country_category_p_fdr": [0.01] * 5})
+    trend = pd.DataFrame(columns=["keyword", "change_pp", "relative_change_pct", "p_fdr"])
+    table = related_keywords(titles, "flutter, ios app development", pay, trend, min_jobs=1, max_terms=5, max_q=0.05,
+                             market_titles=market, min_lift=2.0, generic_words={"expert", "developer"}, prefix_chars=5)
+    # expert: generic; app developer: "app" in profile, "developer" generic (and ~ "development");
+    # flutter developer: nothing new; app: in profile; react: new, lift (3/5)/(2/25) = 7.5
+    assert table["keyword"].tolist() == ["react"]
+    assert table["lift"].iloc[0] == pytest.approx(7.5)
+    strict = related_keywords(titles, "flutter", pay, trend, 1, 5, 0.05, market_titles=market, min_lift=10.0,
+                              generic_words={"expert"}, prefix_chars=5)
+    assert "react" not in strict["keyword"].tolist()          # not disproportionate enough
+    assert related_keywords(titles, "react, flutter, app", pay, trend, 1, 5, 0.05, market_titles=market,
+                            min_lift=2.0, generic_words={"expert", "developer"}, prefix_chars=5).empty   # no result is valid

@@ -1,1 +1,37 @@
-profile_id,method
+profile_id,profile,method,results,ndcg_at_5,strict_precision_at_5,relevant,partly_relevant
+P01,Data analyst,keyword,5,0.773893,0.8,4,1
+P01,Data analyst,tfidf_word,5,0.886947,0.8,4,1
+P01,Data analyst,tfidf_hybrid,5,1.0,1.0,5,0
+P02,WordPress developer,keyword,5,1.0,1.0,5,0
+P02,WordPress developer,tfidf_word,5,0.91253,0.8,4,1
+P02,WordPress developer,tfidf_hybrid,5,0.902621,0.8,4,1
+P03,Mobile app developer,keyword,5,1.0,1.0,5,0
+P03,Mobile app developer,tfidf_word,5,1.0,1.0,5,0
+P03,Mobile app developer,tfidf_hybrid,5,1.0,1.0,5,0
+P04,AI engineer,keyword,5,0.789568,0.6,3,2
+P04,AI engineer,tfidf_word,5,1.0,1.0,5,0
+P04,AI engineer,tfidf_hybrid,5,1.0,1.0,5,0
+P05,Brand designer,keyword,5,1.0,1.0,5,0
+P05,Brand designer,tfidf_word,5,1.0,1.0,5,0
+P05,Brand designer,tfidf_hybrid,5,1.0,1.0,5,0
+P06,Video editor,keyword,5,1.0,1.0,5,0
+P06,Video editor,tfidf_word,5,1.0,1.0,5,0
+P06,Video editor,tfidf_hybrid,5,1.0,1.0,5,0
+P07,Content writer,keyword,5,1.0,1.0,5,0
+P07,Content writer,tfidf_word,5,1.0,1.0,5,0
+P07,Content writer,tfidf_hybrid,5,1.0,1.0,5,0
+P08,Digital marketer,keyword,5,1.0,1.0,5,0
+P08,Digital marketer,tfidf_word,5,1.0,1.0,5,0
+P08,Digital marketer,tfidf_hybrid,5,1.0,1.0,5,0
+P09,Virtual assistant,keyword,5,1.0,1.0,5,0
+P09,Virtual assistant,tfidf_word,5,1.0,1.0,5,0
+P09,Virtual assistant,tfidf_hybrid,5,1.0,1.0,5,0
+P10,Spanish translator,keyword,5,0.868795,0.8,4,0
+P10,Spanish translator,tfidf_word,5,1.0,1.0,5,0
+P10,Spanish translator,tfidf_hybrid,5,1.0,1.0,5,0
+P11,Bookkeeper,keyword,5,1.0,1.0,5,0
+P11,Bookkeeper,tfidf_word,5,1.0,1.0,5,0
+P11,Bookkeeper,tfidf_hybrid,5,1.0,1.0,5,0
+P12,E-commerce store assistant,keyword,5,1.0,1.0,5,0
+P12,E-commerce store assistant,tfidf_word,5,0.857342,0.8,4,1
+P12,E-commerce store assistant,tfidf_hybrid,5,0.91253,0.8,4,1

@@ -1,1 +1,181 @@
 profile_id,method,rank,row_id,title_key,title,relevance
+P01,keyword,1,244246,i need python pyspark expert who can migrate data from sql server and load in snowflake,I need python pyspark expert who can migrate data from sql server and load in snowflake .,1
+P01,keyword,2,222431,help with data analysis project using ml python etc,"help with data analysis project using ML , python ...etc",2
+P01,keyword,3,237870,powershell script for sql server monitoring and power bi report,PowerShell Script for SQL Server Monitoring and Power BI Report,2
+P01,keyword,4,231321,python code needed to provide data analysis,Python code needed to provide data analysis,2
+P01,keyword,5,231565,upwork power bi data analyst,Upwork Power BI Data Analyst,2
+P01,tfidf_word,1,195783,build power bi dashboards,Build Power BI Dashboards,2
+P01,tfidf_word,2,191721,power bi,Power BI,2
+P01,tfidf_word,3,188549,veeqo integration to power bi,Veeqo integration to Power BI,1
+P01,tfidf_word,4,199079,power bi support,Power BI Support,2
+P01,tfidf_word,5,240057,data analysis,Data Analysis,2
+P01,tfidf_hybrid,1,195783,build power bi dashboards,Build Power BI Dashboards,2
+P01,tfidf_hybrid,2,207143,power bi dashboard,Power BI dashboard,2
+P01,tfidf_hybrid,3,226273,create a power bi dashboard,Create a Power BI Dashboard,2
+P01,tfidf_hybrid,4,240057,data analysis,Data Analysis,2
+P01,tfidf_hybrid,5,206836,power bi dashboard design,Power bi dashboard design,2
+P02,keyword,1,243222,wordpress page setup customization with elementor for college website,WordPress Page Setup & Customization with Elementor for College Website.,2
+P02,keyword,2,181573,need changes in wordpress website code customization,Need changes in WordPress website Code customization,2
+P02,keyword,3,244121,wordpress php developer needed for fix on website,WordPress PHP developer needed for fix on website,2
+P02,keyword,4,238512,php wordpress website,Php wordpress website,2
+P02,keyword,5,233819,wordpress elementor website designer to create 180 additional webpages,WordPress Elementor Website Designer to Create 180 Additional Webpages,2
+P02,tfidf_word,1,187431,wordpress website customization needed on my website,WordPress website customization needed on my website,2
+P02,tfidf_word,2,131084,wordpress developer needed for website customization,WordPress Developer Needed for Website Customization,2
+P02,tfidf_word,3,170755,php website,Php Website,2
+P02,tfidf_word,4,231783,wordpress elementor,WordPress/ Elementor,2
+P02,tfidf_word,5,244576,shopify website customization,Shopify Website Customization,1
+P02,tfidf_hybrid,1,187431,wordpress website customization needed on my website,WordPress website customization needed on my website,2
+P02,tfidf_hybrid,2,131084,wordpress developer needed for website customization,WordPress Developer Needed for Website Customization,2
+P02,tfidf_hybrid,3,231783,wordpress elementor,WordPress/ Elementor,2
+P02,tfidf_hybrid,4,244576,shopify website customization,Shopify Website Customization,1
+P02,tfidf_hybrid,5,135987,wordpress developer for podcast website customization,WordPress Developer for Podcast Website Customization,2
+P03,keyword,1,242236,ios android app development,iOS & Android app development,2
+P03,keyword,2,241460,flutter mobile app developer ios and android,Flutter Mobile App Developer (iOS and Android),2
+P03,keyword,3,209736,app and web setup installation on firebase flutter for android and ios,App and Web Setup/Installation on Firebase Flutter for Android and iOS,2
+P03,keyword,4,206153,app development ios android startup,APP Development iOS Android Startup,2
+P03,keyword,5,234136,freelance developer for ux ui source code and database development for ios and android app,"Freelance Developer for UX/UI, Source Code, and Database Development for iOS and Android App",2
+P03,tfidf_word,1,240267,ios app development,IOS app development,2
+P03,tfidf_word,2,189193,app development for ios and android,App development for IOS and Android.,2
+P03,tfidf_word,3,184266,need a developer for android and ios app,Need a developer for android and iOS app,2
+P03,tfidf_word,4,211717,create webview android ios app from our webapp,Create webview android/ios app from our webapp,2
+P03,tfidf_word,5,196281,ios and android app development,IOS and Android app development,2
+P03,tfidf_hybrid,1,189193,app development for ios and android,App development for IOS and Android.,2
+P03,tfidf_hybrid,2,196281,ios and android app development,IOS and Android app development,2
+P03,tfidf_hybrid,3,242236,ios android app development,iOS & Android app development,2
+P03,tfidf_hybrid,4,240267,ios app development,IOS app development,2
+P03,tfidf_hybrid,5,184266,need a developer for android and ios app,Need a developer for android and iOS app,2
+P04,keyword,1,223650,looking for full stack ai machine learning chatbot python nlp specialist,"Looking For Full Stack AI & Machine Learning, Chatbot,| Python & NLP Specialist",2
+P04,keyword,2,244535,machine learning python expert required,Machine learning python expert required,2
+P04,keyword,3,238557,electrical engineer python expert data science machine learning,"Electrical Engineer, Python Expert, Data Science, Machine Learning",1
+P04,keyword,4,232343,looking for aws serverless engineer with python and ai ml chatbot development experience,Looking for AWS Serverless Engineer with Python and AI/ML chatbot development experience,1
+P04,keyword,5,209929,machine learning using python,Machine learning using python,2
+P04,tfidf_word,1,197675,smart companion chatbot development python openai,Smart Companion Chatbot Development - Python/OpenAI,2
+P04,tfidf_word,2,204771,chatbot development,Chatbot Development,2
+P04,tfidf_word,3,133813,machine learning,Machine learning,2
+P04,tfidf_word,4,221971,chatgpt api development,Chatgpt API Development,2
+P04,tfidf_word,5,158737,build a simple llm using chatgpt api,Build a simple LLM using ChatGPT API,2
+P04,tfidf_hybrid,1,221971,chatgpt api development,Chatgpt API Development,2
+P04,tfidf_hybrid,2,204771,chatbot development,Chatbot Development,2
+P04,tfidf_hybrid,3,133813,machine learning,Machine learning,2
+P04,tfidf_hybrid,4,209929,machine learning using python,Machine learning using python,2
+P04,tfidf_hybrid,5,225909,machine learning with python experience,Machine Learning with Python experience,2
+P05,keyword,1,244064,brand identity and logo design for cigar company,Brand Identity and Logo Design for Cigar Company,2
+P05,keyword,2,228232,logo graphic design for brand identity,Logo Graphic Design For Brand Identity,2
+P05,keyword,3,239593,brand identity and logo design,Brand identity and logo design,2
+P05,keyword,4,217137,logo design for mobile grooming service in procreate and adobe illustrator,Logo Design for Mobile Grooming Service in Procreate and Adobe Illustrator,2
+P05,keyword,5,236887,logo and brand identity design,Logo and Brand Identity Design,2
+P05,tfidf_word,1,239593,brand identity and logo design,Brand identity and logo design,2
+P05,tfidf_word,2,217836,logo design and brand identity,Logo Design and Brand Identity,2
+P05,tfidf_word,3,218898,edit a logo on adobe illustrator,Edit a logo on Adobe Illustrator,2
+P05,tfidf_word,4,182477,logo and brand identity,Logo and Brand Identity,2
+P05,tfidf_word,5,217488,logo design and brand identity for bakery,Logo Design and Brand Identity for Bakery,2
+P05,tfidf_hybrid,1,239593,brand identity and logo design,Brand identity and logo design,2
+P05,tfidf_hybrid,2,217836,logo design and brand identity,Logo Design and Brand Identity,2
+P05,tfidf_hybrid,3,218898,edit a logo on adobe illustrator,Edit a logo on Adobe Illustrator,2
+P05,tfidf_hybrid,4,182477,logo and brand identity,Logo and Brand Identity,2
+P05,tfidf_hybrid,5,236887,logo and brand identity design,Logo and Brand Identity Design,2
+P06,keyword,1,171328,pro video editing for tiktok videos and youtube content smooth animations and transitions,PRO Video editing for TikTok videos and YouTube content. Smooth animations and transitions.,2
+P06,keyword,2,243739,video editor needed for editing youtube videos 3,Video Editor Needed for Editing Youtube Videos 3,2
+P06,keyword,3,243702,video editor needed for editing youtube videos 2,Video Editor Needed for Editing Youtube Videos 2,2
+P06,keyword,4,243534,video editor needed for editing youtube videos,Video Editor Needed for Editing Youtube Videos,2
+P06,keyword,5,237771,video editor youtube style video s and instagram reels editing,Video editor - Youtube style video's and instagram reels editing,2
+P06,tfidf_word,1,243534,video editor needed for editing youtube videos,Video Editor Needed for Editing Youtube Videos,2
+P06,tfidf_word,2,243739,video editor needed for editing youtube videos 3,Video Editor Needed for Editing Youtube Videos 3,2
+P06,tfidf_word,3,213243,video editing premiere pro,Video Editing (Premiere Pro),2
+P06,tfidf_word,4,176748,video editing youtube channel,Video editing youtube channel,2
+P06,tfidf_word,5,243702,video editor needed for editing youtube videos 2,Video Editor Needed for Editing Youtube Videos 2,2
+P06,tfidf_hybrid,1,213243,video editing premiere pro,Video Editing (Premiere Pro),2
+P06,tfidf_hybrid,2,243534,video editor needed for editing youtube videos,Video Editor Needed for Editing Youtube Videos,2
+P06,tfidf_hybrid,3,243739,video editor needed for editing youtube videos 3,Video Editor Needed for Editing Youtube Videos 3,2
+P06,tfidf_hybrid,4,243702,video editor needed for editing youtube videos 2,Video Editor Needed for Editing Youtube Videos 2,2
+P06,tfidf_hybrid,5,208675,video editing for reels,Video editing for reels,2
+P07,keyword,1,234822,navigating trends with expert article and blog writing,Navigating Trends with Expert Article and Blog Writing,2
+P07,keyword,2,179840,need writers for blog article writing,Need writers for blog article writing,2
+P07,keyword,3,142897,bulk article writing for blog,Bulk Article Writing for Blog,2
+P07,keyword,4,229402,short blog writing job no experience necessary,"Short blog writing job, no experience necessary",2
+P07,keyword,5,199471,website design blog writer 1 article,Website Design Blog Writer - 1 article,2
+P07,tfidf_word,1,154875,article writing,Article writing,2
+P07,tfidf_word,2,215805,blog writing,Blog writing,2
+P07,tfidf_word,3,179840,need writers for blog article writing,Need writers for blog article writing,2
+P07,tfidf_word,4,142897,bulk article writing for blog,Bulk Article Writing for Blog,2
+P07,tfidf_word,5,226026,seo blog writing,SEO Blog Writing,2
+P07,tfidf_hybrid,1,154875,article writing,Article writing,2
+P07,tfidf_hybrid,2,215805,blog writing,Blog writing,2
+P07,tfidf_hybrid,3,179840,need writers for blog article writing,Need writers for blog article writing,2
+P07,tfidf_hybrid,4,142897,bulk article writing for blog,Bulk Article Writing for Blog,2
+P07,tfidf_hybrid,5,170980,writing,Writing,2
+P08,keyword,1,230304,seeking digital marketing expert seo google ads website optimization and paid social media,"Seeking Digital Marketing Expert: SEO, Google Ads, Website Optimization, and Paid Social Media",2
+P08,keyword,2,238541,facebook ads social media marketing,Facebook ads social media marketing,2
+P08,keyword,3,195351,media buying facebook ads tiktok ads social media marketing,Media Buying - Facebook Ads - TikTok Ads - Social Media Marketing,2
+P08,keyword,4,239136,media buying facebook ads tiktok ads social media marketing 300 per client,Media Buying - Facebook Ads - TikTok Ads - Social Media Marketing - $300 per client,2
+P08,keyword,5,218970,social media marketing contractor for french facebook ads agency,Social Media Marketing Contractor for French Facebook Ads Agency,2
+P08,tfidf_word,1,238541,facebook ads social media marketing,Facebook ads social media marketing,2
+P08,tfidf_word,2,223019,seo google ads,SEO & Google ads,2
+P08,tfidf_word,3,235690,facebook ads social media manager,Facebook Ads/Social Media Manager,2
+P08,tfidf_word,4,188103,looking for google ads facebook ads expert,Looking for Google Ads & Facebook Ads Expert,2
+P08,tfidf_word,5,201675,google ads facebook ads specialist,Google Ads & Facebook Ads specialist,2
+P08,tfidf_hybrid,1,238541,facebook ads social media marketing,Facebook ads social media marketing,2
+P08,tfidf_hybrid,2,235690,facebook ads social media manager,Facebook Ads/Social Media Manager,2
+P08,tfidf_hybrid,3,201675,google ads facebook ads specialist,Google Ads & Facebook Ads specialist,2
+P08,tfidf_hybrid,4,188103,looking for google ads facebook ads expert,Looking for Google Ads & Facebook Ads Expert,2
+P08,tfidf_hybrid,5,223019,seo google ads,SEO & Google ads,2
+P09,keyword,1,204666,virtual assistant for email management data entry admin work,"Virtual assistant for email management, data entry, admin work",2
+P09,keyword,2,241977,virtual assistant needed for email call management and data entry,Virtual Assistant Needed for Email & Call Management and Data Entry,2
+P09,keyword,3,238687,virtual assistant for data entry management and research for outreach marketing campaigns,"Virtual Assistant for Data Entry, Management, and Research for Outreach Marketing Campaigns",2
+P09,keyword,4,170624,virtual assistant data entry and email sending part time job long term,Virtual assistant - Data entry and email sending - Part time job - Long term,2
+P09,keyword,5,221993,virtual assistant data entry lead generation web research direct response marketing,Virtual Assistant | Data Entry | Lead Generation | Web Research | Direct Response Marketing,2
+P09,tfidf_word,1,205999,virtual assistant data entry,Virtual Assistant - Data Entry,2
+P09,tfidf_word,2,198710,assistant data entry,Assistant-Data Entry,2
+P09,tfidf_word,3,204666,virtual assistant for email management data entry admin work,"Virtual assistant for email management, data entry, admin work",2
+P09,tfidf_word,4,145389,email management,Email management,2
+P09,tfidf_word,5,207527,admin support,Admin support,2
+P09,tfidf_hybrid,1,204666,virtual assistant for email management data entry admin work,"Virtual assistant for email management, data entry, admin work",2
+P09,tfidf_hybrid,2,205999,virtual assistant data entry,Virtual Assistant - Data Entry,2
+P09,tfidf_hybrid,3,238708,virtual assistant for data entry,Virtual assistant for Data Entry,2
+P09,tfidf_hybrid,4,224711,virtual assistant and data entry,Virtual assistant and data entry,2
+P09,tfidf_hybrid,5,241977,virtual assistant needed for email call management and data entry,Virtual Assistant Needed for Email & Call Management and Data Entry,2
+P10,keyword,1,215027,translation of documents from english to spanish,Translation of documents from English to Spanish,2
+P10,keyword,2,232949,translation spanish documents to english 35 short pages deadline tomorrow march 3 22 noon eastern,"Translation Spanish Documents to English, 35 short pages. Deadline tomorrow March 3/22 noon Eastern",2
+P10,keyword,3,221831,software technical training documentation translation english to spanish,Software Technical Training Documentation Translation - English to Spanish,2
+P10,keyword,4,212505,700 words english to spanish human translation review and correction,700 words English to Spanish human translation review and correction,2
+P10,keyword,5,133803,transcription and translation of 1 page handwritten document arabic to english,Transcription and Translation of 1 page Handwritten Document (Arabic to English),0
+P10,tfidf_word,1,234080,english to spanish translation,English to Spanish Translation,2
+P10,tfidf_word,2,194664,translation english to spanish,Translation - English to Spanish,2
+P10,tfidf_word,3,176123,english to spanish translation of presentation,English to Spanish translation of presentation,2
+P10,tfidf_word,4,184198,english to spanish translation for advertising,English to Spanish translation for advertising,2
+P10,tfidf_word,5,160108,english to spanish translation check,English to Spanish translation check,2
+P10,tfidf_hybrid,1,234080,english to spanish translation,English to Spanish Translation,2
+P10,tfidf_hybrid,2,194664,translation english to spanish,Translation - English to Spanish,2
+P10,tfidf_hybrid,3,229482,translation from english to spanish,Translation From English To Spanish,2
+P10,tfidf_hybrid,4,160108,english to spanish translation check,English to Spanish translation check,2
+P10,tfidf_hybrid,5,176123,english to spanish translation of presentation,English to Spanish translation of presentation,2
+P11,keyword,1,228871,quickbooks and xero expert for deferred revenue accounting,QuickBooks and Xero Expert for Deferred Revenue Accounting,2
+P11,keyword,2,165842,quickbooks accounting bookkeeping,Quickbooks Accounting/ Bookkeeping,2
+P11,keyword,3,176654,small business bookkeeping accounting quickbooks,Small Business Bookkeeping/ Accounting (Quickbooks),2
+P11,keyword,4,173795,quickbooks bookkeeping cleanup and catch up accounting for e commerce business fy 2023,QuickBooks - Bookkeeping Cleanup and Catch-Up Accounting for E-commerce Business (FY 2023),2
+P11,keyword,5,208907,xero reconciliation bookkeeping,Xero Reconciliation Bookkeeping,2
+P11,tfidf_word,1,201679,bookkeeping quickbooks online,Bookkeeping - Quickbooks Online,2
+P11,tfidf_word,2,178246,ongoing bookkeeping quickbooks,Ongoing Bookkeeping (quickbooks),2
+P11,tfidf_word,3,182573,integration with xero accounting software,Integration with Xero Accounting Software,2
+P11,tfidf_word,4,203632,xero accounting and prepare numbers for taxfiling us company,Xero Accounting and prepare numbers for TaxFiling US Company,2
+P11,tfidf_word,5,194878,accounting and bookkeeping,Accounting and bookkeeping,2
+P11,tfidf_hybrid,1,201679,bookkeeping quickbooks online,Bookkeeping - Quickbooks Online,2
+P11,tfidf_hybrid,2,165842,quickbooks accounting bookkeeping,Quickbooks Accounting/ Bookkeeping,2
+P11,tfidf_hybrid,3,178246,ongoing bookkeeping quickbooks,Ongoing Bookkeeping (quickbooks),2
+P11,tfidf_hybrid,4,194878,accounting and bookkeeping,Accounting and bookkeeping,2
+P11,tfidf_hybrid,5,233035,quickbooks bookkeeping,QuickBooks Bookkeeping,2
+P12,keyword,1,229353,shopify bulk product listing management specialist,Shopify Bulk Product Listing & Management Specialist,2
+P12,keyword,2,203343,shopify store product listing,Shopify store product listing,2
+P12,keyword,3,192360,product listing virtual assistant for shopify store,Product Listing Virtual Assistant for Shopify Store,2
+P12,keyword,4,189646,shopify store product listing manager shopify va,Shopify Store Product/Listing Manager /Shopify VA,2
+P12,keyword,5,201317,shopify and consigncloud expert needed to integrate brick mortar store with ecommerce,Shopify and ConsignCloud Expert needed to integrate Brick&Mortar store with Ecommerce,2
+P12,tfidf_word,1,203343,shopify store product listing,Shopify store product listing,2
+P12,tfidf_word,2,239985,seo for ecommerce store,SEO for Ecommerce Store,1
+P12,tfidf_word,3,239672,shopify ecommerce store set up,Shopify Ecommerce Store set up,2
+P12,tfidf_word,4,189646,shopify store product listing manager shopify va,Shopify Store Product/Listing Manager /Shopify VA,2
+P12,tfidf_word,5,196689,product listing,Product Listing,2
+P12,tfidf_hybrid,1,203343,shopify store product listing,Shopify store product listing,2
+P12,tfidf_hybrid,2,189646,shopify store product listing manager shopify va,Shopify Store Product/Listing Manager /Shopify VA,2
+P12,tfidf_hybrid,3,191461,shopify va store management,Shopify VA/Store management,2
+P12,tfidf_hybrid,4,239672,shopify ecommerce store set up,Shopify Ecommerce Store set up,2
+P12,tfidf_hybrid,5,239985,seo for ecommerce store,SEO for Ecommerce Store,1

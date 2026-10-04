@@ -251,17 +251,49 @@ def choose_winner(summary: pd.DataFrame, methods: list[str], tie_threshold: floa
 
 
 def related_keywords(top_titles: pd.Series, profile: str, pay: pd.DataFrame, trend: pd.DataFrame,
-                     min_jobs: int, max_terms: int, max_q: float) -> pd.DataFrame:
-    """Related market keywords to explore (associations, not advice).
+                     min_jobs: int, max_terms: int, max_q: float, market_titles: pd.Series | None = None,
+                     min_lift: float = 0.0, generic_words: frozenset[str] | set[str] = frozenset(),
+                     prefix_chars: int = 0) -> pd.DataFrame:
+    """Related market keywords to explore (descriptive associations, not advice).
 
-    Terms from the Notebook 04 pay table and Notebook 05 trend table that
-    appear in at least ``min_jobs`` of the profile's top matching titles and
-    are not already in the profile. A term is shown only with supporting
-    evidence: a positive same-country-and-category pay association, or a
-    rising keyword share, each with FDR q below ``max_q``.
+    Candidates are the terms of the Notebook 04 pay table and the Notebook 05
+    trend table with supporting evidence: a positive same-country-and-category
+    pay association, or a rising keyword share, each with FDR q below
+    ``max_q`` (thresholds unchanged from those notebooks). A candidate is kept
+    only when
+
+    * it appears in at least ``min_jobs`` of the profile's top matching titles;
+    * it adds at least one word that is neither generic (``generic_words``:
+      request, action, seniority and job-role words) nor already in the
+      profile; a word counts as already present when it shares its first
+      ``prefix_chars`` letters with a profile word ("analyst" ~ "analysis"),
+      or is identical for shorter words;
+    * it is disproportionately common in the matched jobs: its share there is
+      at least ``min_lift`` times its share in ``market_titles`` (the pool).
+
+    An empty result is a valid answer: no strongly supported keyword.
+    (Decision D-034: the generic-word, prefix and lift rules were added once,
+    after the first version returned overly generic words.)
     """
-    profile_terms = set(ngrams(make_title_key(profile), 1)) | set(ngrams(make_title_key(profile), 2))
-    title_terms = [set(ngrams(t, 1)) | set(ngrams(t, 2)) for t in top_titles.fillna("").astype(str)]
+    profile_key = make_title_key(profile)
+    profile_terms = set(ngrams(profile_key, 1)) | set(ngrams(profile_key, 2))
+    profile_words = set(profile_key.split())
+
+    def already_present(word: str) -> bool:
+        if word in profile_words:
+            return True
+        if prefix_chars and len(word) >= prefix_chars:
+            return any(len(p) >= prefix_chars and p[:prefix_chars] == word[:prefix_chars] for p in profile_words)
+        return False
+
+    def adds_something(term: str) -> bool:
+        return any(not w.isdigit() and w not in generic_words and not already_present(w) for w in term.split())
+
+    def term_sets(titles: pd.Series) -> list[set[str]]:
+        return [set(ngrams(t, 1)) | set(ngrams(t, 2)) for t in titles.fillna("").astype(str)]
+
+    title_terms = term_sets(top_titles)
+    market_terms = term_sets(market_titles) if market_titles is not None and min_lift > 0 else None
     evidence = {}
     if not pay.empty:
         for row in pay.itertuples(index=False):
@@ -273,16 +305,26 @@ def related_keywords(top_titles: pd.Series, profile: str, pay: pd.DataFrame, tre
                 evidence.setdefault(row.keyword, {})["trend_relative_pct"] = float(row.relative_change_pct)
     rows = []
     for term, facts in evidence.items():
-        if term in profile_terms:
+        if term in profile_terms or not adds_something(term):
             continue
         count = sum(term in terms for terms in title_terms)
-        if count >= min_jobs:
-            rows.append({"keyword": term, "matching_jobs": count, **facts})
-    columns = ["keyword", "matching_jobs", "pay_pct", "trend_relative_pct"]
+        if count < min_jobs:
+            continue
+        lift = np.nan
+        if market_terms is not None:
+            market_share = sum(term in terms for terms in market_terms) / max(len(market_terms), 1)
+            lift = (count / len(title_terms)) / market_share if market_share > 0 else np.inf
+            if lift < min_lift:
+                continue
+        rows.append({"keyword": term, "matching_jobs": count, "lift": lift, **facts})
+    columns = ["keyword", "matching_jobs", "lift", "pay_pct", "trend_relative_pct"]
     if not rows:
         return pd.DataFrame(columns=columns)
     table = pd.DataFrame(rows).reindex(columns=columns)
     return table.sort_values(["matching_jobs", "keyword"], ascending=[False, True]).head(max_terms).reset_index(drop=True)
+
+
+NO_KEYWORD_MESSAGE = "No strongly supported related market keyword is available for this profile."
 
 
 def describe_keyword(row: pd.Series) -> str:
@@ -292,4 +334,6 @@ def describe_keyword(row: pd.Series) -> str:
         parts.append(f"associated with {row['pay_pct']:+.0f}% higher hourly offers in the same country and category")
     if pd.notna(row.get("trend_relative_pct")):
         parts.append(f"its job share grew {row['trend_relative_pct']:+.0f}% over the observed weeks")
-    return f"'{row['keyword']}' appears in {int(row['matching_jobs'])} related jobs; " + " and ".join(parts) + "."
+    lift = f" ({row['lift']:.1f} times its share in all pool jobs)" if pd.notna(row.get("lift")) else ""
+    return (f"'{row['keyword']}' appears in {int(row['matching_jobs'])} of the best-matching jobs{lift}; "
+            + " and ".join(parts) + ".")

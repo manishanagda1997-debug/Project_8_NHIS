@@ -204,6 +204,25 @@ related_top_jobs = 50
 related_min_jobs = 3
 related_max_terms = 5
 related_max_q = 0.05
+# Post-output refinement, fixed once on 4 October 2026 after the first version
+# returned generic words; not tuned again (decision D-034). A keyword must add
+# a word that is neither generic nor already in the profile (same first 5
+# letters counts as present: "analyst" ~ "analysis"), and be at least twice
+# as common in the matched jobs as in the whole pool. No result is allowed.
+related_min_lift = 2.0
+related_prefix_chars = 5
+related_generic_words = [
+    # requests and actions
+    "need", "needed", "required", "wanted", "looking", "seeking", "help", "create", "build", "make", "setup",
+    "set", "get", "find", "fix", "update", "improve", "develop",
+    # project words
+    "project", "projects", "job", "jobs", "work", "task", "tasks", "service", "services", "support",
+    "simple", "quick", "small", "new", "long", "term", "ongoing", "urgent", "easy", "full", "time", "part",
+    # seniority and job roles
+    "expert", "experts", "specialist", "professional", "pro", "senior", "junior", "experienced", "skilled",
+    "freelancer", "consultant", "assistant", "developer", "developers", "engineer", "designer", "analyst",
+    "writer", "editor", "manager", "team", "person", "someone", "partner",
+]
 # Filter scenarios for the coverage and filter checks (no filters during the
 # relevance evaluation).
 check_scenarios = [

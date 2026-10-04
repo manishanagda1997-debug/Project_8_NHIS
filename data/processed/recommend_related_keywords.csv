@@ -1,0 +1,3 @@
+profile_id,profile,method,keyword,matching_jobs,lift,pay_pct,trend_relative_pct,sentence
+P02,WordPress developer,tfidf_hybrid,design,6,2.155744,4.646608,9.673879,'design' appears in 6 of the best-matching jobs (2.2 times its share in all pool jobs); associated with +5% higher hourly offers in the same country and category and its job share grew +10% over the observed weeks.
+P03,Mobile app developer,tfidf_hybrid,react,3,5.522742,4.954503,25.43576,'react' appears in 3 of the best-matching jobs (5.5 times its share in all pool jobs); associated with +5% higher hourly offers in the same country and category and its job share grew +25% over the observed weeks.

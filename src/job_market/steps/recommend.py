@@ -30,8 +30,8 @@ from ..io import write_csv
 from ..labels import LabelSheetError, read_relevance_sheet
 from ..manifest import StepRecord, describe_output, sha256_file
 from ..recommend import (
-    Index, build_index, choose_winner, filter_mask, ndcg_at_k, newest_in_repost_chain, pool_mask, recommend, scores,
-    strict_precision_at_k,
+    Index, build_index, choose_winner, describe_keyword, filter_mask, ndcg_at_k, newest_in_repost_chain, pool_mask,
+    recommend, related_keywords, scores, strict_precision_at_k,
 )
 
 NAME = "recommend"
@@ -147,6 +147,33 @@ def score_relevance(results: pd.DataFrame, labels: pd.DataFrame, rules: dict) ->
     return items[["profile_id", "method", "rank", "row_id", "title_key", "title", "relevance"]], by_profile, summary, winner, reason
 
 
+RELATED_COLUMNS = ["profile_id", "profile", "method", "keyword", "matching_jobs", "lift", "pay_pct",
+                   "trend_relative_pct", "sentence"]
+
+
+def related_table(index: Index, rules: dict, method: str, processed) -> pd.DataFrame:
+    """Related market keywords to explore for every evaluation profile (descriptive only)."""
+    def read(name: str) -> pd.DataFrame:
+        path = processed / name
+        return pd.read_csv(path) if path.is_file() and path.stat().st_size > 1 else pd.DataFrame()
+
+    pay, trend = read("pay_keywords_hourly.csv"), read("trend_keywords.csv")
+    candidates = (pool_mask(index.jobs, int(rules["pool_days"])) & index.jobs["newest_in_chain"]).to_numpy()
+    market = index.jobs.loc[candidates, "title_key"]
+    rows = []
+    for profile in rules["profiles"]:
+        top = recommend(index, profile["skills"], method, candidates, int(rules["related_top_jobs"]))
+        table = related_keywords(top["title_key"], profile["skills"], pay, trend, int(rules["related_min_jobs"]),
+                                 int(rules["related_max_terms"]), float(rules["related_max_q"]), market_titles=market,
+                                 min_lift=float(rules["related_min_lift"]),
+                                 generic_words=frozenset(rules["related_generic_words"]),
+                                 prefix_chars=int(rules["related_prefix_chars"]))
+        for _, row in table.iterrows():
+            rows.append({"profile_id": profile["id"], "profile": profile["name"], "method": method,
+                         **row.to_dict(), "sentence": describe_keyword(row)})
+    return pd.DataFrame(rows, columns=RELATED_COLUMNS)
+
+
 def run(settings: Settings, context: dict[str, Any]) -> StepRecord:
     record = StepRecord(NAME, DESCRIPTION)
     rules = settings.section("recommend")
@@ -175,6 +202,7 @@ def run(settings: Settings, context: dict[str, Any]) -> StepRecord:
     empty = (pd.DataFrame(columns=item_columns), pd.DataFrame(columns=["profile_id", "method"]),
              pd.DataFrame(columns=["method"]))
     tables = empty
+    related = pd.DataFrame(columns=RELATED_COLUMNS)
     path = settings.path("labels_dir") / RELEVANCE_SHEET
     if not path.is_file():
         record.metrics["relevance_labels"] = "missing"
@@ -183,6 +211,7 @@ def run(settings: Settings, context: dict[str, Any]) -> StepRecord:
             labels = read_relevance_sheet(path)
             items, by_profile, summary, winner, reason = score_relevance(evaluation_results(index, rules), labels, rules)
             tables = (items, by_profile, summary)
+            related = related_table(index, rules, winner, processed)
             record.metrics.update({
                 "relevance_labels": "scored", "relevance_labels_sha256": sha256_file(path),
                 "recommend_winner": winner, "recommend_winner_reason": reason,
@@ -191,7 +220,7 @@ def run(settings: Settings, context: dict[str, Any]) -> StepRecord:
         except LabelSheetError as error:
             record.metrics["relevance_labels"] = f"not scored: {error}"
     outputs.update({"recommend_relevance_items.csv": tables[0], "recommend_relevance_by_profile.csv": tables[1],
-                    "recommend_relevance_summary.csv": tables[2]})
+                    "recommend_relevance_summary.csv": tables[2], "recommend_related_keywords.csv": related})
     for name, table in outputs.items():
         out = write_csv(table.round(6) if len(table) else table, processed / name)
         record.outputs.append(describe_output(out, settings.root, rows=len(table)))

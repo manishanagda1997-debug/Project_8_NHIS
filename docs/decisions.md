@@ -698,9 +698,27 @@ check the reasoning.
   50 best-matching titles, are not already in the profile, and have a
   positive same-country-and-category pay association or a rising share (FDR
   q < 0.05). Worded as associations, never as advice to learn a skill.
+  **Post-output refinement (fixed once, not tuned again):** the first version
+  returned generic words ("expert", "help", "build"), so a keyword must also
+  add a word that is neither generic (a fixed list of request, action,
+  seniority and job-role words) nor already in the profile (same first 5
+  letters counts as present), and be at least twice as common in the matched
+  jobs as in the whole pool (lift >= 2). No result is a valid answer. Only two
+  profiles receive a keyword ("react", "design"). This feature is descriptive
+  and separate from the blinded method evaluation.
 - **Similar jobs:** a job's title is the query; the job itself is excluded and
   the same pool, repost and diversity rules apply. Checked with tests and
   examples, without a separate labelled evaluation.
+- **Result:** the hybrid is selected by the frozen rule: mean nDCG@5 0.985,
+  strict Precision@5 0.967; its nDCG lead over word TF-IDF (0.971) is inside
+  the 0.02 tie margin, so Precision@5 decides; the keyword count (0.953) is
+  outside it. 115 of the 122 judged titles were labelled relevant, so the
+  scores are near the ceiling and no statistical superiority is claimed.
+- **Record:** the tag `recommender-1.0` marks the frozen design and blank
+  sheet; its CI run fails only because the notebooks had not been re-run
+  after the rebuild (fixed in the next commit, outputs only). The tag is left
+  in place so the freeze time stays on record. `relevance-labels-final`
+  marks the completed labels, committed before scoring.
 - **Evidence:** `src/job_market/recommend.py`, `steps/recommend.py`,
   `labels.py`, `tests/test_recommend.py`, `recommend_*.csv`,
   `data/labels/relevance_labels.xlsx`, Notebook 07.
