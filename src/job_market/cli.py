@@ -7,6 +7,7 @@
     python -m job_market verify           rebuild, run notebooks, then the lineage check
     python -m job_market make-label-sheets  draw the blind and development samples as Excel sheets (once)
     python -m job_market make-relevance-sheet  write the blinded recommendation relevance sheet (once)
+    python -m job_market serve            start the web app (recommendations and API) on http://127.0.0.1:5000
 
 Every command exits with code 0 on success and 1 on failure, so the same
 commands work in a terminal, in Docker and in continuous integration.
@@ -43,6 +44,9 @@ def main(argv: list[str] | None = None) -> int:
         cmd.add_argument("-v", "--verbose", action="store_true", help="also list passing checks")
     sub.add_parser("make-label-sheets", help="draw the label samples and write the Excel sheets (refuses to overwrite)")
     sub.add_parser("make-relevance-sheet", help="write the blinded relevance sheet for the recommender (refuses to overwrite)")
+    serve = sub.add_parser("serve", help="start the web app on http://127.0.0.1:5000")
+    serve.add_argument("--host", default="127.0.0.1", help="address to listen on (0.0.0.0 inside Docker)")
+    serve.add_argument("--port", type=int, default=5000)
     args = parser.parse_args(argv)
 
     settings = load_settings()
@@ -97,6 +101,17 @@ def main(argv: list[str] | None = None) -> int:
         items = relevance_items(evaluation_results(index, rules), int(rules["sheet_seed"]))
         path = write_relevance_sheet(items, rules["profiles"], settings.path("labels_dir") / RELEVANCE_SHEET)
         print(f"wrote {settings.relative(path)}: {len(items)} titles to judge for {items['profile_id'].nunique()} profiles")
+        return 0
+    if args.command == "serve":
+        try:
+            from job_market_web import create_app
+        except ImportError:
+            print("The web package is not installed. Run: pip install -e . --no-deps")
+            return 1
+        print("Loading the verified build and building the search index (about 20 seconds)...")
+        app = create_app()
+        print(f"Ready: open http://{'localhost' if args.host in ('127.0.0.1', '0.0.0.0') else args.host}:{args.port}  (Ctrl+C to stop)")
+        app.run(host=args.host, port=args.port, debug=False)
         return 0
     parser.error(f"unknown command {args.command}")
     return 2

@@ -199,13 +199,54 @@ def recommend(index: Index, query: str, method: str, candidate_mask: pd.Series |
     return top.assign(rank=np.arange(1, len(top) + 1))
 
 
+def repost_chain_rows(jobs: pd.DataFrame, position: int, days: int = 3) -> set[int]:
+    """Row ids of the possible reposts of one job (same title key, country and exact pay, within ``days``)."""
+    job = jobs.iloc[position]
+    signature = job.get("pay_signature")
+    if pd.isna(job.get("country")) or pd.isna(signature) or signature == "":
+        return set()
+    same = ((jobs["title_key"] == job["title_key"]) & (jobs["country"] == job["country"])
+            & (jobs["pay_signature"] == signature)
+            & ((jobs["posted_at"] - job["posted_at"]).abs() <= pd.Timedelta(days=days)))
+    return set(jobs.loc[same, "row_id"].astype(int))
+
+
 def similar_jobs(index: Index, row_id: int, method: str, candidate_mask: pd.Series | np.ndarray, k: int) -> pd.DataFrame:
-    """Jobs most like one job: its title is the query and the job itself is excluded."""
-    match = index.jobs.index[index.jobs["row_id"] == row_id]
+    """Jobs most like one job: its title is the query; the job itself and its possible reposts are excluded."""
+    match = np.flatnonzero(index.jobs["row_id"].to_numpy() == row_id)
     if len(match) == 0:
         raise KeyError(f"row_id {row_id} is not in the index")
-    title = index.jobs.loc[match[0], "title_key"]
-    return recommend(index, title, method, candidate_mask, k, exclude_rows={int(row_id)})
+    title = index.jobs.iloc[match[0]]["title_key"]
+    exclude = {int(row_id)} | repost_chain_rows(index.jobs, int(match[0]))
+    return recommend(index, title, method, candidate_mask, k, exclude_rows=exclude)
+
+
+def _money(value: float) -> str:
+    return f"${value:,.0f}" if float(value).is_integer() else f"${value:,.2f}"
+
+
+def pay_text(contract_type: str, hourly_low: float, hourly_high: float, budget: float) -> str:
+    """Pay exactly as the client stated it: "$15-$35/hr", "$30/hr", "Fixed: $500" or "Rate not stated"."""
+    if str(contract_type) == "fixed":
+        return f"Fixed: {_money(budget)}" if pd.notna(budget) else "Budget not stated"
+    rates = sorted(v for v in (hourly_low, hourly_high) if pd.notna(v))
+    if not rates:
+        return "Rate not stated"
+    if len(rates) == 1 or rates[0] == rates[1]:
+        return f"{_money(rates[-1])}/hr"
+    return f"{_money(rates[0])}\u2013{_money(rates[1])}/hr"
+
+
+def market_term_shares(titles: pd.Series, terms: set[str]) -> dict[str, float]:
+    """Share of ``titles`` containing each term (single words and two-word phrases)."""
+    counts = dict.fromkeys(terms, 0)
+    n = 0
+    for title in titles.fillna("").astype(str):
+        n += 1
+        for term in set(ngrams(title, 1)) | set(ngrams(title, 2)):
+            if term in counts:
+                counts[term] += 1
+    return {term: count / max(n, 1) for term, count in counts.items()}
 
 
 # ------------------------------------------------------------ evaluation
@@ -253,7 +294,7 @@ def choose_winner(summary: pd.DataFrame, methods: list[str], tie_threshold: floa
 def related_keywords(top_titles: pd.Series, profile: str, pay: pd.DataFrame, trend: pd.DataFrame,
                      min_jobs: int, max_terms: int, max_q: float, market_titles: pd.Series | None = None,
                      min_lift: float = 0.0, generic_words: frozenset[str] | set[str] = frozenset(),
-                     prefix_chars: int = 0) -> pd.DataFrame:
+                     prefix_chars: int = 0, market_shares: dict[str, float] | None = None) -> pd.DataFrame:
     """Related market keywords to explore (descriptive associations, not advice).
 
     Candidates are the terms of the Notebook 04 pay table and the Notebook 05
@@ -293,7 +334,8 @@ def related_keywords(top_titles: pd.Series, profile: str, pay: pd.DataFrame, tre
         return [set(ngrams(t, 1)) | set(ngrams(t, 2)) for t in titles.fillna("").astype(str)]
 
     title_terms = term_sets(top_titles)
-    market_terms = term_sets(market_titles) if market_titles is not None and min_lift > 0 else None
+    market_terms = (term_sets(market_titles) if market_titles is not None and min_lift > 0 and market_shares is None
+                    else None)
     evidence = {}
     if not pay.empty:
         for row in pay.itertuples(index=False):
@@ -311,8 +353,11 @@ def related_keywords(top_titles: pd.Series, profile: str, pay: pd.DataFrame, tre
         if count < min_jobs:
             continue
         lift = np.nan
-        if market_terms is not None:
-            market_share = sum(term in terms for terms in market_terms) / max(len(market_terms), 1)
+        if min_lift > 0 and (market_terms is not None or market_shares is not None):
+            if market_shares is not None:
+                market_share = market_shares.get(term, 0.0)
+            else:
+                market_share = sum(term in terms for terms in market_terms) / max(len(market_terms), 1)
             lift = (count / len(title_terms)) / market_share if market_share > 0 else np.inf
             if lift < min_lift:
                 continue

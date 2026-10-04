@@ -77,6 +77,33 @@ lineage check in one command.
 
 Each command exits with code 0 on success and 1 on failure.
 
+## Web app (Task 5)
+
+After a successful `rebuild`, start the recommendation page and JSON API:
+
+```bash
+python -m job_market serve          # then open http://localhost:5000
+```
+
+Startup takes about 20 seconds (the app verifies the build and builds the
+search index). It uses exactly the code and the evaluated method of
+Notebook 07 (hybrid word + character TF-IDF). Stop it with Ctrl+C.
+
+| Address | Returns |
+|---|---|
+| `/` | the recommendation page |
+| `/api/health` | readiness, build ID, recommender version and method, indexed jobs |
+| `/api/recommend?skills=python, sql&days=14&contract=hourly&min_hourly=30` | the 10 best-matching jobs, the filters applied in words, related market keywords |
+| `/api/recommend?skills=logo design&contract=fixed&min_budget=500` | the same, for fixed-price jobs |
+| `/api/similar/<row_id>?days=14` | the 5 jobs most like one job |
+
+Parameters: `skills` (required, at most 300 characters), `days` (7, 14, 30
+or all; default 14), `contract` (all, hourly or fixed), `min_hourly` (only
+with `contract=hourly`; a job passes when the maximum of the client's stated
+hourly range reaches it), `min_budget` (only with `contract=fixed`). Invalid
+or unknown parameters get a 400 error with a plain message; an unknown job
+ID gets 404.
+
 ## Opening notebooks interactively
 
 Start JupyterLab from the project environment, so the default kernel is the
@@ -114,6 +141,7 @@ docs/assignment_brief.pdf
 environment.yml          pinned analysis environment of the official build
 notebooks/               narrative analysis, reading verified pipeline outputs
 src/job_market/          pipeline, analysis steps and quality gates
+src/job_market_web/      Flask app: recommendation page and JSON API (presentation only)
 tests/                   automated tests
 ```
 

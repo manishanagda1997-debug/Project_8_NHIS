@@ -198,3 +198,9 @@ def test_related_keywords_refinement_rules():
     assert "react" not in strict["keyword"].tolist()          # not disproportionate enough
     assert related_keywords(titles, "react, flutter, app", pay, trend, 1, 5, 0.05, market_titles=market,
                             min_lift=2.0, generic_words={"expert", "developer"}, prefix_chars=5).empty   # no result is valid
+
+
+def test_market_term_shares():
+    from job_market.recommend import market_term_shares
+    shares = market_term_shares(pd.Series(["react app", "react native app", "logo design", None]), {"react", "react native", "seo"})
+    assert shares == {"react": 0.5, "react native": 0.25, "seo": 0.0}

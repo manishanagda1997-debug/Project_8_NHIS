@@ -722,3 +722,38 @@ check the reasoning.
 - **Evidence:** `src/job_market/recommend.py`, `steps/recommend.py`,
   `labels.py`, `tests/test_recommend.py`, `recommend_*.csv`,
   `data/labels/relevance_labels.xlsx`, Notebook 07.
+
+### D-035 Web app and API (Task 5)
+
+- **What:** One Flask app, started with `python -m job_market serve`: the
+  recommendation page at `/` and a JSON API (`/api/health`,
+  `/api/recommend`, `/api/similar/<row_id>`). The Task 6 dashboard will be a
+  second page of the same app, reading the pipeline tables only.
+- **Method:** the public page and API always use the evaluated winner, the
+  hybrid word + character TF-IDF (`"method": "hybrid_word_character_tfidf"`
+  in every response). There is no method switch: the methods were already
+  compared, and an unknown parameter such as `method` is rejected.
+- **Validation:** `skills` required (at most 300 characters); `days` in 7,
+  14, 30 or all; `contract` in all, hourly or fixed; `min_hourly` only with
+  `contract=hourly` and `min_budget` only with `contract=fixed`, both
+  positive. A filter that does not fit the job type is a 400 error, never
+  silently ignored. An unknown job ID is a 404.
+- **Responses:** build ID, recommender version, method, the filters applied
+  in plain words, candidate pool size, returned count, the results (title,
+  link, pay exactly as stated: "$15-$35/hr", "$30/hr", "Fixed: $500" or
+  "Rate not stated"), related market keywords or the no-keyword message, and
+  short notes on the limits. No file paths.
+- **Similar jobs:** the job itself and its possible reposts are excluded; the
+  same pool, repost and diversity rules apply; 5 results.
+- **Integrity:** at startup the app checks that the code and settings match
+  the recorded build and verifies the SHA-256 of every file it reads. It
+  does not need the raw CSV, so the same check works in Docker. The app
+  lives in its own package (`src/job_market_web`), a presentation layer that
+  calls `job_market.recommend`; editing the page does not change the analysis
+  code fingerprint.
+- **Tests:** `tests/test_web.py`: health, page, results and metadata, API
+  results identical to the Python recommender, deterministic order, both
+  filters, repost and diversity handling, every invalid request, 404s, and
+  the pay text.
+- **Limit:** Flask's built-in server is for local use; the Docker image will
+  use a production server (decided at that stage).

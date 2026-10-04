@@ -36,6 +36,9 @@ job-market = "job_market.cli:main"
 [tool.setuptools.packages.find]
 where = ["src"]
 
+[tool.setuptools.package-data]
+job_market_web = ["templates/*.html"]
+
 [tool.pytest.ini_options]
 # pythonpath lets the ordinary tests import the package from src/. The
 # notebook-execution test starts a separate Jupyter kernel, which imports the

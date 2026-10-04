@@ -510,7 +510,7 @@
     "2024-03-24"
   ],
   "fingerprints": {
-    "code_sha256": "696a17717a443637971ddbead7bd75a541cd2d83f1b75ef1169a2095b1ebb735",
+    "code_sha256": "0ed2e9981c6a0dfe5eea34cf345cf75313525deb54d171ed4e100f8f2afdaafe",
     "config_sha256": "8a4708189feab82d6754a718cc89406495cdd8654c2c927c910e329d036fa24f",
     "environment_sha256": "16395497efe48498ffe44d037ec2020318fdbc12dca3fd624ff97cdb6db099ce",
     "source_sha256": "6513e9a744f15726bdb40d6435a60834e864ace08a75e1d7feb75e10ddb78b11"
@@ -800,9 +800,9 @@
     }
   ],
   "project_version": "1.0.0",
-  "run_finished_utc": "2026-10-04T18:35:03Z",
-  "run_id": "20261004T182911Z-4b770839e4",
-  "run_started_utc": "2026-10-04T18:29:11Z",
+  "run_finished_utc": "2026-10-04T19:32:15Z",
+  "run_id": "20261004T192633Z-137994eb69",
+  "run_started_utc": "2026-10-04T19:26:33Z",
   "source": {
     "bytes": 50577682,
     "columns": [
@@ -853,7 +853,7 @@
           "sha256": "e0b856e875048ac0468bdd7783028da2603718923cb6c9b2f3439acea5746d43"
         }
       ],
-      "seconds": 5.227
+      "seconds": 5.369
     },
     {
       "description": "Clean titles, add time, pay, quality, repeat and eligibility columns; keep every raw row.",
@@ -899,7 +899,7 @@
           "sha256": "f94c6171261976f7014fa8dd56d665fa907a4ecd72af58664ec1d6dd19d3a900"
         }
       ],
-      "seconds": 12.582
+      "seconds": 11.282
     },
     {
       "description": "Give every job one job-function category: keyword rules first, a TF-IDF classifier for the rest.",
@@ -960,7 +960,7 @@
           "sha256": "a1302994d11854a7fb2fe2e12714af445c842c84d798bcbae4ea1b46ccfa51ed"
         }
       ],
-      "seconds": 157.311
+      "seconds": 173.254
     },
     {
       "description": "Score the job categories against the development and blind human labels.",
@@ -999,7 +999,7 @@
           "sha256": "6480da504e9a9b3791288f15a9cda3410226ab897fd35b6c358ca15cfe04bd77"
         }
       ],
-      "seconds": 1.421
+      "seconds": 1.243
     },
     {
       "description": "Keyword-pay associations (Task 1) and client-country hourly rates (Task 4).",
@@ -1049,7 +1049,7 @@
           "sha256": "44488f725673fa57444a8cb1ef350d188be99104acb939d8a9f5ca40c676606c"
         }
       ],
-      "seconds": 64.52
+      "seconds": 55.493
     },
     {
       "description": "Emerging categories and keywords (Task 2); geography, engagement and work-arrangement signals (Task 7).",
@@ -1121,7 +1121,7 @@
           "sha256": "bd6c801ddeae6f1182d9367d0d7f5ccfc85318d08741a8676ea43bc79e5c2a99"
         }
       ],
-      "seconds": 31.465
+      "seconds": 21.324
     },
     {
       "description": "Short-horizon demand forecasts (Tasks 3, 8) and online-hiring signal forecasts (Task 7).",
@@ -1184,7 +1184,7 @@
           "sha256": "ee5b2694cfac4e9910821b86f4352b7f6f14dff66b6d767aa8bde9dc1ae6e01d"
         }
       ],
-      "seconds": 1.901
+      "seconds": 1.211
     },
     {
       "description": "Job recommendations: index, label-free checks and the blind relevance evaluation (Task 5).",
@@ -1245,7 +1245,7 @@
           "sha256": "fbbb8aeffbf71f598bee55c09b92897808df30bc7a82f86bfd7cc62d9571022e"
         }
       ],
-      "seconds": 77.448
+      "seconds": 71.983
     }
   ],
   "taxonomy_version": "1.0"
