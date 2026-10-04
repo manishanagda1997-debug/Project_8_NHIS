@@ -1,0 +1,13 @@
+label_set,subset,system,titles,correct,accuracy,wilson_low,wilson_high
+dev,all,full,150,125,0.8333,0.7655,0.8845
+dev,all,rules_only,150,125,0.8333,0.7655,0.8845
+dev,labelled_sure,full,123,110,0.8943,0.8275,0.9372
+dev,labelled_unsure,full,27,15,0.5556,0.3731,0.7241
+dev,decided_by_rule,full,131,119,0.9084,0.8467,0.9468
+dev,predicted_not_other,full,127,115,0.9055,0.8421,0.9451
+blind,all,full,350,241,0.6886,0.6382,0.7348
+blind,all,rules_only,350,240,0.6857,0.6353,0.7321
+blind,labelled_sure,full,290,221,0.7621,0.7098,0.8075
+blind,labelled_unsure,full,60,20,0.3333,0.2273,0.4594
+blind,decided_by_rule,full,302,233,0.7715,0.7209,0.8153
+blind,predicted_not_other,full,303,234,0.7723,0.7218,0.8159

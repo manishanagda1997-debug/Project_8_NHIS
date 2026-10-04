@@ -16,6 +16,8 @@ dropdown; reading them back validates every label.
 
 from __future__ import annotations
 
+import warnings
+
 from pathlib import Path
 
 import pandas as pd
@@ -129,7 +131,12 @@ def read_label_sheet(path: Path, require_complete: bool = True) -> pd.DataFrame:
     path = Path(path)
     if not path.is_file():
         raise LabelSheetError(f"label sheet not found: {path}")
-    table = pd.read_excel(path, sheet_name="labels", dtype={"sample_id": str, "title": str, "category": str, "note": str})
+    with warnings.catch_warnings():
+        # Excel stores a dropdown that points to another tab as an "extension"
+        # that openpyxl cannot read; the values themselves are read and checked below.
+        warnings.filterwarnings("ignore", message="Data Validation extension is not supported")
+        table = pd.read_excel(path, sheet_name="labels", dtype={"sample_id": str, "title": str, "category": str, "note": str})
+    table = table.dropna(how="all")      # formatted but empty rows below the sample
     missing = [c for c in SHEET_COLUMNS if c not in table.columns]
     if missing:
         raise LabelSheetError(f"{path.name} lacks columns {missing}")

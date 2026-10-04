@@ -15,6 +15,7 @@ with a dashboard.
 | `00_build_overview` | Shows which build the notebooks use and the raw file before cleaning |
 | `01_data_audit_and_cleaning` | Audits every column, explains each cleaning rule with its evidence, and validates the master table `jobs_clean.parquet` |
 | `02_exploratory_market_analysis` | Explores market size, pay, geography, time patterns, missing-pay bias and title words before modelling |
+| `03_job_categories` | Gives every job one job-function category (rules + a guarded classifier), tunes it on 150 hand labels and reports the honest result on 350 blind labels |
 
 ## Data setup
 

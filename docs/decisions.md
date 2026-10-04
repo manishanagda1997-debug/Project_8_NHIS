@@ -479,6 +479,9 @@ check the reasoning.
     script, integration) is Software (T13/T16); regulatory filings are
     Legal, writing an article about them is Writing (T24); missing tool words
     (OpenSCAD, Apify, trim videos). Rule-assigned Other is never a weak label.
+  - *Effect on the development set:* agreement rises from 76% (114 of 150,
+    first rule set) to 83% (125 of 150) after tuning; the classifier added
+    nothing measurable on these titles at either stage.
   - *Not changed:* 15 remaining disagreements that are judgement calls
     ("Facebook verification", "AI influencer", "Practice Manager | CPA");
     special rules for single titles would turn the development set into an
@@ -519,3 +522,28 @@ check the reasoning.
   `src/job_market/steps/categorize.py`, `classifier_report.json`,
   `classifier_proxy_by_threshold.csv`, `classifier_proxy_by_category.csv`,
   `tests/test_categorize.py`, Notebook 03.
+
+### D-030 Blind result and how it is reported
+
+- **What:** After `categorizer-1.0` and the blind labels were committed and
+  tagged (`blind-labels-final`), the frozen system was scored once on the 350
+  blind titles: **241 of 350 = 68.9%** agreement (95% Wilson interval
+  63.8%-73.5%); 76.2% on titles labelled without hesitation, 33.3% on titles
+  marked unsure; rules only 68.6%. When the system names a category (not
+  Other), it agrees 77.2% of the time; it predicts Other for 13.4% of blind
+  titles where the annotator chose Other for 6.3%.
+- **Why:** The blind set is a simple random sample drawn before any tuning,
+  so it estimates agreement on the whole market. The development result
+  (83%) is optimistic because the rules were tuned on those titles.
+- **Label review:** The annotator considered a post-scoring review; under the
+  agreed rule (only data-entry slips or labelling-guide violations, made in
+  copies, original result stays primary) no change qualified, so the original
+  labels are the only labels.
+- **Consequence:** Software & IT, AI & ML, Engineering and Admin have low
+  blind recall (31-46%), mostly because their titles fall into Other; their
+  demand shares are therefore likely undercounted, and later notebooks show
+  the Other share next to every category result.
+- **Rule:** No rule, model, threshold or guard changes because of this
+  result; improvements are listed as future work.
+- **Evidence:** `steps/evaluate.py`, `label_evaluation_*.csv`, Notebook 03
+  section 8.

@@ -80,11 +80,17 @@
     }
   },
   "counts": {
+    "blind_accuracy": 0.6886,
+    "blind_labels": "scored",
+    "blind_labels_sha256": "b4a52aff32ac384a27ad299dfa238c667c68a65d80777fb272ccca9f68c30370",
     "calendar_days_with_postings": 89,
     "categorizer_version": "1.0",
     "classifier_threshold": 0.7,
     "classifier_trained": true,
     "clean_rows": 244828,
+    "dev_accuracy": 0.8333,
+    "dev_labels": "scored",
+    "dev_labels_sha256": "0c7924e2d1a8567d8ae1daf752a841129788f90cb4011aebdc46e760184560f1",
     "distinct_titles": 205289,
     "duplicate_links_non_missing": 0,
     "exact_duplicate_rows": 0,
@@ -258,7 +264,7 @@
     "2024-03-24"
   ],
   "fingerprints": {
-    "code_sha256": "a4d74443d41b1c27fabff0ad4f78cf9f101fcf4b1feedd59c64e3f1b9c90019f",
+    "code_sha256": "c44d982de7327de8d97d228239e655dac9c01d28ad7f97bfa41249da6031e288",
     "config_sha256": "0160b1a2ea306f6230cea77828f605f3fc4af70d9c1788aad23dde8b0715e03a",
     "environment_sha256": "984229d962aa79d91e494358a278b9408c261bd92cb6e0abfa2d05719164ebd7",
     "source_sha256": "6513e9a744f15726bdb40d6435a60834e864ace08a75e1d7feb75e10ddb78b11"
@@ -335,12 +341,36 @@
       "path": "data/processed/classifier_proxy_by_category.csv",
       "rows": 22,
       "sha256": "a1302994d11854a7fb2fe2e12714af445c842c84d798bcbae4ea1b46ccfa51ed"
+    },
+    {
+      "bytes": 94697,
+      "path": "data/processed/label_evaluation_items.csv",
+      "rows": 500,
+      "sha256": "2882289b5a09320014bdb037368159ff1fb04498cd6ba15b2abfcde0bb01d727"
+    },
+    {
+      "bytes": 695,
+      "path": "data/processed/label_evaluation_summary.csv",
+      "rows": 12,
+      "sha256": "0545de9e407828c6e0970d4cb251f628e1c5a1243b7f5e989078086640bf249d"
+    },
+    {
+      "bytes": 2096,
+      "path": "data/processed/label_evaluation_by_category.csv",
+      "rows": 44,
+      "sha256": "60adc6c32172f19487cdc429ecf5972b8995aaf71f88a05e3c4185c481c463a7"
+    },
+    {
+      "bytes": 5047,
+      "path": "data/processed/label_evaluation_confusion.csv",
+      "rows": 122,
+      "sha256": "6480da504e9a9b3791288f15a9cda3410226ab897fd35b6c358ca15cfe04bd77"
     }
   ],
   "project_version": "1.0.0",
-  "run_finished_utc": "2026-10-04T07:08:35Z",
-  "run_id": "20261004T070541Z-0dd674f883",
-  "run_started_utc": "2026-10-04T07:05:41Z",
+  "run_finished_utc": "2026-10-04T10:16:51Z",
+  "run_id": "20261004T101309Z-e3768b0636",
+  "run_started_utc": "2026-10-04T10:13:09Z",
   "source": {
     "bytes": 50577682,
     "columns": [
@@ -391,7 +421,7 @@
           "sha256": "e0b856e875048ac0468bdd7783028da2603718923cb6c9b2f3439acea5746d43"
         }
       ],
-      "seconds": 9.269
+      "seconds": 4.338
     },
     {
       "description": "Clean titles, add time, pay, quality, repeat and eligibility columns; keep every raw row.",
@@ -437,7 +467,7 @@
           "sha256": "f94c6171261976f7014fa8dd56d665fa907a4ecd72af58664ec1d6dd19d3a900"
         }
       ],
-      "seconds": 17.103
+      "seconds": 8.083
     },
     {
       "description": "Give every job one job-function category: keyword rules first, a TF-IDF classifier for the rest.",
@@ -498,7 +528,46 @@
           "sha256": "a1302994d11854a7fb2fe2e12714af445c842c84d798bcbae4ea1b46ccfa51ed"
         }
       ],
-      "seconds": 146.886
+      "seconds": 207.29
+    },
+    {
+      "description": "Score the job categories against the development and blind human labels.",
+      "metrics": {
+        "blind_accuracy": 0.6886,
+        "blind_labels": "scored",
+        "blind_labels_sha256": "b4a52aff32ac384a27ad299dfa238c667c68a65d80777fb272ccca9f68c30370",
+        "dev_accuracy": 0.8333,
+        "dev_labels": "scored",
+        "dev_labels_sha256": "0c7924e2d1a8567d8ae1daf752a841129788f90cb4011aebdc46e760184560f1"
+      },
+      "name": "evaluate",
+      "outputs": [
+        {
+          "bytes": 94697,
+          "path": "data/processed/label_evaluation_items.csv",
+          "rows": 500,
+          "sha256": "2882289b5a09320014bdb037368159ff1fb04498cd6ba15b2abfcde0bb01d727"
+        },
+        {
+          "bytes": 695,
+          "path": "data/processed/label_evaluation_summary.csv",
+          "rows": 12,
+          "sha256": "0545de9e407828c6e0970d4cb251f628e1c5a1243b7f5e989078086640bf249d"
+        },
+        {
+          "bytes": 2096,
+          "path": "data/processed/label_evaluation_by_category.csv",
+          "rows": 44,
+          "sha256": "60adc6c32172f19487cdc429ecf5972b8995aaf71f88a05e3c4185c481c463a7"
+        },
+        {
+          "bytes": 5047,
+          "path": "data/processed/label_evaluation_confusion.csv",
+          "rows": 122,
+          "sha256": "6480da504e9a9b3791288f15a9cda3410226ab897fd35b6c358ca15cfe04bd77"
+        }
+      ],
+      "seconds": 1.657
     }
   ],
   "taxonomy_version": "1.0"
