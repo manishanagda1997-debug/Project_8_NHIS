@@ -653,3 +653,54 @@ check the reasoning.
   total jobs the seasonal baseline beat the other models in the final window.
 - **Evidence:** `src/job_market/forecast.py`, `steps/forecast.py`,
   `tests/test_forecast.py`, `forecast_*.csv`, Notebook 06.
+
+### D-034 Job recommendations and the pooled blind relevance evaluation (Task 5)
+
+- **What:** A freelancer types skills; the engine returns the 10 best-matching
+  jobs from the final 14 observed days (the default; the app also offers 7,
+  30 days or all). Three methods are compared, simplest first: a keyword
+  count (profile words found in the title as whole words), word TF-IDF
+  (single words and two-word phrases without stop words) and a hybrid of word
+  and character TF-IDF (3-5 character pieces), averaged 50/50. The
+  vectorizers are fitted on every title in the 37-day window. Sentence
+  embeddings are left for future work: they add a large model dependency and
+  are harder to explain, and the brief asks for scikit-learn.
+- **Same treatment for every method:** the same pool; only the newest posting
+  of each possible-repost chain (same title key, country and exact pay terms
+  within 3 days; D-016) is kept; at most one result per title key unless too
+  few different matches exist; only positive scores; ties go to the newer job.
+- **Filters:** strict. Minimum hourly rate: a job passes when the maximum of
+  the client's stated hourly range is at least the freelancer's minimum
+  ($15-$35 passes a $30 minimum; $15-$25 does not); a job stating one rate
+  uses it; jobs without a rate fail; fixed-price budgets are never compared
+  with hourly rates. A minimum budget applies to fixed-price jobs only.
+- **Evaluation:** 12 profiles written without looking at job titles and
+  approved on 4 October 2026 before any result existed (they cover 12
+  representative kinds of work, not every category). Each method's top 5
+  per profile, without filters, is pooled by (profile, title key), shuffled
+  within each profile and judged blind on the title only: 2 relevant, 1
+  partly relevant, 0 not relevant. This is a pooled blind relevance
+  evaluation of title-level relevance, not of whole-job suitability.
+  `python -m job_market make-relevance-sheet` writes the sheet once and
+  refuses to overwrite it. No file links a method to a job until the sheet
+  is complete.
+- **Winner rule (frozen before labelling):** highest mean graded nDCG@5
+  (gain 2^label - 1; the ideal ranking comes from the judged pool of that
+  profile; missing positions count as 0). Differences below 0.02 are
+  effectively tied; then strict Precision@5 (only label 2 counts); then the
+  simpler method. Results are reported per profile too.
+- **Label-free checks:** for every profile, method and filter scenario
+  (none; hourly minimum $30 and $50; fixed minimum $500): result counts
+  (coverage and zero-result rate), distinct titles, filter violations and
+  results outside the pool.
+- **Related market keywords to explore:** terms from the Notebook 04 pay table
+  and the Notebook 05 trend table that appear in at least 3 of the profile's
+  50 best-matching titles, are not already in the profile, and have a
+  positive same-country-and-category pay association or a rising share (FDR
+  q < 0.05). Worded as associations, never as advice to learn a skill.
+- **Similar jobs:** a job's title is the query; the job itself is excluded and
+  the same pool, repost and diversity rules apply. Checked with tests and
+  examples, without a separate labelled evaluation.
+- **Evidence:** `src/job_market/recommend.py`, `steps/recommend.py`,
+  `labels.py`, `tests/test_recommend.py`, `recommend_*.csv`,
+  `data/labels/relevance_labels.xlsx`, Notebook 07.

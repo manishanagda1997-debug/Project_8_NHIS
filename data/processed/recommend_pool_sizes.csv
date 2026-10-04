@@ -1,0 +1,5 @@
+pool_days,label,jobs,jobs_after_reposts
+7,last 7 days,42587,41201
+14,last 14 days,85635,82565
+30,last 30 days,185233,178168
+0,all,229520,220789

@@ -6,6 +6,7 @@
     python -m job_market check-notebooks  notebook check only (needs the manifest, not the raw data)
     python -m job_market verify           rebuild, run notebooks, then the lineage check
     python -m job_market make-label-sheets  draw the blind and development samples as Excel sheets (once)
+    python -m job_market make-relevance-sheet  write the blinded recommendation relevance sheet (once)
 
 Every command exits with code 0 on success and 1 on failure, so the same
 commands work in a terminal, in Docker and in continuous integration.
@@ -41,6 +42,7 @@ def main(argv: list[str] | None = None) -> int:
         cmd = sub.add_parser(name, help=text)
         cmd.add_argument("-v", "--verbose", action="store_true", help="also list passing checks")
     sub.add_parser("make-label-sheets", help="draw the label samples and write the Excel sheets (refuses to overwrite)")
+    sub.add_parser("make-relevance-sheet", help="write the blinded relevance sheet for the recommender (refuses to overwrite)")
     args = parser.parse_args(argv)
 
     settings = load_settings()
@@ -82,6 +84,19 @@ def main(argv: list[str] | None = None) -> int:
         for sample, name in [(dev, "dev_labels.xlsx"), (blind, "blind_labels.xlsx")]:
             path = write_label_sheet(sample, folder / name)
             print(f"wrote {settings.relative(path)}: {len(sample)} titles")
+        return 0
+    if args.command == "make-relevance-sheet":
+        from .labels import write_relevance_sheet
+        from .notebook import start
+        from .recommend import build_index
+        from .steps.recommend import RELEVANCE_SHEET, evaluation_results, relevance_items
+
+        project = start(verbose=False)
+        rules = settings.section("recommend")
+        index = build_index(project.read_parquet("recommend_jobs.parquet"), rules)
+        items = relevance_items(evaluation_results(index, rules), int(rules["sheet_seed"]))
+        path = write_relevance_sheet(items, rules["profiles"], settings.path("labels_dir") / RELEVANCE_SHEET)
+        print(f"wrote {settings.relative(path)}: {len(items)} titles to judge for {items['profile_id'].nunique()} profiles")
         return 0
     parser.error(f"unknown command {args.command}")
     return 2

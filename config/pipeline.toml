@@ -169,3 +169,109 @@ range_lower = 0.1
 range_upper = 0.9
 # A share change below this (percentage points) is called "stable".
 stable_change_pp = 0.1
+
+[recommend]
+# Job recommendations (decision D-034). Frozen on 4 October 2026, before any
+# retrieval result was generated or seen. Changing any value after the
+# relevance labels exist invalidates the evaluation.
+recommender_version = "1.0"
+# Candidate pool: jobs posted in the final N observed days of the time-series
+# window (the evaluation uses 14; the app also offers 7, 30 and "all").
+pool_days = 14
+pool_day_options = [7, 14, 30, 0]          # 0 = all available days
+results = 10
+eval_top_k = 5
+# Methods in order of complexity (simplest first; a full tie goes to the simpler).
+methods = ["keyword", "tfidf_word", "tfidf_hybrid"]
+# Word TF-IDF: single words and two-word phrases without stop words, built from
+# title keys; a term must appear in at least this many indexed titles.
+word_min_df = 2
+# Character TF-IDF: 3-5 character pieces inside word boundaries.
+char_ngram_min = 3
+char_ngram_max = 5
+char_min_df = 2
+# Hybrid score = weight x word similarity + (1 - weight) x character similarity.
+hybrid_word_weight = 0.5
+# Winner rule: highest mean graded nDCG@5 (gains 2/1/0). Differences below
+# this are "effectively tied"; then strict Precision@5 (only label 2 counts);
+# then the simpler method.
+tie_threshold = 0.02
+# Shuffling the blinded relevance sheet.
+sheet_seed = 20261004
+# Related market keywords to explore: terms from Notebook 04/05 that appear in
+# at least this many of the profile's top matching jobs.
+related_top_jobs = 50
+related_min_jobs = 3
+related_max_terms = 5
+related_max_q = 0.05
+# Filter scenarios for the coverage and filter checks (no filters during the
+# relevance evaluation).
+check_scenarios = [
+    { name = "no_filter" },
+    { name = "hourly_min_30", contract = "hourly", min_hourly = 30.0 },
+    { name = "hourly_min_50", contract = "hourly", min_hourly = 50.0 },
+    { name = "fixed_min_500", contract = "fixed", min_budget = 500.0 },
+]
+
+# The 12 evaluation profiles, written from general knowledge without looking
+# at any job titles, and approved before any result existed. The evaluation
+# covers 12 representative profiles; it does not measure every category.
+[[recommend.profiles]]
+id = "P01"
+name = "Data analyst"
+skills = "python, pandas, sql, data analysis, power bi dashboards"
+
+[[recommend.profiles]]
+id = "P02"
+name = "WordPress developer"
+skills = "wordpress, elementor, php, website customization"
+
+[[recommend.profiles]]
+id = "P03"
+name = "Mobile app developer"
+skills = "flutter, dart, android, ios app development"
+
+[[recommend.profiles]]
+id = "P04"
+name = "AI engineer"
+skills = "machine learning, llm, chatgpt api, chatbot development, python"
+
+[[recommend.profiles]]
+id = "P05"
+name = "Brand designer"
+skills = "logo design, brand identity, adobe illustrator"
+
+[[recommend.profiles]]
+id = "P06"
+name = "Video editor"
+skills = "video editing, youtube videos, premiere pro, reels"
+
+[[recommend.profiles]]
+id = "P07"
+name = "Content writer"
+skills = "blog writing, article writing, copywriting, ghostwriting"
+
+[[recommend.profiles]]
+id = "P08"
+name = "Digital marketer"
+skills = "seo, google ads, facebook ads, social media marketing"
+
+[[recommend.profiles]]
+id = "P09"
+name = "Virtual assistant"
+skills = "virtual assistant, data entry, email management, admin support"
+
+[[recommend.profiles]]
+id = "P10"
+name = "Spanish translator"
+skills = "spanish translation, english to spanish, spanish transcription"
+
+[[recommend.profiles]]
+id = "P11"
+name = "Bookkeeper"
+skills = "bookkeeping, quickbooks, xero, accounting"
+
+[[recommend.profiles]]
+id = "P12"
+name = "E-commerce store assistant"
+skills = "shopify, ecommerce store, product listing, order management, store management"

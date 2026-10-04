@@ -83,6 +83,116 @@
       "name": "job-market-analysis",
       "random_seed": 42
     },
+    "recommend": {
+      "char_min_df": 2,
+      "char_ngram_max": 5,
+      "char_ngram_min": 3,
+      "check_scenarios": [
+        {
+          "name": "no_filter"
+        },
+        {
+          "contract": "hourly",
+          "min_hourly": 30.0,
+          "name": "hourly_min_30"
+        },
+        {
+          "contract": "hourly",
+          "min_hourly": 50.0,
+          "name": "hourly_min_50"
+        },
+        {
+          "contract": "fixed",
+          "min_budget": 500.0,
+          "name": "fixed_min_500"
+        }
+      ],
+      "eval_top_k": 5,
+      "hybrid_word_weight": 0.5,
+      "methods": [
+        "keyword",
+        "tfidf_word",
+        "tfidf_hybrid"
+      ],
+      "pool_day_options": [
+        7,
+        14,
+        30,
+        0
+      ],
+      "pool_days": 14,
+      "profiles": [
+        {
+          "id": "P01",
+          "name": "Data analyst",
+          "skills": "python, pandas, sql, data analysis, power bi dashboards"
+        },
+        {
+          "id": "P02",
+          "name": "WordPress developer",
+          "skills": "wordpress, elementor, php, website customization"
+        },
+        {
+          "id": "P03",
+          "name": "Mobile app developer",
+          "skills": "flutter, dart, android, ios app development"
+        },
+        {
+          "id": "P04",
+          "name": "AI engineer",
+          "skills": "machine learning, llm, chatgpt api, chatbot development, python"
+        },
+        {
+          "id": "P05",
+          "name": "Brand designer",
+          "skills": "logo design, brand identity, adobe illustrator"
+        },
+        {
+          "id": "P06",
+          "name": "Video editor",
+          "skills": "video editing, youtube videos, premiere pro, reels"
+        },
+        {
+          "id": "P07",
+          "name": "Content writer",
+          "skills": "blog writing, article writing, copywriting, ghostwriting"
+        },
+        {
+          "id": "P08",
+          "name": "Digital marketer",
+          "skills": "seo, google ads, facebook ads, social media marketing"
+        },
+        {
+          "id": "P09",
+          "name": "Virtual assistant",
+          "skills": "virtual assistant, data entry, email management, admin support"
+        },
+        {
+          "id": "P10",
+          "name": "Spanish translator",
+          "skills": "spanish translation, english to spanish, spanish transcription"
+        },
+        {
+          "id": "P11",
+          "name": "Bookkeeper",
+          "skills": "bookkeeping, quickbooks, xero, accounting"
+        },
+        {
+          "id": "P12",
+          "name": "E-commerce store assistant",
+          "skills": "shopify, ecommerce store, product listing, order management, store management"
+        }
+      ],
+      "recommender_version": "1.0",
+      "related_max_q": 0.05,
+      "related_max_terms": 5,
+      "related_min_jobs": 3,
+      "related_top_jobs": 50,
+      "results": 10,
+      "sheet_seed": 20261004,
+      "tie_threshold": 0.02,
+      "word_min_df": 2
+    },
     "schema": {
       "required_columns": [
         "title",
@@ -171,6 +281,12 @@
     "proxy_title_keys_shared_with_training": 0,
     "raw_columns": 8,
     "raw_rows": 244828,
+    "recommend_filter_violations": 0,
+    "recommend_indexed_jobs": 229520,
+    "recommend_pool_jobs": 82565,
+    "recommend_zero_result_cases": 0,
+    "recommender_version": "1.0",
+    "relevance_labels": "missing",
     "share_below_threshold": 0.0936,
     "share_fallback_blocked": 0.0041,
     "share_no_text": 0.0,
@@ -322,8 +438,8 @@
     "2024-03-24"
   ],
   "fingerprints": {
-    "code_sha256": "59f7d00b2a07ebd42561f1fbcb711cca714a6d6f84c47bab0554b9212af2ee7f",
-    "config_sha256": "fea6d6fb72f6e083cd17d6b33ed7aca91d55d42d1dc289824e8046d3180febed",
+    "code_sha256": "fbef31546a0a6ff34f6677e2fcc7cacec0e853ed34f24e81dd0c1f9eed639902",
+    "config_sha256": "9d7b83bb238a078221ec867a3558e6da42a3f01b5b89e652f818e4da4d4679fb",
     "environment_sha256": "16395497efe48498ffe44d037ec2020318fdbc12dca3fd624ff97cdb6db099ce",
     "source_sha256": "6513e9a744f15726bdb40d6435a60834e864ace08a75e1d7feb75e10ddb78b11"
   },
@@ -567,12 +683,48 @@
       "path": "data/processed/forecast_signals_outlook.csv",
       "rows": 3,
       "sha256": "ee5b2694cfac4e9910821b86f4352b7f6f14dff66b6d767aa8bde9dc1ae6e01d"
+    },
+    {
+      "bytes": 27337700,
+      "path": "data/processed/recommend_jobs.parquet",
+      "rows": 229520,
+      "sha256": "8e04beaeba27bde7d08b8202331983406b910c8ebdf78bd1303b937d55007003"
+    },
+    {
+      "bytes": 9340,
+      "path": "data/processed/recommend_checks.csv",
+      "rows": 144,
+      "sha256": "9e82d7801fa2c2975efd3be122565efa51a50bd3ea37af438894d77533b7c562"
+    },
+    {
+      "bytes": 144,
+      "path": "data/processed/recommend_pool_sizes.csv",
+      "rows": 4,
+      "sha256": "00594fd7b69835872c8036b8bbd5ebe09e24d78c43a2a3992a591471e9a99ebc"
+    },
+    {
+      "bytes": 56,
+      "path": "data/processed/recommend_relevance_items.csv",
+      "rows": 0,
+      "sha256": "91554016a850e3dacfe2a5d0e3f612ae0c0b0b1cbcca677ce7f911f73e385260"
+    },
+    {
+      "bytes": 18,
+      "path": "data/processed/recommend_relevance_by_profile.csv",
+      "rows": 0,
+      "sha256": "8b4e742d3b1681d0191b57a460cae44ab9d34fc4bbd7b9eee7dfaea442d8feae"
+    },
+    {
+      "bytes": 7,
+      "path": "data/processed/recommend_relevance_summary.csv",
+      "rows": 0,
+      "sha256": "9267048380ff1914ceccf8b22a01c81a525e3f49997ef5790e02b6267919f4ca"
     }
   ],
   "project_version": "1.0.0",
-  "run_finished_utc": "2026-10-04T12:32:01Z",
-  "run_id": "20261004T122311Z-98262faf0c",
-  "run_started_utc": "2026-10-04T12:23:11Z",
+  "run_finished_utc": "2026-10-04T13:08:36Z",
+  "run_id": "20261004T130021Z-5894edd8d2",
+  "run_started_utc": "2026-10-04T13:00:21Z",
   "source": {
     "bytes": 50577682,
     "columns": [
@@ -623,7 +775,7 @@
           "sha256": "e0b856e875048ac0468bdd7783028da2603718923cb6c9b2f3439acea5746d43"
         }
       ],
-      "seconds": 5.619
+      "seconds": 3.671
     },
     {
       "description": "Clean titles, add time, pay, quality, repeat and eligibility columns; keep every raw row.",
@@ -669,7 +821,7 @@
           "sha256": "f94c6171261976f7014fa8dd56d665fa907a4ecd72af58664ec1d6dd19d3a900"
         }
       ],
-      "seconds": 22.173
+      "seconds": 11.012
     },
     {
       "description": "Give every job one job-function category: keyword rules first, a TF-IDF classifier for the rest.",
@@ -730,7 +882,7 @@
           "sha256": "a1302994d11854a7fb2fe2e12714af445c842c84d798bcbae4ea1b46ccfa51ed"
         }
       ],
-      "seconds": 327.593
+      "seconds": 191.375
     },
     {
       "description": "Score the job categories against the development and blind human labels.",
@@ -769,7 +921,7 @@
           "sha256": "6480da504e9a9b3791288f15a9cda3410226ab897fd35b6c358ca15cfe04bd77"
         }
       ],
-      "seconds": 1.669
+      "seconds": 2.801
     },
     {
       "description": "Keyword-pay associations (Task 1) and client-country hourly rates (Task 4).",
@@ -819,7 +971,7 @@
           "sha256": "44488f725673fa57444a8cb1ef350d188be99104acb939d8a9f5ca40c676606c"
         }
       ],
-      "seconds": 117.693
+      "seconds": 119.998
     },
     {
       "description": "Emerging categories and keywords (Task 2); geography, engagement and work-arrangement signals (Task 7).",
@@ -891,7 +1043,7 @@
           "sha256": "bd6c801ddeae6f1182d9367d0d7f5ccfc85318d08741a8676ea43bc79e5c2a99"
         }
       ],
-      "seconds": 52.21
+      "seconds": 59.896
     },
     {
       "description": "Short-horizon demand forecasts (Tasks 3, 8) and online-hiring signal forecasts (Task 7).",
@@ -954,7 +1106,58 @@
           "sha256": "ee5b2694cfac4e9910821b86f4352b7f6f14dff66b6d767aa8bde9dc1ae6e01d"
         }
       ],
-      "seconds": 3.237
+      "seconds": 3.348
+    },
+    {
+      "description": "Job recommendations: index, label-free checks and the blind relevance evaluation (Task 5).",
+      "metrics": {
+        "recommend_filter_violations": 0,
+        "recommend_indexed_jobs": 229520,
+        "recommend_pool_jobs": 82565,
+        "recommend_zero_result_cases": 0,
+        "recommender_version": "1.0",
+        "relevance_labels": "missing"
+      },
+      "name": "recommend",
+      "outputs": [
+        {
+          "bytes": 27337700,
+          "path": "data/processed/recommend_jobs.parquet",
+          "rows": 229520,
+          "sha256": "8e04beaeba27bde7d08b8202331983406b910c8ebdf78bd1303b937d55007003"
+        },
+        {
+          "bytes": 9340,
+          "path": "data/processed/recommend_checks.csv",
+          "rows": 144,
+          "sha256": "9e82d7801fa2c2975efd3be122565efa51a50bd3ea37af438894d77533b7c562"
+        },
+        {
+          "bytes": 144,
+          "path": "data/processed/recommend_pool_sizes.csv",
+          "rows": 4,
+          "sha256": "00594fd7b69835872c8036b8bbd5ebe09e24d78c43a2a3992a591471e9a99ebc"
+        },
+        {
+          "bytes": 56,
+          "path": "data/processed/recommend_relevance_items.csv",
+          "rows": 0,
+          "sha256": "91554016a850e3dacfe2a5d0e3f612ae0c0b0b1cbcca677ce7f911f73e385260"
+        },
+        {
+          "bytes": 18,
+          "path": "data/processed/recommend_relevance_by_profile.csv",
+          "rows": 0,
+          "sha256": "8b4e742d3b1681d0191b57a460cae44ab9d34fc4bbd7b9eee7dfaea442d8feae"
+        },
+        {
+          "bytes": 7,
+          "path": "data/processed/recommend_relevance_summary.csv",
+          "rows": 0,
+          "sha256": "9267048380ff1914ceccf8b22a01c81a525e3f49997ef5790e02b6267919f4ca"
+        }
+      ],
+      "seconds": 102.934
     }
   ],
   "taxonomy_version": "1.0"

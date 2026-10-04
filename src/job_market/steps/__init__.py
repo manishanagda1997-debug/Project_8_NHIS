@@ -5,8 +5,8 @@ Each step module exposes ``NAME``, ``DESCRIPTION`` and ``run(settings, context)`
 metrics. Later stages of the project add their steps to ``STEPS``.
 """
 
-from . import categorize, clean, evaluate, forecast, ingest, pay, trends
+from . import categorize, clean, evaluate, forecast, ingest, pay, recommend, trends
 
-STEPS = (ingest, clean, categorize, evaluate, pay, trends, forecast)
+STEPS = (ingest, clean, categorize, evaluate, pay, trends, forecast, recommend)
 
 __all__ = ["STEPS"]

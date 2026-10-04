@@ -152,3 +152,92 @@ def read_label_sheet(path: Path, require_complete: bool = True) -> pd.DataFrame:
     table["unsure"] = table["unsure"].astype(str).str.strip().str.lower().eq("yes")
     table["row_id"] = table["row_id"].astype("int64")
     return table[SHEET_COLUMNS]
+
+
+# ------------------------------------------------- recommendation relevance
+
+RELEVANCE_COLUMNS = ["item_id", "profile_id", "title", "relevance", "note", "title_key"]
+RELEVANCE_GUIDE = (
+    ("2", "Relevant", "This freelancer could do the main work of this job with the skills listed."),
+    ("1", "Partly relevant", "The job uses some of their skills, but the main work needs a different skill, "
+                             "or the title is too vague to be sure."),
+    ("0", "Not relevant", "The job does not fit this freelancer's skills."),
+)
+
+
+def write_relevance_sheet(items: pd.DataFrame, profiles: list[dict], path: Path) -> Path:
+    """Write the blinded relevance sheet (decision D-034).
+
+    One row per (profile, title key) found by any method, shuffled within each
+    profile. The sheet shows only the profile and the title: no method, rank,
+    score, pay, country or date. ``title_key`` is a hidden matching column.
+    """
+    from openpyxl import Workbook
+    from openpyxl.styles import Alignment, Font, PatternFill
+    from openpyxl.worksheet.datavalidation import DataValidation
+
+    path = Path(path)
+    if path.exists():
+        raise FileExistsError(f"{path} already exists; it may contain judgements. Move it away first if you really want a new sheet.")
+    path.parent.mkdir(parents=True, exist_ok=True)
+    book = Workbook()
+    sheet = book.active
+    sheet.title = "relevance"
+    sheet.append(RELEVANCE_COLUMNS)
+    for row in items.itertuples(index=False):
+        sheet.append([row.item_id, row.profile_id, row.title, None, None, row.title_key])
+
+    guide = book.create_sheet("guide")
+    guide.append(["profile_id", "profile", "skills typed in"])
+    for profile in profiles:
+        guide.append([profile["id"], profile["name"], profile["skills"]])
+    guide.append([])
+    guide.append(["relevance", "meaning", "rule"])
+    for entry in RELEVANCE_GUIDE:
+        guide.append(list(entry))
+    guide.append([])
+    guide.append(["note", "Judge the title only (title-level relevance), against the profile's skills. "
+                          "The same title can appear under several profiles; judge it for each profile separately."])
+
+    last = len(items) + 1
+    choice = DataValidation(type="list", formula1='"2,1,0"', allow_blank=True)
+    choice.error = "Choose 2 (relevant), 1 (partly relevant) or 0 (not relevant)."
+    sheet.add_data_validation(choice)
+    choice.add(f"D2:D{last}")
+    header_fill = PatternFill("solid", fgColor="DDE7F5")
+    for ws, widths in [(sheet, [9, 10, 80, 11, 40, 30]), (guide, [12, 28, 100])]:
+        for cell in ws[1]:
+            cell.font = Font(bold=True)
+            cell.fill = header_fill
+        for index, width in enumerate(widths):
+            ws.column_dimensions[chr(ord("A") + index)].width = width
+        ws.freeze_panes = "A2"
+    sheet.column_dimensions["F"].hidden = True
+    for row in sheet.iter_rows(min_row=2, min_col=3, max_col=3):
+        row[0].alignment = Alignment(wrap_text=True, vertical="top")
+    book.save(path)
+    return path
+
+
+def read_relevance_sheet(path: Path, require_complete: bool = True) -> pd.DataFrame:
+    """Read and validate the relevance sheet: every judgement must be 0, 1 or 2."""
+    path = Path(path)
+    if not path.is_file():
+        raise LabelSheetError(f"relevance sheet not found: {path}")
+    table = pd.read_excel(path, sheet_name="relevance", dtype={"item_id": str, "profile_id": str, "title": str,
+                                                                 "note": str, "title_key": str})
+    table = table.dropna(how="all")
+    missing = [c for c in RELEVANCE_COLUMNS if c not in table.columns]
+    if missing:
+        raise LabelSheetError(f"{path.name} lacks columns {missing}")
+    values = pd.to_numeric(table["relevance"], errors="coerce")
+    bad = table.loc[table["relevance"].notna() & ~values.isin([0, 1, 2]), "item_id"].tolist()
+    if bad:
+        raise LabelSheetError(f"{path.name} has invalid relevance values (use 0, 1 or 2), e.g. {bad[:5]}")
+    if require_complete and values.isna().any():
+        empty = table.loc[values.isna(), "item_id"].tolist()
+        raise LabelSheetError(f"{path.name} has {len(empty)} unjudged rows, e.g. {empty[:5]}")
+    if table.duplicated(["profile_id", "title_key"]).any() or table["item_id"].duplicated().any():
+        raise LabelSheetError(f"{path.name} has duplicate items")
+    table["relevance"] = values
+    return table[RELEVANCE_COLUMNS]
