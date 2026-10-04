@@ -547,3 +547,35 @@ check the reasoning.
   result; improvements are listed as future work.
 - **Evidence:** `steps/evaluate.py`, `label_evaluation_*.csv`, Notebook 03
   section 8.
+
+### D-031 Pay analysis: three-layer keyword associations and client-country rates
+
+- **What:** Hourly pay is the midpoint of a complete hourly range; fixed-price
+  budgets are analysed separately. Models use log pay and report
+  `(exp(b) - 1) x 100` percent. `country` is the **client's** country.
+  Keywords are words and two-word phrases of `title_key` (binary presence per
+  job), tested when they have at least 300 rated jobs **and** 100 distinct
+  title keys; a word is dropped when 80% or more of its jobs also contain a
+  kept phrase with it. Each keyword is measured in three layers (raw, same
+  client country, same country + assigned category) by a within-group
+  regression with standard errors clustered by `title_key`, and p-values
+  adjusted with Benjamini-Hochberg across all tested keywords. Countries need
+  30 rated jobs (D-020); each gets a median with a cluster-bootstrap interval
+  and a category-adjusted index relative to the job-weighted average client.
+  Explanatory power is measured on a 20% test split grouped by `title_key`
+  (median baseline, country + category, plus title words). Sensitivity:
+  without extreme rates, without possible reposts, low end and high end of
+  the range.
+- **Why:** Raw keyword differences mix the keyword with who posts it and what
+  kind of job it is. The category is derived from the title, so the
+  country + category layer partly removes the title signal itself; it is
+  shown next to the other two layers, never as the single correct answer.
+  Clustering by title stops repeated postings from counting as independent
+  evidence; the FDR adjustment controls false discoveries among 322 tests.
+- **Limit:** Associations, not causes; pay is what clients offer, not what
+  freelancers earn. Title words explain about a quarter of the variation in
+  log hourly pay. Category controls inherit the Other-heavy weakness of D-030.
+  Rates cluster at round numbers, so median intervals can collapse to one
+  value, and low-end rankings of mid-sized countries are unstable.
+- **Evidence:** `src/job_market/pay.py`, `steps/pay.py`, `tests/test_pay.py`,
+  `pay_*.csv`, Notebook 04.

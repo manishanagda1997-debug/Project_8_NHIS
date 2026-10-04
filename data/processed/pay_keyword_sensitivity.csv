@@ -1,0 +1,3221 @@
+keyword,jobs,variant,layer,pct
+2,434,primary,raw,3.344162
+3d,845,primary,raw,8.751751
+account,738,primary,raw,-22.005253
+accountant,443,primary,raw,-0.782769
+accounting,351,primary,raw,-10.446907
+accounts,356,primary,raw,-44.418875
+ad,947,primary,raw,1.701331
+admin,473,primary,raw,-40.527285
+administrative,321,primary,raw,-33.630567
+ads,2688,primary,raw,17.96087
+ads expert,371,primary,raw,28.705321
+advertising,372,primary,raw,14.585073
+agency,1149,primary,raw,-16.460171
+agent,490,primary,raw,-22.661459
+ai,1700,primary,raw,19.380038
+amazon,979,primary,raw,-22.42622
+analysis,463,primary,raw,23.289439
+analyst,647,primary,raw,20.198898
+analytics,410,primary,raw,44.602061
+android,364,primary,raw,12.1122
+animation,432,primary,raw,14.254291
+api,843,primary,raw,21.581205
+app,2586,primary,raw,12.293458
+app developer,305,primary,raw,11.429886
+application,816,primary,raw,14.762003
+appointment,726,primary,raw,-52.507796
+appointment setter,550,primary,raw,-51.041315
+architect,326,primary,raw,56.787615
+artist,558,primary,raw,23.980218
+assistance,552,primary,raw,0.650546
+assistant,3860,primary,raw,-56.015647
+audio,321,primary,raw,-4.503867
+automation,828,primary,raw,15.483893
+aws,449,primary,raw,40.981424
+b2b,568,primary,raw,-10.09688
+backend,402,primary,raw,23.638187
+based,883,primary,raw,8.379801
+blockchain,345,primary,raw,73.749796
+blog,537,primary,raw,-9.472378
+book,670,primary,raw,3.474815
+bookkeeper,530,primary,raw,-27.640774
+brand,1432,primary,raw,14.613765
+branding,309,primary,raw,24.442616
+build,1650,primary,raw,15.606685
+builder,445,primary,raw,-16.84836
+building,504,primary,raw,-13.608259
+business,2530,primary,raw,5.76245
+buyer,308,primary,raw,-5.783599
+call,443,primary,raw,-38.910708
+calling,383,primary,raw,-50.567254
+campaign,660,primary,raw,13.74491
+can,593,primary,raw,33.329487
+canva,302,primary,raw,-31.597138
+channel,793,primary,raw,4.395529
+client,339,primary,raw,-17.421217
+cloud,309,primary,raw,40.368304
+code,423,primary,raw,15.833314
+cold,962,primary,raw,-50.547685
+cold caller,317,primary,raw,-59.055649
+cold calling,304,primary,raw,-52.292864
+com,318,primary,raw,4.842337
+company,1835,primary,raw,4.602609
+construction,339,primary,raw,22.345729
+consultant,885,primary,raw,84.4961
+consultation,325,primary,raw,106.966589
+content,3048,primary,raw,-15.232473
+content creator,670,primary,raw,-27.245773
+content writer,501,primary,raw,-3.380422
+contract,371,primary,raw,63.891557
+conversion,392,primary,raw,34.259897
+coordinator,339,primary,raw,-32.2557
+copy,836,primary,raw,-23.470851
+copywriter,607,primary,raw,27.699451
+course,369,primary,raw,2.317569
+create,2065,primary,raw,7.761345
+creation,1139,primary,raw,-10.491005
+creative,754,primary,raw,0.535773
+creator,1232,primary,raw,-20.68291
+crm,535,primary,raw,5.88866
+crypto,404,primary,raw,27.713045
+custom,695,primary,raw,28.80881
+customer,1029,primary,raw,-45.106621
+customer service,492,primary,raw,-56.267133
+data,3032,primary,raw,-23.910383
+data entry,769,primary,raw,-51.711123
+database,357,primary,raw,13.486125
+de,498,primary,raw,-15.028429
+design,4583,primary,raw,14.775956
+designer,5603,primary,raw,7.928502
+dev,311,primary,raw,12.07167
+develop,306,primary,raw,25.823398
+developer,7572,primary,raw,13.651443
+development,2493,primary,raw,11.004286
+different,327,primary,raw,-43.209624
+digital,1325,primary,raw,-8.718798
+digital marketing,657,primary,raw,-11.877331
+document,380,primary,raw,26.740034
+e,1093,primary,raw,-3.355702
+e commerce,800,primary,raw,-5.832326
+ecommerce,657,primary,raw,-5.853729
+edit,414,primary,raw,-2.735196
+editing,1019,primary,raw,-12.196334
+editor,3052,primary,raw,-16.093447
+email,1752,primary,raw,-7.018664
+email marketing,526,primary,raw,1.953077
+end,637,primary,raw,16.563884
+engineer,1509,primary,raw,38.121071
+english,1512,primary,raw,-29.796296
+event,401,primary,raw,32.640464
+excel,959,primary,raw,-28.981367
+executive,539,primary,raw,-36.853504
+existing,495,primary,raw,14.134949
+experience,1385,primary,raw,5.616517
+experienced,1851,primary,raw,2.180567
+expert,7041,primary,raw,14.630626
+expertise,366,primary,raw,22.204349
+facebook,1791,primary,raw,9.166952
+facebook ads,663,primary,raw,22.555314
+figma,558,primary,raw,7.765791
+file,410,primary,raw,14.115973
+financial,553,primary,raw,65.429328
+fix,481,primary,raw,14.463788
+flutter,303,primary,raw,-5.868698
+form,564,primary,raw,-11.76241
+freelance,457,primary,raw,-0.635072
+freelancer,300,primary,raw,8.764273
+french,324,primary,raw,-21.909408
+front end,427,primary,raw,10.845655
+full stack,1160,primary,raw,15.597461
+full time,406,primary,raw,-38.598462
+game,535,primary,raw,21.661942
+german,409,primary,raw,-8.172239
+google,2751,primary,raw,10.32122
+google ads,919,primary,raw,18.340842
+graphic design,405,primary,raw,-3.928602
+graphic designer,1792,primary,raw,-2.420479
+graphics,329,primary,raw,6.159205
+growth,769,primary,raw,-24.012999
+health,353,primary,raw,8.462135
+help,2180,primary,raw,17.775283
+high,618,primary,raw,2.420028
+hiring,300,primary,raw,-14.181563
+home,375,primary,raw,-2.528603
+hubspot,404,primary,raw,37.42525
+illustrator,320,primary,raw,6.780227
+image,412,primary,raw,-6.789429
+implementation,305,primary,raw,38.094751
+instagram,996,primary,raw,-31.092533
+integration,975,primary,raw,25.516863
+into,650,primary,raw,-19.088972
+ios,410,primary,raw,16.069938
+it,649,primary,raw,-15.478105
+job,789,primary,raw,-2.974789
+join,326,primary,raw,-4.059749
+js,742,primary,raw,7.212947
+landing page,525,primary,raw,13.331967
+lead,1481,primary,raw,-46.892325
+lead generation,881,primary,raw,-53.717658
+leads,309,primary,raw,-51.004928
+legal,413,primary,raw,67.372635
+level,399,primary,raw,-5.400206
+linkedin,672,primary,raw,-24.717227
+list,446,primary,raw,-49.345267
+logo,1466,primary,raw,19.234528
+logo design,394,primary,raw,24.591067
+long term,601,primary,raw,-22.344454
+make,519,primary,raw,14.124389
+management,1493,primary,raw,-15.808833
+manager,3879,primary,raw,-20.693266
+market,531,primary,raw,1.864434
+marketer,376,primary,raw,-12.409246
+marketing,4323,primary,raw,-5.822431
+marketing agency,342,primary,raw,-15.071977
+marketing expert,316,primary,raw,4.110902
+marketing specialist,456,primary,raw,-8.406063
+me,485,primary,raw,1.74379
+media content,347,primary,raw,-24.144937
+media manager,902,primary,raw,-33.980361
+media marketing,401,primary,raw,-31.353752
+medical,383,primary,raw,-9.468577
+meta,428,primary,raw,20.342456
+microsoft,401,primary,raw,51.217436
+mobile,994,primary,raw,17.038926
+mobile app,479,primary,raw,14.444973
+model,438,primary,raw,34.217599
+native,632,primary,raw,-6.683606
+net,324,primary,raw,18.843901
+new,1193,primary,raw,19.262983
+no,300,primary,raw,41.887193
+office,310,primary,raw,9.872846
+ongoing,382,primary,raw,1.589735
+online,1243,primary,raw,-9.64349
+only,430,primary,raw,-2.51398
+operations,317,primary,raw,-30.067499
+opportunity,306,primary,raw,-33.481442
+optimization,660,primary,raw,10.92117
+outreach,379,primary,raw,-50.173101
+page,1392,primary,raw,4.436393
+pages,366,primary,raw,-1.238147
+part time,549,primary,raw,-22.137808
+paste,485,primary,raw,-44.391544
+pdf,383,primary,raw,-1.718456
+personal,596,primary,raw,-19.254075
+photo,397,primary,raw,-5.630711
+photographer,332,primary,raw,86.053245
+php,429,primary,raw,-0.473163
+plan,321,primary,raw,38.994482
+platform,744,primary,raw,24.152419
+podcast,370,primary,raw,-7.688962
+post,352,primary,raw,-15.851216
+power,365,primary,raw,23.653338
+presentation,391,primary,raw,35.905032
+pro,404,primary,raw,5.519475
+product,1872,primary,raw,2.234909
+products,339,primary,raw,-15.433379
+professional,592,primary,raw,17.408544
+project,2444,primary,raw,8.959243
+project manager,441,primary,raw,-5.709839
+projects,342,primary,raw,4.520883
+python,824,primary,raw,10.152368
+qa,304,primary,raw,-13.093421
+quickbooks,394,primary,raw,-3.42652
+react,1098,primary,raw,11.057365
+real estate,1277,primary,raw,-36.580868
+redesign,382,primary,raw,15.981272
+reels,316,primary,raw,-34.0353
+remote,714,primary,raw,9.95271
+representative,557,primary,raw,-29.78979
+required,922,primary,raw,0.697438
+research,1075,primary,raw,-27.857851
+review,474,primary,raw,51.072569
+s,720,primary,raw,15.16501
+saas,683,primary,raw,12.55198
+sales,1999,primary,raw,-18.500061
+scraping,325,primary,raw,-32.947019
+script,491,primary,raw,31.332479
+search,316,primary,raw,-0.143655
+seeking,1248,primary,raw,11.499088
+senior,928,primary,raw,40.774198
+seo,1703,primary,raw,-22.332176
+server,325,primary,raw,41.595642
+service,934,primary,raw,-32.639143
+services,457,primary,raw,7.83217
+set up,493,primary,raw,17.808671
+setup,1024,primary,raw,20.500271
+shopify,2323,primary,raw,-11.164478
+shopify website,314,primary,raw,-6.381359
+short,834,primary,raw,-9.3851
+simple,702,primary,raw,7.956897
+site,1126,primary,raw,8.77826
+skills,337,primary,raw,-16.389677
+small,588,primary,raw,11.283438
+social media,3657,primary,raw,-29.916104
+software,967,primary,raw,24.463177
+someone,441,primary,raw,-9.759333
+sourcing,301,primary,raw,-28.080302
+spanish,797,primary,raw,-21.064746
+speaking,331,primary,raw,-31.126688
+specialist,4712,primary,raw,-12.278036
+stack developer,693,primary,raw,13.995701
+startup,552,primary,raw,24.528661
+store,894,primary,raw,-14.892832
+strategist,348,primary,raw,27.756321
+strategy,369,primary,raw,55.184405
+support,1365,primary,raw,-17.197612
+system,556,primary,raw,37.098401
+tax,640,primary,raw,93.289955
+team,603,primary,raw,-4.247446
+tech,480,primary,raw,3.281843
+technical,506,primary,raw,10.69053
+template,423,primary,raw,10.90934
+testing,328,primary,raw,8.399227
+text,480,primary,raw,-27.752822
+that,468,primary,raw,5.085461
+theme,304,primary,raw,-1.045477
+tiktok,852,primary,raw,-23.991021
+translation,618,primary,raw,-3.34761
+translator,454,primary,raw,-9.398972
+tutor,319,primary,raw,-17.923033
+ui,1103,primary,raw,18.780046
+ui ux,535,primary,raw,17.315311
+uk,340,primary,raw,11.725257
+up,1156,primary,raw,10.619295
+update,557,primary,raw,14.170513
+urgent,430,primary,raw,6.287476
+us,720,primary,raw,17.705566
+using,758,primary,raw,7.5199
+ux designer,404,primary,raw,15.044706
+ux ui,301,primary,raw,32.932008
+va,675,primary,raw,-67.31383
+video,4561,primary,raw,-10.313716
+video editing,456,primary,raw,-19.611911
+video editor,2007,primary,raw,-19.731823
+videographer,409,primary,raw,114.277272
+videos,610,primary,raw,-14.682028
+virtual,2404,primary,raw,-58.605816
+virtual assistant,1848,primary,raw,-62.444181
+voice,415,primary,raw,42.832218
+wanted,768,primary,raw,-21.165948
+web,2623,primary,raw,3.276936
+web designer,349,primary,raw,2.327385
+web developer,508,primary,raw,6.657351
+webflow,579,primary,raw,13.190419
+website,5770,primary,raw,4.333698
+website design,376,primary,raw,0.739589
+website development,389,primary,raw,-0.23801
+websites,494,primary,raw,-37.38709
+who,451,primary,raw,-2.911619
+wix,327,primary,raw,-3.199072
+woocommerce,302,primary,raw,-3.945319
+word,304,primary,raw,1.176993
+wordpress,2648,primary,raw,-2.908241
+wordpress developer,350,primary,raw,-4.162293
+wordpress site,320,primary,raw,1.237692
+wordpress website,414,primary,raw,-1.521399
+work,913,primary,raw,17.205671
+write,493,primary,raw,22.326097
+writer,1831,primary,raw,20.563493
+writers,301,primary,raw,6.333904
+writing,642,primary,raw,11.486769
+youtube,2455,primary,raw,-10.991174
+youtube channel,606,primary,raw,4.470299
+2,434,primary,country_category,0.022862
+3d,845,primary,country_category,1.055114
+account,738,primary,country_category,-18.079764
+accountant,443,primary,country_category,-15.152019
+accounting,351,primary,country_category,-21.123595
+accounts,356,primary,country_category,-43.494037
+ad,947,primary,country_category,10.728651
+admin,473,primary,country_category,-9.946633
+administrative,321,primary,country_category,22.573591
+ads,2688,primary,country_category,32.010696
+ads expert,371,primary,country_category,41.086849
+advertising,372,primary,country_category,21.113275
+agency,1149,primary,country_category,-7.09069
+agent,490,primary,country_category,-8.775872
+ai,1700,primary,country_category,3.175406
+amazon,979,primary,country_category,-10.167492
+analysis,463,primary,country_category,7.18375
+analyst,647,primary,country_category,8.319721
+analytics,410,primary,country_category,38.775641
+android,364,primary,country_category,2.702812
+animation,432,primary,country_category,15.69294
+api,843,primary,country_category,2.776423
+app,2586,primary,country_category,3.191573
+app developer,305,primary,country_category,-2.278107
+application,816,primary,country_category,3.684304
+appointment,726,primary,country_category,-26.250315
+appointment setter,550,primary,country_category,-21.532692
+architect,326,primary,country_category,36.538238
+artist,558,primary,country_category,8.774398
+assistance,552,primary,country_category,2.096274
+assistant,3860,primary,country_category,-37.307722
+audio,321,primary,country_category,-16.206249
+automation,828,primary,country_category,-1.679702
+aws,449,primary,country_category,19.963331
+b2b,568,primary,country_category,10.936803
+backend,402,primary,country_category,14.077819
+based,883,primary,country_category,12.171826
+blockchain,345,primary,country_category,44.005521
+blog,537,primary,country_category,-20.518779
+book,670,primary,country_category,-5.727583
+bookkeeper,530,primary,country_category,-43.314095
+brand,1432,primary,country_category,13.958393
+branding,309,primary,country_category,13.816828
+build,1650,primary,country_category,6.900734
+builder,445,primary,country_category,-18.429601
+building,504,primary,country_category,-9.220724
+business,2530,primary,country_category,6.515275
+buyer,308,primary,country_category,3.360812
+call,443,primary,country_category,-14.845783
+calling,383,primary,country_category,-26.914918
+campaign,660,primary,country_category,22.282125
+can,593,primary,country_category,21.334794
+canva,302,primary,country_category,-34.860382
+channel,793,primary,country_category,0.673657
+client,339,primary,country_category,-14.292604
+cloud,309,primary,country_category,22.656395
+code,423,primary,country_category,0.486323
+cold,962,primary,country_category,-25.930678
+cold caller,317,primary,country_category,-35.019953
+cold calling,304,primary,country_category,-27.602154
+com,318,primary,country_category,-3.595479
+company,1835,primary,country_category,5.859849
+construction,339,primary,country_category,10.687097
+consultant,885,primary,country_category,76.944852
+consultation,325,primary,country_category,85.343153
+content,3048,primary,country_category,-16.765787
+content creator,670,primary,country_category,-22.859105
+content writer,501,primary,country_category,-16.183162
+contract,371,primary,country_category,13.359949
+conversion,392,primary,country_category,28.384863
+coordinator,339,primary,country_category,-31.977644
+copy,836,primary,country_category,-7.211595
+copywriter,607,primary,country_category,20.692236
+course,369,primary,country_category,8.768792
+create,2065,primary,country_category,1.593798
+creation,1139,primary,country_category,-11.342822
+creative,754,primary,country_category,-2.816875
+creator,1232,primary,country_category,-18.166809
+crm,535,primary,country_category,2.76997
+crypto,404,primary,country_category,23.685132
+custom,695,primary,country_category,16.427465
+customer,1029,primary,country_category,-30.287209
+customer service,492,primary,country_category,-42.373004
+data,3032,primary,country_category,-15.392995
+data entry,769,primary,country_category,-16.540811
+database,357,primary,country_category,-1.894198
+de,498,primary,country_category,-12.990159
+design,4583,primary,country_category,4.646608
+designer,5603,primary,country_category,-2.885399
+dev,311,primary,country_category,3.749744
+develop,306,primary,country_category,18.225908
+developer,7572,primary,country_category,2.909423
+development,2493,primary,country_category,8.692909
+different,327,primary,country_category,-26.238072
+digital,1325,primary,country_category,-3.78356
+digital marketing,657,primary,country_category,-2.788837
+document,380,primary,country_category,4.916023
+e,1093,primary,country_category,2.659761
+e commerce,800,primary,country_category,0.819753
+ecommerce,657,primary,country_category,1.764656
+edit,414,primary,country_category,-9.843752
+editing,1019,primary,country_category,-14.940655
+editor,3052,primary,country_category,-20.412844
+email,1752,primary,country_category,0.621077
+email marketing,526,primary,country_category,8.137575
+end,637,primary,country_category,10.636681
+engineer,1509,primary,country_category,17.209138
+english,1512,primary,country_category,-21.137144
+event,401,primary,country_category,28.873719
+excel,959,primary,country_category,-23.831718
+executive,539,primary,country_category,-1.267797
+existing,495,primary,country_category,4.953481
+experience,1385,primary,country_category,2.016323
+experienced,1851,primary,country_category,2.874008
+expert,7041,primary,country_category,12.776957
+expertise,366,primary,country_category,16.228011
+facebook,1791,primary,country_category,20.074367
+facebook ads,663,primary,country_category,33.421924
+figma,558,primary,country_category,-0.662753
+file,410,primary,country_category,9.517018
+financial,553,primary,country_category,54.584113
+fix,481,primary,country_category,8.16884
+flutter,303,primary,country_category,-12.644414
+form,564,primary,country_category,-12.82409
+freelance,457,primary,country_category,-1.465084
+freelancer,300,primary,country_category,19.619661
+french,324,primary,country_category,-17.369517
+front end,427,primary,country_category,4.755723
+full stack,1160,primary,country_category,8.587341
+full time,406,primary,country_category,-32.511295
+game,535,primary,country_category,7.970366
+german,409,primary,country_category,-0.724178
+google,2751,primary,country_category,13.832372
+google ads,919,primary,country_category,30.324161
+graphic design,405,primary,country_category,-14.427337
+graphic designer,1792,primary,country_category,-13.829659
+graphics,329,primary,country_category,-4.17827
+growth,769,primary,country_category,-21.280874
+health,353,primary,country_category,9.104365
+help,2180,primary,country_category,11.203333
+high,618,primary,country_category,6.402664
+hiring,300,primary,country_category,-6.868383
+home,375,primary,country_category,-1.011767
+hubspot,404,primary,country_category,30.030176
+illustrator,320,primary,country_category,-5.104955
+image,412,primary,country_category,-12.853489
+implementation,305,primary,country_category,25.972283
+instagram,996,primary,country_category,-24.637426
+integration,975,primary,country_category,8.542814
+into,650,primary,country_category,-15.247924
+ios,410,primary,country_category,4.692435
+it,649,primary,country_category,-2.604191
+job,789,primary,country_category,7.583746
+join,326,primary,country_category,-4.449595
+js,742,primary,country_category,3.443394
+landing page,525,primary,country_category,7.37123
+lead,1481,primary,country_category,-28.090669
+lead generation,881,primary,country_category,-32.332932
+leads,309,primary,country_category,-32.119486
+legal,413,primary,country_category,-16.534651
+level,399,primary,country_category,-2.043244
+linkedin,672,primary,country_category,-15.226825
+list,446,primary,country_category,-37.807473
+logo,1466,primary,country_category,7.315442
+logo design,394,primary,country_category,11.484328
+long term,601,primary,country_category,-18.534536
+make,519,primary,country_category,-1.920475
+management,1493,primary,country_category,-12.32596
+manager,3879,primary,country_category,-19.692979
+market,531,primary,country_category,8.135101
+marketer,376,primary,country_category,-5.66375
+marketing,4323,primary,country_category,1.952207
+marketing agency,342,primary,country_category,-2.844297
+marketing expert,316,primary,country_category,15.012897
+marketing specialist,456,primary,country_category,-0.913195
+me,485,primary,country_category,2.693572
+media content,347,primary,country_category,-19.860393
+media manager,902,primary,country_category,-29.502673
+media marketing,401,primary,country_category,-25.992022
+medical,383,primary,country_category,-5.492556
+meta,428,primary,country_category,30.499778
+microsoft,401,primary,country_category,41.263074
+mobile,994,primary,country_category,4.537104
+mobile app,479,primary,country_category,4.735623
+model,438,primary,country_category,17.890186
+native,632,primary,country_category,-7.780659
+net,324,primary,country_category,5.004602
+new,1193,primary,country_category,18.946223
+no,300,primary,country_category,20.2648
+office,310,primary,country_category,20.481384
+ongoing,382,primary,country_category,-1.552776
+online,1243,primary,country_category,-3.520981
+only,430,primary,country_category,0.740955
+operations,317,primary,country_category,-19.94436
+opportunity,306,primary,country_category,-33.092522
+optimization,660,primary,country_category,9.841243
+outreach,379,primary,country_category,-30.725259
+page,1392,primary,country_category,0.014407
+pages,366,primary,country_category,-6.287408
+part time,549,primary,country_category,-14.617547
+paste,485,primary,country_category,-23.588304
+pdf,383,primary,country_category,-5.357225
+personal,596,primary,country_category,-0.446522
+photo,397,primary,country_category,-22.822464
+photographer,332,primary,country_category,78.501093
+php,429,primary,country_category,-3.564809
+plan,321,primary,country_category,23.126678
+platform,744,primary,country_category,14.924762
+podcast,370,primary,country_category,-20.50984
+post,352,primary,country_category,-16.351837
+power,365,primary,country_category,7.446094
+presentation,391,primary,country_category,25.81405
+pro,404,primary,country_category,2.022749
+product,1872,primary,country_category,3.174824
+products,339,primary,country_category,-10.204901
+professional,592,primary,country_category,14.462676
+project,2444,primary,country_category,3.539867
+project manager,441,primary,country_category,-17.201334
+projects,342,primary,country_category,-1.565361
+python,824,primary,country_category,-7.519382
+qa,304,primary,country_category,-26.85546
+quickbooks,394,primary,country_category,-22.561542
+react,1098,primary,country_category,4.954503
+real estate,1277,primary,country_category,-27.365774
+redesign,382,primary,country_category,7.90006
+reels,316,primary,country_category,-31.160768
+remote,714,primary,country_category,19.454791
+representative,557,primary,country_category,10.111482
+required,922,primary,country_category,5.442232
+research,1075,primary,country_category,-2.322608
+review,474,primary,country_category,33.12978
+s,720,primary,country_category,6.473431
+saas,683,primary,country_category,2.713569
+sales,1999,primary,country_category,22.410516
+scraping,325,primary,country_category,-43.925375
+script,491,primary,country_category,10.284967
+search,316,primary,country_category,2.75138
+seeking,1248,primary,country_category,10.390577
+senior,928,primary,country_category,27.714118
+seo,1703,primary,country_category,-19.366029
+server,325,primary,country_category,21.968193
+service,934,primary,country_category,-19.066446
+services,457,primary,country_category,11.166139
+set up,493,primary,country_category,15.142378
+setup,1024,primary,country_category,15.848685
+shopify,2323,primary,country_category,-7.923153
+shopify website,314,primary,country_category,-8.745266
+short,834,primary,country_category,-7.719842
+simple,702,primary,country_category,10.912265
+site,1126,primary,country_category,3.337765
+skills,337,primary,country_category,-13.950647
+small,588,primary,country_category,4.115854
+social media,3657,primary,country_category,-26.037882
+software,967,primary,country_category,10.004136
+someone,441,primary,country_category,-7.253917
+sourcing,301,primary,country_category,-23.970146
+spanish,797,primary,country_category,-18.642771
+speaking,331,primary,country_category,-16.548553
+specialist,4712,primary,country_category,-6.388592
+stack developer,693,primary,country_category,7.604665
+startup,552,primary,country_category,19.560193
+store,894,primary,country_category,-1.450141
+strategist,348,primary,country_category,30.948309
+strategy,369,primary,country_category,51.294265
+support,1365,primary,country_category,8.288696
+system,556,primary,country_category,32.057655
+tax,640,primary,country_category,79.051723
+team,603,primary,country_category,-2.289958
+tech,480,primary,country_category,8.937051
+technical,506,primary,country_category,11.75375
+template,423,primary,country_category,1.630809
+testing,328,primary,country_category,-4.042168
+text,480,primary,country_category,-15.138209
+that,468,primary,country_category,-1.975688
+theme,304,primary,country_category,-5.657648
+tiktok,852,primary,country_category,-19.171455
+translation,618,primary,country_category,15.249984
+translator,454,primary,country_category,1.828889
+tutor,319,primary,country_category,-22.476355
+ui,1103,primary,country_category,9.777638
+ui ux,535,primary,country_category,8.827082
+uk,340,primary,country_category,13.136636
+up,1156,primary,country_category,8.376443
+update,557,primary,country_category,4.342546
+urgent,430,primary,country_category,6.995656
+us,720,primary,country_category,12.956076
+using,758,primary,country_category,0.150838
+ux designer,404,primary,country_category,6.006959
+ux ui,301,primary,country_category,20.562749
+va,675,primary,country_category,-48.071883
+video,4561,primary,country_category,-13.332632
+video editing,456,primary,country_category,-16.375593
+video editor,2007,primary,country_category,-21.811788
+videographer,409,primary,country_category,121.050108
+videos,610,primary,country_category,-11.921991
+virtual,2404,primary,country_category,-36.068455
+virtual assistant,1848,primary,country_category,-38.194892
+voice,415,primary,country_category,28.771334
+wanted,768,primary,country_category,-17.432016
+web,2623,primary,country_category,-2.175257
+web designer,349,primary,country_category,-3.999999
+web developer,508,primary,country_category,1.923603
+webflow,579,primary,country_category,8.064274
+website,5770,primary,country_category,-1.099878
+website design,376,primary,country_category,-5.317394
+website development,389,primary,country_category,-4.439075
+websites,494,primary,country_category,-26.56234
+who,451,primary,country_category,1.434022
+wix,327,primary,country_category,-10.315353
+woocommerce,302,primary,country_category,-7.009891
+word,304,primary,country_category,0.318535
+wordpress,2648,primary,country_category,-8.726453
+wordpress developer,350,primary,country_category,-7.682726
+wordpress site,320,primary,country_category,-2.87835
+wordpress website,414,primary,country_category,-7.969349
+work,913,primary,country_category,8.081276
+write,493,primary,country_category,7.680666
+writer,1831,primary,country_category,3.897462
+writers,301,primary,country_category,3.737493
+writing,642,primary,country_category,2.007471
+youtube,2455,primary,country_category,-12.443732
+youtube channel,606,primary,country_category,0.579625
+2,434,without_extreme_pay,raw,4.149648
+3d,844,without_extreme_pay,raw,9.202177
+account,738,without_extreme_pay,raw,-21.395887
+accountant,443,without_extreme_pay,raw,-0.009428
+accounting,351,without_extreme_pay,raw,-9.749639
+accounts,356,without_extreme_pay,raw,-43.986362
+ad,947,without_extreme_pay,raw,2.498202
+admin,472,without_extreme_pay,raw,-40.526551
+administrative,321,without_extreme_pay,raw,-33.114142
+ads,2677,without_extreme_pay,raw,17.617788
+ads expert,371,without_extreme_pay,raw,29.70812
+advertising,369,without_extreme_pay,raw,12.896413
+agency,1145,without_extreme_pay,raw,-16.67728
+agent,467,without_extreme_pay,raw,-32.932079
+ai,1694,without_extreme_pay,raw,19.16388
+amazon,976,without_extreme_pay,raw,-22.528058
+analysis,463,without_extreme_pay,raw,24.250958
+analyst,647,without_extreme_pay,raw,21.138158
+analytics,410,without_extreme_pay,raw,45.729405
+android,364,without_extreme_pay,raw,12.985487
+animation,431,without_extreme_pay,raw,14.34475
+api,842,without_extreme_pay,raw,22.201047
+app,2583,without_extreme_pay,raw,12.80508
+app developer,305,without_extreme_pay,raw,12.297308
+application,816,without_extreme_pay,raw,15.660314
+appointment,726,without_extreme_pay,raw,-52.137273
+appointment setter,550,without_extreme_pay,raw,-50.659834
+architect,326,without_extreme_pay,raw,58.008889
+artist,558,without_extreme_pay,raw,24.948146
+assistance,552,without_extreme_pay,raw,1.435955
+assistant,3858,without_extreme_pay,raw,-55.754644
+audio,321,without_extreme_pay,raw,-3.760489
+automation,827,without_extreme_pay,raw,16.058174
+aws,448,without_extreme_pay,raw,41.359172
+b2b,568,without_extreme_pay,raw,-9.395385
+backend,402,without_extreme_pay,raw,24.601782
+based,881,without_extreme_pay,raw,8.549579
+blockchain,344,without_extreme_pay,raw,73.701382
+blog,537,without_extreme_pay,raw,-8.766216
+book,668,without_extreme_pay,raw,3.509354
+bookkeeper,530,without_extreme_pay,raw,-27.076619
+brand,1430,without_extreme_pay,raw,15.13453
+branding,309,without_extreme_pay,raw,25.411496
+build,1649,without_extreme_pay,raw,16.346677
+builder,444,without_extreme_pay,raw,-16.82551
+building,503,without_extreme_pay,raw,-13.426751
+business,2523,without_extreme_pay,raw,5.803772
+buyer,308,without_extreme_pay,raw,-5.05029
+call,442,without_extreme_pay,raw,-38.951315
+calling,383,without_extreme_pay,raw,-50.182565
+campaign,656,without_extreme_pay,raw,12.633453
+can,592,without_extreme_pay,raw,33.683148
+canva,302,without_extreme_pay,raw,-31.064961
+channel,793,without_extreme_pay,raw,5.21227
+client,338,without_extreme_pay,raw,-17.42889
+cloud,309,without_extreme_pay,raw,41.461326
+code,423,without_extreme_pay,raw,16.736198
+cold,959,without_extreme_pay,raw,-50.689182
+cold caller,317,without_extreme_pay,raw,-58.737247
+cold calling,304,without_extreme_pay,raw,-51.921842
+com,318,without_extreme_pay,raw,5.658533
+company,1828,without_extreme_pay,raw,4.231388
+construction,338,without_extreme_pay,raw,22.467573
+consultant,880,without_extreme_pay,raw,83.615292
+consultation,324,without_extreme_pay,raw,107.362626
+content,3044,without_extreme_pay,raw,-14.87921
+content creator,668,without_extreme_pay,raw,-27.296376
+content writer,499,without_extreme_pay,raw,-3.732987
+contract,370,without_extreme_pay,raw,64.09296
+conversion,392,without_extreme_pay,raw,35.306283
+coordinator,339,without_extreme_pay,raw,-31.728481
+copy,836,without_extreme_pay,raw,-22.872422
+copywriter,607,without_extreme_pay,raw,28.69702
+course,369,without_extreme_pay,raw,3.114506
+create,2063,without_extreme_pay,raw,8.306355
+creation,1139,without_extreme_pay,raw,-9.788642
+creative,754,without_extreme_pay,raw,1.321916
+creator,1230,without_extreme_pay,raw,-20.417863
+crm,535,without_extreme_pay,raw,6.714881
+crypto,404,without_extreme_pay,raw,28.708468
+custom,694,without_extreme_pay,raw,29.400508
+customer,1027,without_extreme_pay,raw,-45.041009
+customer service,490,without_extreme_pay,raw,-56.569938
+data,3029,without_extreme_pay,raw,-23.568715
+data entry,769,without_extreme_pay,raw,-51.334244
+database,356,without_extreme_pay,raw,13.62646
+de,494,without_extreme_pay,raw,-16.281603
+design,4577,without_extreme_pay,raw,15.306688
+designer,5600,without_extreme_pay,raw,8.649321
+dev,311,without_extreme_pay,raw,12.944148
+develop,306,without_extreme_pay,raw,26.803008
+developer,7568,without_extreme_pay,raw,14.442518
+development,2486,without_extreme_pay,raw,11.03324
+different,327,without_extreme_pay,raw,-42.767793
+digital,1322,without_extreme_pay,raw,-8.600933
+digital marketing,656,without_extreme_pay,raw,-11.57073
+document,380,without_extreme_pay,raw,27.727599
+e,1090,without_extreme_pay,raw,-3.356997
+e commerce,799,without_extreme_pay,raw,-5.463452
+ecommerce,656,without_extreme_pay,raw,-5.493941
+edit,413,without_extreme_pay,raw,-2.565856
+editing,1017,without_extreme_pay,raw,-12.025622
+editor,3052,without_extreme_pay,raw,-15.4228
+email,1750,without_extreme_pay,raw,-6.597133
+email marketing,525,without_extreme_pay,raw,2.265745
+end,637,without_extreme_pay,raw,17.474576
+engineer,1505,without_extreme_pay,raw,38.289477
+english,1511,without_extreme_pay,raw,-29.403737
+event,401,without_extreme_pay,raw,33.674315
+excel,959,without_extreme_pay,raw,-28.425537
+executive,538,without_extreme_pay,raw,-36.85796
+existing,495,without_extreme_pay,raw,15.025262
+experience,1381,without_extreme_pay,raw,5.637308
+experienced,1846,without_extreme_pay,raw,2.229407
+expert,7033,without_extreme_pay,raw,15.219729
+expertise,366,without_extreme_pay,raw,23.156378
+facebook,1781,without_extreme_pay,raw,8.347039
+facebook ads,661,without_extreme_pay,raw,22.56474
+figma,558,without_extreme_pay,raw,8.606892
+file,410,without_extreme_pay,raw,15.005327
+financial,533,without_extreme_pay,raw,53.184641
+fix,481,without_extreme_pay,raw,15.356537
+flutter,303,without_extreme_pay,raw,-5.136089
+form,563,without_extreme_pay,raw,-11.603225
+freelance,457,without_extreme_pay,raw,0.139533
+freelancer,300,without_extreme_pay,raw,9.610877
+french,324,without_extreme_pay,raw,-21.301648
+front end,427,without_extreme_pay,raw,11.70964
+full stack,1160,without_extreme_pay,raw,16.505706
+full time,406,without_extreme_pay,raw,-38.120393
+game,534,without_extreme_pay,raw,22.087477
+german,409,without_extreme_pay,raw,-7.456826
+google,2749,without_extreme_pay,raw,10.971689
+google ads,918,without_extreme_pay,raw,18.946791
+graphic design,405,without_extreme_pay,raw,-3.180107
+graphic designer,1791,without_extreme_pay,raw,-1.826234
+graphics,329,without_extreme_pay,raw,6.98576
+growth,769,without_extreme_pay,raw,-23.419191
+health,353,without_extreme_pay,raw,9.306856
+help,2177,without_extreme_pay,raw,18.234642
+high,613,without_extreme_pay,raw,0.850198
+hiring,298,without_extreme_pay,raw,-15.2983
+home,374,without_extreme_pay,raw,-2.506306
+hubspot,404,without_extreme_pay,raw,38.496488
+illustrator,320,without_extreme_pay,raw,7.611545
+image,412,without_extreme_pay,raw,-6.063205
+implementation,305,without_extreme_pay,raw,39.170001
+instagram,994,without_extreme_pay,raw,-30.948242
+integration,975,without_extreme_pay,raw,26.501359
+into,650,without_extreme_pay,raw,-18.457287
+ios,410,without_extreme_pay,raw,16.974543
+it,649,without_extreme_pay,raw,-14.818168
+job,785,without_extreme_pay,raw,-3.753006
+join,326,without_extreme_pay,raw,-3.312872
+js,741,without_extreme_pay,raw,7.69789
+landing page,524,without_extreme_pay,raw,13.665241
+lead,1477,without_extreme_pay,raw,-46.999854
+lead generation,879,without_extreme_pay,raw,-53.734108
+leads,309,without_extreme_pay,raw,-50.623864
+legal,412,without_extreme_pay,raw,67.568507
+level,399,without_extreme_pay,raw,-4.663237
+linkedin,672,without_extreme_pay,raw,-24.129464
+list,445,without_extreme_pay,raw,-49.307928
+logo,1464,without_extreme_pay,raw,19.793083
+logo design,392,without_extreme_pay,raw,24.125955
+long term,601,without_extreme_pay,raw,-21.738521
+make,518,without_extreme_pay,raw,14.348529
+management,1489,without_extreme_pay,raw,-15.751981
+manager,3877,without_extreme_pay,raw,-20.183182
+market,531,without_extreme_pay,raw,2.659162
+marketer,376,without_extreme_pay,raw,-11.72711
+marketing,4315,without_extreme_pay,raw,-5.580587
+marketing agency,342,without_extreme_pay,raw,-14.410822
+marketing expert,314,without_extreme_pay,raw,3.305775
+marketing specialist,456,without_extreme_pay,raw,-7.692141
+me,483,without_extreme_pay,raw,1.258175
+media content,346,without_extreme_pay,raw,-24.172581
+media manager,902,without_extreme_pay,raw,-33.464046
+media marketing,401,without_extreme_pay,raw,-30.819211
+medical,383,without_extreme_pay,raw,-8.763459
+meta,426,without_extreme_pay,raw,19.995735
+microsoft,401,without_extreme_pay,raw,52.396308
+mobile,993,without_extreme_pay,raw,17.64186
+mobile app,479,without_extreme_pay,raw,15.337556
+model,438,without_extreme_pay,raw,35.264199
+native,631,without_extreme_pay,raw,-6.357351
+net,324,without_extreme_pay,raw,19.769294
+new,1191,without_extreme_pay,raw,19.692541
+no,297,without_extreme_pay,raw,39.644951
+office,309,without_extreme_pay,raw,9.643964
+ongoing,382,without_extreme_pay,raw,2.381102
+online,1238,without_extreme_pay,raw,-9.912135
+only,430,without_extreme_pay,raw,-1.754255
+operations,313,without_extreme_pay,raw,-32.153852
+opportunity,306,without_extreme_pay,raw,-32.963923
+optimization,660,without_extreme_pay,raw,11.787888
+outreach,379,without_extreme_pay,raw,-49.785352
+page,1388,without_extreme_pay,raw,4.507017
+pages,366,without_extreme_pay,raw,-0.468965
+part time,547,without_extreme_pay,raw,-22.412909
+paste,485,without_extreme_pay,raw,-43.958366
+pdf,382,without_extreme_pay,raw,-1.709169
+personal,594,without_extreme_pay,raw,-19.36929
+photo,397,without_extreme_pay,raw,-4.895556
+photographer,331,without_extreme_pay,raw,86.078924
+php,429,without_extreme_pay,raw,0.302484
+plan,321,without_extreme_pay,raw,40.076943
+platform,744,without_extreme_pay,raw,25.123689
+podcast,370,without_extreme_pay,raw,-6.970057
+post,350,without_extreme_pay,raw,-16.624933
+power,365,without_extreme_pay,raw,24.61666
+presentation,391,without_extreme_pay,raw,36.964246
+pro,404,without_extreme_pay,raw,6.341685
+product,1871,without_extreme_pay,raw,2.859548
+products,338,without_extreme_pay,raw,-15.576779
+professional,591,without_extreme_pay,raw,17.861015
+project,2442,without_extreme_pay,raw,9.583544
+project manager,441,without_extreme_pay,raw,-4.974977
+projects,342,without_extreme_pay,raw,5.334777
+python,823,without_extreme_pay,raw,10.690864
+qa,304,without_extreme_pay,raw,-12.417093
+quickbooks,394,without_extreme_pay,raw,-2.674191
+react,1098,without_extreme_pay,raw,11.929213
+real estate,1273,without_extreme_pay,raw,-36.720699
+redesign,382,without_extreme_pay,raw,16.884913
+reels,316,without_extreme_pay,raw,-33.522051
+remote,700,without_extreme_pay,raw,5.006532
+representative,525,without_extreme_pay,raw,-41.648556
+required,921,without_extreme_pay,raw,1.213816
+research,1075,without_extreme_pay,raw,-27.292599
+review,473,without_extreme_pay,raw,51.540412
+s,719,without_extreme_pay,raw,15.639187
+saas,682,without_extreme_pay,raw,13.009092
+sales,1924,without_extreme_pay,raw,-27.075364
+scraping,325,without_extreme_pay,raw,-32.425251
+script,491,without_extreme_pay,raw,32.357156
+search,316,without_extreme_pay,raw,0.633665
+seeking,1246,without_extreme_pay,raw,11.858327
+senior,925,without_extreme_pay,raw,40.676726
+seo,1702,without_extreme_pay,raw,-21.853388
+server,325,without_extreme_pay,raw,42.698434
+service,929,without_extreme_pay,raw,-33.303391
+services,456,without_extreme_pay,raw,7.938341
+set up,493,without_extreme_pay,raw,18.727673
+setup,1023,without_extreme_pay,raw,21.153738
+shopify,2323,without_extreme_pay,raw,-10.459167
+shopify website,314,without_extreme_pay,raw,-5.652664
+short,830,without_extreme_pay,raw,-9.959207
+simple,702,without_extreme_pay,raw,8.800771
+site,1126,without_extreme_pay,raw,9.6324
+skills,337,without_extreme_pay,raw,-15.738824
+small,587,without_extreme_pay,raw,11.704662
+social media,3655,without_extreme_pay,raw,-29.467098
+software,967,without_extreme_pay,raw,25.439292
+someone,441,without_extreme_pay,raw,-9.056081
+sourcing,300,without_extreme_pay,raw,-28.354181
+spanish,797,without_extreme_pay,raw,-20.44767
+speaking,331,without_extreme_pay,raw,-30.590709
+specialist,4707,without_extreme_pay,raw,-11.855114
+stack developer,693,without_extreme_pay,raw,14.886817
+startup,552,without_extreme_pay,raw,25.500816
+store,891,without_extreme_pay,raw,-14.988901
+strategist,348,without_extreme_pay,raw,28.751462
+strategy,369,without_extreme_pay,raw,56.393792
+support,1363,without_extreme_pay,raw,-16.953635
+system,554,without_extreme_pay,raw,36.914241
+tax,638,without_extreme_pay,raw,93.626728
+team,602,without_extreme_pay,raw,-4.009461
+tech,480,without_extreme_pay,raw,4.087226
+technical,505,without_extreme_pay,raw,11.036798
+template,423,without_extreme_pay,raw,11.773786
+testing,328,without_extreme_pay,raw,9.243235
+text,479,without_extreme_pay,raw,-27.698058
+that,467,without_extreme_pay,raw,5.165761
+theme,304,without_extreme_pay,raw,-0.275279
+tiktok,849,without_extreme_pay,raw,-24.14875
+translation,613,without_extreme_pay,raw,-4.786973
+translator,454,without_extreme_pay,raw,-8.692816
+tutor,319,without_extreme_pay,raw,-17.28424
+ui,1101,without_extreme_pay,raw,19.188913
+ui ux,535,without_extreme_pay,raw,18.230875
+uk,339,without_extreme_pay,raw,11.713636
+up,1155,without_extreme_pay,raw,11.175574
+update,557,without_extreme_pay,raw,15.061696
+urgent,430,without_extreme_pay,raw,7.115905
+us,719,without_extreme_pay,raw,18.193816
+using,757,without_extreme_pay,raw,8.016969
+ux designer,404,without_extreme_pay,raw,15.941251
+ux ui,300,without_extreme_pay,raw,32.918371
+va,675,without_extreme_pay,raw,-67.059153
+video,4553,without_extreme_pay,raw,-10.075352
+video editing,454,without_extreme_pay,raw,-20.068127
+video editor,2007,without_extreme_pay,raw,-19.097012
+videographer,408,without_extreme_pay,raw,115.040329
+videos,610,without_extreme_pay,raw,-14.016112
+virtual,2402,without_extreme_pay,raw,-58.416131
+virtual assistant,1846,without_extreme_pay,raw,-62.3142
+voice,410,without_extreme_pay,raw,39.411857
+wanted,768,without_extreme_pay,raw,-20.549833
+web,2621,without_extreme_pay,raw,3.895395
+web designer,348,without_extreme_pay,raw,2.347524
+web developer,508,without_extreme_pay,raw,7.489347
+webflow,579,without_extreme_pay,raw,14.074145
+website,5768,without_extreme_pay,raw,5.084953
+website design,376,without_extreme_pay,raw,1.524275
+website development,389,without_extreme_pay,raw,0.539155
+websites,494,without_extreme_pay,raw,-36.899209
+who,450,without_extreme_pay,raw,-2.691725
+wix,327,without_extreme_pay,raw,-2.445479
+woocommerce,302,without_extreme_pay,raw,-3.197731
+word,302,without_extreme_pay,raw,-0.039559
+wordpress,2648,without_extreme_pay,raw,-2.134199
+wordpress developer,350,without_extreme_pay,raw,-3.416035
+wordpress site,320,without_extreme_pay,raw,2.02581
+wordpress website,414,without_extreme_pay,raw,-0.754051
+work,910,without_extreme_pay,raw,17.05603
+write,493,without_extreme_pay,raw,23.280404
+writer,1826,without_extreme_pay,raw,20.591058
+writers,301,without_extreme_pay,raw,7.161578
+writing,642,without_extreme_pay,raw,12.35775
+youtube,2453,without_extreme_pay,raw,-10.50138
+youtube channel,606,without_extreme_pay,raw,5.286035
+2,434,without_extreme_pay,country_category,0.77772
+3d,844,without_extreme_pay,country_category,1.147137
+account,738,without_extreme_pay,country_category,-17.332274
+accountant,443,without_extreme_pay,country_category,-14.594361
+accounting,351,without_extreme_pay,country_category,-20.468803
+accounts,356,without_extreme_pay,country_category,-42.973354
+ad,947,without_extreme_pay,country_category,11.374129
+admin,472,without_extreme_pay,country_category,-10.344023
+administrative,321,without_extreme_pay,country_category,23.055952
+ads,2677,without_extreme_pay,country_category,31.315657
+ads expert,371,without_extreme_pay,country_category,41.966367
+advertising,369,without_extreme_pay,country_category,19.234947
+agency,1145,without_extreme_pay,country_category,-6.649002
+agent,467,without_extreme_pay,country_category,-18.318849
+ai,1694,without_extreme_pay,country_category,4.630754
+amazon,976,without_extreme_pay,country_category,-10.380202
+analysis,463,without_extreme_pay,country_category,7.898329
+analyst,647,without_extreme_pay,country_category,8.99292
+analytics,410,without_extreme_pay,country_category,39.556685
+android,364,without_extreme_pay,country_category,3.616009
+animation,431,without_extreme_pay,country_category,15.429174
+api,842,without_extreme_pay,country_category,2.936786
+app,2583,without_extreme_pay,country_category,3.480644
+app developer,305,without_extreme_pay,country_category,-1.696511
+application,816,without_extreme_pay,country_category,4.210533
+appointment,726,without_extreme_pay,country_category,-19.926097
+appointment setter,550,without_extreme_pay,country_category,-14.499479
+architect,326,without_extreme_pay,country_category,37.3234
+artist,558,without_extreme_pay,country_category,9.149571
+assistance,552,without_extreme_pay,country_category,2.767325
+assistant,3858,without_extreme_pay,country_category,-37.018661
+audio,321,without_extreme_pay,country_category,-13.915199
+automation,827,without_extreme_pay,country_category,-1.470491
+aws,448,without_extreme_pay,country_category,19.644832
+b2b,568,without_extreme_pay,country_category,13.891057
+backend,402,without_extreme_pay,country_category,14.393886
+based,881,without_extreme_pay,country_category,12.459788
+blockchain,344,without_extreme_pay,country_category,43.239964
+blog,537,without_extreme_pay,country_category,-19.993026
+book,668,without_extreme_pay,country_category,-5.932724
+bookkeeper,530,without_extreme_pay,country_category,-43.009397
+brand,1430,without_extreme_pay,country_category,14.026506
+branding,309,without_extreme_pay,country_category,14.178734
+build,1649,without_extreme_pay,country_category,7.293266
+builder,444,without_extreme_pay,country_category,-18.694824
+building,503,without_extreme_pay,country_category,-9.0971
+business,2523,without_extreme_pay,country_category,6.870134
+buyer,308,without_extreme_pay,country_category,4.323026
+call,442,without_extreme_pay,country_category,-12.43437
+calling,383,without_extreme_pay,country_category,-22.502164
+campaign,656,without_extreme_pay,country_category,21.115308
+can,592,without_extreme_pay,country_category,21.434676
+canva,302,without_extreme_pay,country_category,-34.672103
+channel,793,without_extreme_pay,country_category,1.107486
+client,338,without_extreme_pay,country_category,-13.903165
+cloud,309,without_extreme_pay,country_category,23.281779
+code,423,without_extreme_pay,country_category,0.874993
+cold,959,without_extreme_pay,country_category,-20.580897
+cold caller,317,without_extreme_pay,country_category,-29.401025
+cold calling,304,without_extreme_pay,country_category,-22.690843
+com,318,without_extreme_pay,country_category,-2.97537
+company,1828,without_extreme_pay,country_category,5.551705
+construction,338,without_extreme_pay,country_category,10.490966
+consultant,880,without_extreme_pay,country_category,75.919677
+consultation,324,without_extreme_pay,country_category,85.657416
+content,3044,without_extreme_pay,country_category,-16.637523
+content creator,668,without_extreme_pay,country_category,-23.03045
+content writer,499,without_extreme_pay,country_category,-16.772932
+contract,370,without_extreme_pay,country_category,13.669663
+conversion,392,without_extreme_pay,country_category,29.213046
+coordinator,339,without_extreme_pay,country_category,-31.401753
+copy,836,without_extreme_pay,country_category,-6.733419
+copywriter,607,without_extreme_pay,country_category,21.549384
+course,369,without_extreme_pay,country_category,9.243727
+create,2063,without_extreme_pay,country_category,1.943318
+creation,1139,without_extreme_pay,country_category,-10.863336
+creative,754,without_extreme_pay,country_category,-2.262768
+creator,1230,without_extreme_pay,country_category,-17.996095
+crm,535,without_extreme_pay,country_category,3.615691
+crypto,404,without_extreme_pay,country_category,24.680074
+custom,694,without_extreme_pay,country_category,16.65683
+customer,1027,without_extreme_pay,country_category,-29.780001
+customer service,490,without_extreme_pay,country_category,-42.644383
+data,3029,without_extreme_pay,country_category,-15.185563
+data entry,769,without_extreme_pay,country_category,-16.253389
+database,356,without_extreme_pay,country_category,-2.125348
+de,494,without_extreme_pay,country_category,-13.686826
+design,4577,without_extreme_pay,country_category,4.642257
+designer,5600,without_extreme_pay,country_category,-2.677427
+dev,311,without_extreme_pay,country_category,4.15269
+develop,306,without_extreme_pay,country_category,18.935596
+developer,7568,without_extreme_pay,country_category,3.177686
+development,2486,without_extreme_pay,country_category,9.058719
+different,327,without_extreme_pay,country_category,-25.986467
+digital,1322,without_extreme_pay,country_category,-3.532614
+digital marketing,656,without_extreme_pay,country_category,-2.486078
+document,380,without_extreme_pay,country_category,5.689056
+e,1090,without_extreme_pay,country_category,2.455201
+e commerce,799,without_extreme_pay,country_category,0.948104
+ecommerce,656,without_extreme_pay,country_category,1.87203
+edit,413,without_extreme_pay,country_category,-10.018676
+editing,1017,without_extreme_pay,country_category,-15.06944
+editor,3052,without_extreme_pay,country_category,-19.819271
+email,1750,without_extreme_pay,country_category,1.691197
+email marketing,525,without_extreme_pay,country_category,8.316486
+end,637,without_extreme_pay,country_category,10.832113
+engineer,1505,without_extreme_pay,country_category,17.341137
+english,1511,without_extreme_pay,country_category,-20.102065
+event,401,without_extreme_pay,country_category,29.778054
+excel,959,without_extreme_pay,country_category,-23.571393
+executive,538,without_extreme_pay,country_category,-0.99165
+existing,495,without_extreme_pay,country_category,5.276548
+experience,1381,without_extreme_pay,country_category,2.036315
+experienced,1846,without_extreme_pay,country_category,3.131974
+expert,7033,without_extreme_pay,country_category,13.305538
+expertise,366,without_extreme_pay,country_category,17.019318
+facebook,1781,without_extreme_pay,country_category,19.012919
+facebook ads,661,without_extreme_pay,country_category,33.412924
+figma,558,without_extreme_pay,country_category,-0.44365
+file,410,without_extreme_pay,country_category,9.946341
+financial,533,without_extreme_pay,country_category,38.632137
+fix,481,without_extreme_pay,country_category,8.595789
+flutter,303,without_extreme_pay,country_category,-12.452132
+form,563,without_extreme_pay,country_category,-12.99859
+freelance,457,without_extreme_pay,country_category,-0.84076
+freelancer,300,without_extreme_pay,country_category,20.463936
+french,324,without_extreme_pay,country_category,-16.516984
+front end,427,without_extreme_pay,country_category,4.879368
+full stack,1160,without_extreme_pay,country_category,8.88703
+full time,406,without_extreme_pay,country_category,-32.092374
+game,534,without_extreme_pay,country_category,7.977139
+german,409,without_extreme_pay,country_category,-0.219968
+google,2749,without_extreme_pay,country_category,14.264707
+google ads,918,without_extreme_pay,country_category,30.724846
+graphic design,405,without_extreme_pay,country_category,-14.129231
+graphic designer,1791,without_extreme_pay,country_category,-13.697503
+graphics,329,without_extreme_pay,country_category,-3.83306
+growth,769,without_extreme_pay,country_category,-20.832976
+health,353,without_extreme_pay,country_category,9.743069
+help,2177,without_extreme_pay,country_category,11.485663
+high,613,without_extreme_pay,country_category,4.64447
+hiring,298,without_extreme_pay,country_category,-7.910912
+home,374,without_extreme_pay,country_category,-0.613318
+hubspot,404,without_extreme_pay,country_category,31.133251
+illustrator,320,without_extreme_pay,country_category,-4.914627
+image,412,without_extreme_pay,country_category,-12.550025
+implementation,305,without_extreme_pay,country_category,26.703432
+instagram,994,without_extreme_pay,country_category,-24.268654
+integration,975,without_extreme_pay,country_category,9.073002
+into,650,without_extreme_pay,country_category,-14.825127
+ios,410,without_extreme_pay,country_category,5.207634
+it,649,without_extreme_pay,country_category,-2.112945
+job,785,without_extreme_pay,country_category,6.932377
+join,326,without_extreme_pay,country_category,-3.707184
+js,741,without_extreme_pay,country_category,3.340913
+landing page,524,without_extreme_pay,country_category,7.107939
+lead,1477,without_extreme_pay,country_category,-24.99726
+lead generation,879,without_extreme_pay,country_category,-28.69711
+leads,309,without_extreme_pay,country_category,-29.194497
+legal,412,without_extreme_pay,country_category,-15.948477
+level,399,without_extreme_pay,country_category,-1.555146
+linkedin,672,without_extreme_pay,country_category,-13.99438
+list,445,without_extreme_pay,country_category,-36.892886
+logo,1464,without_extreme_pay,country_category,7.305192
+logo design,392,without_extreme_pay,country_category,10.425327
+long term,601,without_extreme_pay,country_category,-17.959404
+make,518,without_extreme_pay,country_category,-2.186843
+management,1489,without_extreme_pay,country_category,-11.990103
+manager,3877,without_extreme_pay,country_category,-19.105228
+market,531,without_extreme_pay,country_category,9.060011
+marketer,376,without_extreme_pay,country_category,-4.826862
+marketing,4315,without_extreme_pay,country_category,2.200212
+marketing agency,342,without_extreme_pay,country_category,-1.395395
+marketing expert,314,without_extreme_pay,country_category,13.919768
+marketing specialist,456,without_extreme_pay,country_category,-0.315805
+me,483,without_extreme_pay,country_category,2.176778
+media content,346,without_extreme_pay,country_category,-20.053438
+media manager,902,without_extreme_pay,country_category,-29.054453
+media marketing,401,without_extreme_pay,country_category,-25.482257
+medical,383,without_extreme_pay,country_category,-4.37641
+meta,426,without_extreme_pay,country_category,29.742527
+microsoft,401,without_extreme_pay,country_category,42.836814
+mobile,993,without_extreme_pay,country_category,4.881215
+mobile app,479,without_extreme_pay,country_category,5.308619
+model,438,without_extreme_pay,country_category,19.175898
+native,631,without_extreme_pay,country_category,-7.109054
+net,324,without_extreme_pay,country_category,5.198219
+new,1191,without_extreme_pay,country_category,19.178013
+no,297,without_extreme_pay,country_category,17.695322
+office,309,without_extreme_pay,country_category,20.062838
+ongoing,382,without_extreme_pay,country_category,-1.160382
+online,1238,without_extreme_pay,country_category,-3.629249
+only,430,without_extreme_pay,country_category,1.732446
+operations,313,without_extreme_pay,country_category,-22.072743
+opportunity,306,without_extreme_pay,country_category,-32.227664
+optimization,660,without_extreme_pay,country_category,10.527294
+outreach,379,without_extreme_pay,country_category,-28.410065
+page,1388,without_extreme_pay,country_category,-0.235949
+pages,366,without_extreme_pay,country_category,-5.883367
+part time,547,without_extreme_pay,country_category,-14.802741
+paste,485,without_extreme_pay,country_category,-23.413279
+pdf,382,without_extreme_pay,country_category,-5.546638
+personal,594,without_extreme_pay,country_category,-0.872167
+photo,397,without_extreme_pay,country_category,-22.456881
+photographer,331,without_extreme_pay,country_category,77.901425
+php,429,without_extreme_pay,country_category,-3.379415
+plan,321,without_extreme_pay,country_category,24.089688
+platform,744,without_extreme_pay,country_category,15.81143
+podcast,370,without_extreme_pay,country_category,-19.780592
+post,350,without_extreme_pay,country_category,-17.257938
+power,365,without_extreme_pay,country_category,7.897787
+presentation,391,without_extreme_pay,country_category,26.59256
+pro,404,without_extreme_pay,country_category,2.615811
+product,1871,without_extreme_pay,country_category,3.564877
+products,338,without_extreme_pay,country_category,-10.560822
+professional,591,without_extreme_pay,country_category,15.016001
+project,2442,without_extreme_pay,country_category,4.033008
+project manager,441,without_extreme_pay,country_category,-16.426553
+projects,342,without_extreme_pay,country_category,-0.981434
+python,823,without_extreme_pay,country_category,-7.275609
+qa,304,without_extreme_pay,country_category,-26.490437
+quickbooks,394,without_extreme_pay,country_category,-22.102279
+react,1098,without_extreme_pay,country_category,5.30051
+real estate,1273,without_extreme_pay,country_category,-26.117654
+redesign,382,without_extreme_pay,country_category,8.175141
+reels,316,without_extreme_pay,country_category,-30.871036
+remote,700,without_extreme_pay,country_category,13.806877
+representative,525,without_extreme_pay,country_category,-7.725084
+required,921,without_extreme_pay,country_category,5.978396
+research,1075,without_extreme_pay,country_category,-1.777567
+review,473,without_extreme_pay,country_category,33.430957
+s,719,without_extreme_pay,country_category,6.893783
+saas,682,without_extreme_pay,country_category,2.877061
+sales,1924,without_extreme_pay,country_category,10.458592
+scraping,325,without_extreme_pay,country_category,-43.622556
+script,491,without_extreme_pay,country_category,10.620223
+search,316,without_extreme_pay,country_category,3.657964
+seeking,1246,without_extreme_pay,country_category,10.84188
+senior,925,without_extreme_pay,country_category,27.06127
+seo,1702,without_extreme_pay,country_category,-18.992264
+server,325,without_extreme_pay,country_category,22.169017
+service,929,without_extreme_pay,country_category,-19.526014
+services,456,without_extreme_pay,country_category,12.090531
+set up,493,without_extreme_pay,country_category,15.901544
+setup,1023,without_extreme_pay,country_category,16.436249
+shopify,2323,without_extreme_pay,country_category,-7.612269
+shopify website,314,without_extreme_pay,country_category,-8.537674
+short,830,without_extreme_pay,country_category,-8.361406
+simple,702,without_extreme_pay,country_category,11.273281
+site,1126,without_extreme_pay,country_category,3.525904
+skills,337,without_extreme_pay,country_category,-13.401374
+small,587,without_extreme_pay,country_category,4.201389
+social media,3655,without_extreme_pay,country_category,-25.650347
+software,967,without_extreme_pay,country_category,10.732438
+someone,441,without_extreme_pay,country_category,-6.608089
+sourcing,300,without_extreme_pay,country_category,-24.144544
+spanish,797,without_extreme_pay,country_category,-17.731014
+speaking,331,without_extreme_pay,country_category,-15.452507
+specialist,4707,without_extreme_pay,country_category,-5.562758
+stack developer,693,without_extreme_pay,country_category,7.858016
+startup,552,without_extreme_pay,country_category,20.595921
+store,891,without_extreme_pay,country_category,-1.077645
+strategist,348,without_extreme_pay,country_category,31.892098
+strategy,369,without_extreme_pay,country_category,52.238409
+support,1363,without_extreme_pay,country_category,8.922295
+system,554,without_extreme_pay,country_category,31.369625
+tax,638,without_extreme_pay,country_category,78.96123
+team,602,without_extreme_pay,country_category,-1.769762
+tech,480,without_extreme_pay,country_category,9.88819
+technical,505,without_extreme_pay,country_category,12.029063
+template,423,without_extreme_pay,country_category,1.964834
+testing,328,without_extreme_pay,country_category,-3.612318
+text,479,without_extreme_pay,country_category,-15.311748
+that,467,without_extreme_pay,country_category,-2.054914
+theme,304,without_extreme_pay,country_category,-5.52025
+tiktok,849,without_extreme_pay,country_category,-19.52201
+translation,613,without_extreme_pay,country_category,13.304247
+translator,454,without_extreme_pay,country_category,2.961308
+tutor,319,without_extreme_pay,country_category,-22.186959
+ui,1101,without_extreme_pay,country_category,9.653844
+ui ux,535,without_extreme_pay,country_category,9.236041
+uk,339,without_extreme_pay,country_category,13.563112
+up,1155,without_extreme_pay,country_category,9.007228
+update,557,without_extreme_pay,country_category,4.757893
+urgent,430,without_extreme_pay,country_category,7.506262
+us,719,without_extreme_pay,country_category,13.61777
+using,757,without_extreme_pay,country_category,0.443936
+ux designer,404,without_extreme_pay,country_category,6.488876
+ux ui,300,without_extreme_pay,country_category,19.844321
+va,675,without_extreme_pay,country_category,-47.767865
+video,4553,without_extreme_pay,country_category,-13.353147
+video editing,454,without_extreme_pay,country_category,-17.296552
+video editor,2007,without_extreme_pay,country_category,-21.267683
+videographer,408,without_extreme_pay,country_category,121.999401
+videos,610,without_extreme_pay,country_category,-11.412558
+virtual,2402,without_extreme_pay,country_category,-35.899096
+virtual assistant,1846,without_extreme_pay,country_category,-38.210797
+voice,410,without_extreme_pay,country_category,24.92827
+wanted,768,without_extreme_pay,country_category,-16.79282
+web,2621,without_extreme_pay,country_category,-2.07925
+web designer,348,without_extreme_pay,country_category,-4.604927
+web developer,508,without_extreme_pay,country_category,2.092911
+webflow,579,without_extreme_pay,country_category,8.186609
+website,5768,without_extreme_pay,country_category,-0.851994
+website design,376,without_extreme_pay,country_category,-5.118597
+website development,389,without_extreme_pay,country_category,-4.153674
+websites,494,without_extreme_pay,country_category,-26.327221
+who,450,without_extreme_pay,country_category,1.447573
+wix,327,without_extreme_pay,country_category,-10.14954
+woocommerce,302,without_extreme_pay,country_category,-6.550111
+word,302,without_extreme_pay,country_category,-1.223594
+wordpress,2648,without_extreme_pay,country_category,-8.533602
+wordpress developer,350,without_extreme_pay,country_category,-7.542491
+wordpress site,320,without_extreme_pay,country_category,-2.813055
+wordpress website,414,without_extreme_pay,country_category,-7.752616
+work,910,without_extreme_pay,country_category,7.5639
+write,493,without_extreme_pay,country_category,8.173455
+writer,1826,without_extreme_pay,country_category,3.635254
+writers,301,without_extreme_pay,country_category,4.120745
+writing,642,without_extreme_pay,country_category,2.84041
+youtube,2453,without_extreme_pay,country_category,-12.258318
+youtube channel,606,without_extreme_pay,country_category,0.971375
+2,428,without_possible_reposts,raw,3.444091
+3d,841,without_possible_reposts,raw,8.888558
+account,724,without_possible_reposts,raw,-21.882489
+accountant,434,without_possible_reposts,raw,0.361163
+accounting,346,without_possible_reposts,raw,-11.122492
+accounts,336,without_possible_reposts,raw,-43.324327
+ad,877,without_possible_reposts,raw,4.39844
+admin,472,without_possible_reposts,raw,-40.549202
+administrative,297,without_possible_reposts,raw,-39.172121
+ads,2490,without_possible_reposts,raw,13.893876
+ads expert,347,without_possible_reposts,raw,24.032539
+advertising,361,without_possible_reposts,raw,12.479747
+agency,1109,without_possible_reposts,raw,-17.777506
+agent,458,without_possible_reposts,raw,-30.425926
+ai,1676,without_possible_reposts,raw,18.844554
+amazon,974,without_possible_reposts,raw,-22.166115
+analysis,458,without_possible_reposts,raw,23.706651
+analyst,619,without_possible_reposts,raw,20.217063
+analytics,401,without_possible_reposts,raw,45.31611
+android,342,without_possible_reposts,raw,12.833675
+animation,431,without_possible_reposts,raw,14.280975
+api,833,without_possible_reposts,raw,21.575762
+app,2507,without_possible_reposts,raw,12.440528
+app developer,294,without_possible_reposts,raw,11.082277
+application,803,without_possible_reposts,raw,14.498872
+appointment,663,without_possible_reposts,raw,-54.025397
+appointment setter,490,without_possible_reposts,raw,-53.054483
+architect,322,without_possible_reposts,raw,56.933036
+artist,543,without_possible_reposts,raw,23.012603
+assistance,542,without_possible_reposts,raw,0.21995
+assistant,3706,without_possible_reposts,raw,-56.00367
+audio,304,without_possible_reposts,raw,-3.016986
+automation,816,without_possible_reposts,raw,15.392206
+aws,446,without_possible_reposts,raw,40.875655
+b2b,558,without_possible_reposts,raw,-9.519108
+backend,390,without_possible_reposts,raw,22.272245
+based,872,without_possible_reposts,raw,8.478788
+blockchain,329,without_possible_reposts,raw,73.17643
+blog,519,without_possible_reposts,raw,-9.338968
+book,657,without_possible_reposts,raw,3.881916
+bookkeeper,513,without_possible_reposts,raw,-27.235548
+brand,1418,without_possible_reposts,raw,14.804876
+branding,308,without_possible_reposts,raw,24.422788
+build,1635,without_possible_reposts,raw,15.437589
+builder,436,without_possible_reposts,raw,-17.098668
+building,499,without_possible_reposts,raw,-13.249646
+business,2508,without_possible_reposts,raw,5.822682
+buyer,269,without_possible_reposts,raw,-11.281633
+call,427,without_possible_reposts,raw,-38.216805
+calling,378,without_possible_reposts,raw,-51.216312
+campaign,649,without_possible_reposts,raw,13.661624
+can,519,without_possible_reposts,raw,21.270708
+canva,295,without_possible_reposts,raw,-32.517011
+channel,644,without_possible_reposts,raw,9.100957
+client,335,without_possible_reposts,raw,-17.296864
+cloud,300,without_possible_reposts,raw,41.478314
+code,421,without_possible_reposts,raw,15.79255
+cold,931,without_possible_reposts,raw,-50.561064
+cold caller,296,without_possible_reposts,raw,-58.946359
+cold calling,299,without_possible_reposts,raw,-53.08517
+com,318,without_possible_reposts,raw,4.640208
+company,1804,without_possible_reposts,raw,4.026171
+construction,335,without_possible_reposts,raw,22.705725
+consultant,879,without_possible_reposts,raw,83.695695
+consultation,321,without_possible_reposts,raw,109.356036
+content,2946,without_possible_reposts,raw,-15.131583
+content creator,648,without_possible_reposts,raw,-25.727411
+content writer,459,without_possible_reposts,raw,-2.35632
+contract,363,without_possible_reposts,raw,64.708411
+conversion,382,without_possible_reposts,raw,31.988844
+coordinator,329,without_possible_reposts,raw,-32.142903
+copy,539,without_possible_reposts,raw,-5.537424
+copywriter,591,without_possible_reposts,raw,28.670071
+course,342,without_possible_reposts,raw,3.81771
+create,2036,without_possible_reposts,raw,7.466969
+creation,1128,without_possible_reposts,raw,-10.679191
+creative,744,without_possible_reposts,raw,0.374038
+creator,1201,without_possible_reposts,raw,-19.420091
+crm,527,without_possible_reposts,raw,5.630437
+crypto,399,without_possible_reposts,raw,27.003956
+custom,690,without_possible_reposts,raw,28.547998
+customer,1009,without_possible_reposts,raw,-45.015323
+customer service,482,without_possible_reposts,raw,-56.366871
+data,2760,without_possible_reposts,raw,-21.851084
+data entry,714,without_possible_reposts,raw,-53.671218
+database,352,without_possible_reposts,raw,14.101944
+de,437,without_possible_reposts,raw,-18.18968
+design,4498,without_possible_reposts,raw,14.390864
+designer,5478,without_possible_reposts,raw,7.903903
+dev,305,without_possible_reposts,raw,12.731987
+develop,303,without_possible_reposts,raw,25.569206
+developer,7374,without_possible_reposts,raw,13.111352
+development,2450,without_possible_reposts,raw,10.528915
+different,161,without_possible_reposts,raw,-28.38537
+digital,1302,without_possible_reposts,raw,-8.824969
+digital marketing,642,without_possible_reposts,raw,-12.655586
+document,351,without_possible_reposts,raw,24.089254
+e,1060,without_possible_reposts,raw,-3.678888
+e commerce,787,without_possible_reposts,raw,-5.673031
+ecommerce,643,without_possible_reposts,raw,-5.701068
+edit,413,without_possible_reposts,raw,-2.876189
+editing,995,without_possible_reposts,raw,-12.202165
+editor,2929,without_possible_reposts,raw,-17.415916
+email,1726,without_possible_reposts,raw,-7.194433
+email marketing,514,without_possible_reposts,raw,1.938029
+end,630,without_possible_reposts,raw,16.580172
+engineer,1483,without_possible_reposts,raw,37.859919
+english,1396,without_possible_reposts,raw,-28.083376
+event,397,without_possible_reposts,raw,32.934583
+excel,706,without_possible_reposts,raw,-17.430446
+executive,525,without_possible_reposts,raw,-36.126194
+existing,492,without_possible_reposts,raw,14.067692
+experience,1358,without_possible_reposts,raw,5.408166
+experienced,1810,without_possible_reposts,raw,3.18521
+expert,6719,without_possible_reposts,raw,15.516824
+expertise,360,without_possible_reposts,raw,22.786657
+facebook,1584,without_possible_reposts,raw,2.417618
+facebook ads,517,without_possible_reposts,raw,11.019303
+figma,550,without_possible_reposts,raw,7.219531
+file,378,without_possible_reposts,raw,21.256512
+financial,530,without_possible_reposts,raw,54.307723
+fix,474,without_possible_reposts,raw,14.733898
+flutter,297,without_possible_reposts,raw,-6.607337
+form,563,without_possible_reposts,raw,-12.08447
+freelance,436,without_possible_reposts,raw,1.246922
+freelancer,284,without_possible_reposts,raw,9.656487
+french,314,without_possible_reposts,raw,-21.37322
+front end,421,without_possible_reposts,raw,11.128875
+full stack,1114,without_possible_reposts,raw,14.912375
+full time,401,without_possible_reposts,raw,-39.013705
+game,531,without_possible_reposts,raw,21.074247
+german,401,without_possible_reposts,raw,-7.901921
+google,2633,without_possible_reposts,raw,12.358073
+google ads,905,without_possible_reposts,raw,17.375248
+graphic design,402,without_possible_reposts,raw,-4.17055
+graphic designer,1742,without_possible_reposts,raw,-2.732858
+graphics,329,without_possible_reposts,raw,5.954718
+growth,418,without_possible_reposts,raw,-21.429534
+health,349,without_possible_reposts,raw,9.2545
+help,2158,without_possible_reposts,raw,17.737484
+high,608,without_possible_reposts,raw,2.498967
+hiring,290,without_possible_reposts,raw,-16.413565
+home,372,without_possible_reposts,raw,-2.867616
+hubspot,401,without_possible_reposts,raw,37.94028
+illustrator,309,without_possible_reposts,raw,5.462993
+image,409,without_possible_reposts,raw,-6.86581
+implementation,305,without_possible_reposts,raw,37.833331
+instagram,965,without_possible_reposts,raw,-31.992891
+integration,967,without_possible_reposts,raw,25.354461
+into,561,without_possible_reposts,raw,-12.425095
+ios,399,without_possible_reposts,raw,16.296705
+it,501,without_possible_reposts,raw,0.189449
+job,739,without_possible_reposts,raw,-2.933087
+join,293,without_possible_reposts,raw,-5.906096
+js,730,without_possible_reposts,raw,7.191214
+landing page,515,without_possible_reposts,raw,14.782713
+lead,1456,without_possible_reposts,raw,-46.756092
+lead generation,862,without_possible_reposts,raw,-53.810563
+leads,288,without_possible_reposts,raw,-52.179559
+legal,411,without_possible_reposts,raw,67.338117
+level,392,without_possible_reposts,raw,-5.243715
+linkedin,662,without_possible_reposts,raw,-24.791114
+list,439,without_possible_reposts,raw,-49.269453
+logo,1402,without_possible_reposts,raw,18.065052
+logo design,363,without_possible_reposts,raw,21.230143
+long term,586,without_possible_reposts,raw,-22.384134
+make,488,without_possible_reposts,raw,8.422127
+management,1367,without_possible_reposts,raw,-14.808741
+manager,3659,without_possible_reposts,raw,-21.289981
+market,526,without_possible_reposts,raw,2.27629
+marketer,369,without_possible_reposts,raw,-13.451938
+marketing,4208,without_possible_reposts,raw,-6.164676
+marketing agency,336,without_possible_reposts,raw,-15.157133
+marketing expert,307,without_possible_reposts,raw,4.364041
+marketing specialist,441,without_possible_reposts,raw,-8.667428
+me,480,without_possible_reposts,raw,2.004599
+media content,332,without_possible_reposts,raw,-25.018544
+media manager,831,without_possible_reposts,raw,-34.143344
+media marketing,385,without_possible_reposts,raw,-32.191768
+medical,376,without_possible_reposts,raw,-7.376859
+meta,421,without_possible_reposts,raw,19.923754
+microsoft,383,without_possible_reposts,raw,45.072215
+mobile,964,without_possible_reposts,raw,13.993615
+mobile app,468,without_possible_reposts,raw,15.034745
+model,435,without_possible_reposts,raw,34.219729
+native,610,without_possible_reposts,raw,-6.270411
+net,320,without_possible_reposts,raw,18.704339
+new,1124,without_possible_reposts,raw,18.489041
+no,265,without_possible_reposts,raw,33.857224
+office,301,without_possible_reposts,raw,6.811814
+ongoing,376,without_possible_reposts,raw,1.745776
+online,1159,without_possible_reposts,raw,-11.799553
+only,417,without_possible_reposts,raw,-4.242288
+operations,290,without_possible_reposts,raw,-22.36898
+opportunity,294,without_possible_reposts,raw,-33.796594
+optimization,650,without_possible_reposts,raw,10.14146
+outreach,376,without_possible_reposts,raw,-50.134833
+page,1341,without_possible_reposts,raw,5.228129
+pages,365,without_possible_reposts,raw,-1.438618
+part time,535,without_possible_reposts,raw,-22.937592
+paste,221,without_possible_reposts,raw,-34.767842
+pdf,369,without_possible_reposts,raw,-2.299588
+personal,587,without_possible_reposts,raw,-19.028041
+photo,394,without_possible_reposts,raw,-5.857919
+photographer,330,without_possible_reposts,raw,86.909793
+php,424,without_possible_reposts,raw,-0.284866
+plan,316,without_possible_reposts,raw,39.133532
+platform,725,without_possible_reposts,raw,20.981274
+podcast,365,without_possible_reposts,raw,-7.687632
+post,348,without_possible_reposts,raw,-16.000576
+power,363,without_possible_reposts,raw,23.323576
+presentation,391,without_possible_reposts,raw,35.648737
+pro,387,without_possible_reposts,raw,4.26561
+product,1847,without_possible_reposts,raw,2.117123
+products,330,without_possible_reposts,raw,-15.582083
+professional,590,without_possible_reposts,raw,17.725219
+project,2373,without_possible_reposts,raw,9.110465
+project manager,436,without_possible_reposts,raw,-5.860161
+projects,338,without_possible_reposts,raw,4.553711
+python,804,without_possible_reposts,raw,9.455308
+qa,279,without_possible_reposts,raw,-19.625556
+quickbooks,391,without_possible_reposts,raw,-3.354169
+react,1076,without_possible_reposts,raw,10.401635
+real estate,1239,without_possible_reposts,raw,-35.650579
+redesign,377,without_possible_reposts,raw,15.265871
+reels,311,without_possible_reposts,raw,-34.547123
+remote,655,without_possible_reposts,raw,0.125845
+representative,531,without_possible_reposts,raw,-35.699515
+required,869,without_possible_reposts,raw,-1.158358
+research,1047,without_possible_reposts,raw,-26.680396
+review,468,without_possible_reposts,raw,51.488297
+s,677,without_possible_reposts,raw,15.724426
+saas,654,without_possible_reposts,raw,13.491808
+sales,1904,without_possible_reposts,raw,-23.784154
+scraping,318,without_possible_reposts,raw,-32.173889
+script,477,without_possible_reposts,raw,29.455596
+search,309,without_possible_reposts,raw,-1.158071
+seeking,1220,without_possible_reposts,raw,10.743746
+senior,893,without_possible_reposts,raw,40.523645
+seo,1686,without_possible_reposts,raw,-22.277974
+server,323,without_possible_reposts,raw,41.486709
+service,902,without_possible_reposts,raw,-32.390086
+services,454,without_possible_reposts,raw,7.549708
+set up,492,without_possible_reposts,raw,17.313734
+setup,1018,without_possible_reposts,raw,20.133554
+shopify,2277,without_possible_reposts,raw,-11.433376
+shopify website,297,without_possible_reposts,raw,-6.737494
+short,774,without_possible_reposts,raw,-10.991148
+simple,562,without_possible_reposts,raw,12.294695
+site,1110,without_possible_reposts,raw,8.193388
+skills,327,without_possible_reposts,raw,-15.293011
+small,583,without_possible_reposts,raw,11.366778
+social media,3521,without_possible_reposts,raw,-29.906015
+software,931,without_possible_reposts,raw,25.379742
+someone,413,without_possible_reposts,raw,-6.754449
+sourcing,301,without_possible_reposts,raw,-28.222343
+spanish,710,without_possible_reposts,raw,-23.245374
+speaking,327,without_possible_reposts,raw,-30.605677
+specialist,4375,without_possible_reposts,raw,-11.646867
+stack developer,654,without_possible_reposts,raw,13.052101
+startup,547,without_possible_reposts,raw,25.369401
+store,804,without_possible_reposts,raw,-14.430172
+strategist,340,without_possible_reposts,raw,26.704649
+strategy,369,without_possible_reposts,raw,54.894541
+support,1338,without_possible_reposts,raw,-18.03156
+system,545,without_possible_reposts,raw,34.98932
+tax,631,without_possible_reposts,raw,93.397591
+team,565,without_possible_reposts,raw,-4.199563
+tech,477,without_possible_reposts,raw,3.501907
+technical,504,without_possible_reposts,raw,10.67789
+template,420,without_possible_reposts,raw,10.872524
+testing,278,without_possible_reposts,raw,-3.171427
+text,348,without_possible_reposts,raw,-15.110177
+that,457,without_possible_reposts,raw,4.781179
+theme,302,without_possible_reposts,raw,-1.49689
+tiktok,829,without_possible_reposts,raw,-25.247532
+translation,582,without_possible_reposts,raw,-3.57296
+translator,443,without_possible_reposts,raw,-9.76006
+tutor,316,without_possible_reposts,raw,-18.194497
+ui,1081,without_possible_reposts,raw,19.114463
+ui ux,522,without_possible_reposts,raw,17.486446
+uk,334,without_possible_reposts,raw,12.87322
+up,1141,without_possible_reposts,raw,11.556834
+update,553,without_possible_reposts,raw,14.179831
+urgent,402,without_possible_reposts,raw,7.257617
+us,704,without_possible_reposts,raw,14.315171
+using,752,without_possible_reposts,raw,7.288778
+ux designer,394,without_possible_reposts,raw,15.242458
+ux ui,296,without_possible_reposts,raw,33.447025
+va,663,without_possible_reposts,raw,-67.348382
+video,4415,without_possible_reposts,raw,-11.020843
+video editing,437,without_possible_reposts,raw,-19.844433
+video editor,1910,without_possible_reposts,raw,-21.406433
+videographer,406,without_possible_reposts,raw,114.676706
+videos,598,without_possible_reposts,raw,-14.355674
+virtual,2281,without_possible_reposts,raw,-58.52952
+virtual assistant,1749,without_possible_reposts,raw,-62.344752
+voice,403,without_possible_reposts,raw,43.183025
+wanted,735,without_possible_reposts,raw,-19.141417
+web,2568,without_possible_reposts,raw,2.760682
+web designer,341,without_possible_reposts,raw,3.725692
+web developer,498,without_possible_reposts,raw,6.688888
+webflow,570,without_possible_reposts,raw,13.60288
+website,5642,without_possible_reposts,raw,3.811656
+website design,362,without_possible_reposts,raw,0.541248
+website development,381,without_possible_reposts,raw,-0.371453
+websites,317,without_possible_reposts,raw,-25.931499
+who,424,without_possible_reposts,raw,-2.567951
+wix,324,without_possible_reposts,raw,-2.841451
+woocommerce,296,without_possible_reposts,raw,-4.515502
+word,296,without_possible_reposts,raw,0.954418
+wordpress,2608,without_possible_reposts,raw,-3.210121
+wordpress developer,347,without_possible_reposts,raw,-4.46158
+wordpress site,316,without_possible_reposts,raw,0.811083
+wordpress website,405,without_possible_reposts,raw,-1.091141
+work,864,without_possible_reposts,raw,10.238585
+write,441,without_possible_reposts,raw,23.200768
+writer,1716,without_possible_reposts,raw,21.400719
+writers,262,without_possible_reposts,raw,8.193637
+writing,582,without_possible_reposts,raw,11.529118
+youtube,1833,without_possible_reposts,raw,-6.154016
+youtube channel,464,without_possible_reposts,raw,12.223103
+2,428,without_possible_reposts,country_category,0.218372
+3d,841,without_possible_reposts,country_category,1.54748
+account,724,without_possible_reposts,country_category,-17.843543
+accountant,434,without_possible_reposts,country_category,-14.050609
+accounting,346,without_possible_reposts,country_category,-21.589807
+accounts,336,without_possible_reposts,country_category,-41.390782
+ad,877,without_possible_reposts,country_category,9.423273
+admin,472,without_possible_reposts,country_category,-9.542347
+administrative,297,without_possible_reposts,country_category,11.644752
+ads,2490,without_possible_reposts,country_category,26.942523
+ads expert,347,without_possible_reposts,country_category,36.023177
+advertising,361,without_possible_reposts,country_category,19.767535
+agency,1109,without_possible_reposts,country_category,-7.90224
+agent,458,without_possible_reposts,country_category,-16.345222
+ai,1676,without_possible_reposts,country_category,4.168671
+amazon,974,without_possible_reposts,country_category,-9.892868
+analysis,458,without_possible_reposts,country_category,6.850156
+analyst,619,without_possible_reposts,country_category,7.246988
+analytics,401,without_possible_reposts,country_category,39.331919
+android,342,without_possible_reposts,country_category,2.902542
+animation,431,without_possible_reposts,country_category,15.41346
+api,833,without_possible_reposts,country_category,3.028623
+app,2507,without_possible_reposts,country_category,3.703578
+app developer,294,without_possible_reposts,country_category,-1.862991
+application,803,without_possible_reposts,country_category,3.670579
+appointment,663,without_possible_reposts,country_category,-25.548806
+appointment setter,490,without_possible_reposts,country_category,-21.277242
+architect,322,without_possible_reposts,country_category,36.454428
+artist,543,without_possible_reposts,country_category,8.832431
+assistance,542,without_possible_reposts,country_category,1.105617
+assistant,3706,without_possible_reposts,country_category,-37.02511
+audio,304,without_possible_reposts,country_category,-15.406716
+automation,816,without_possible_reposts,country_category,-1.32728
+aws,446,without_possible_reposts,country_category,20.02479
+b2b,558,without_possible_reposts,country_category,12.921013
+backend,390,without_possible_reposts,country_category,13.274061
+based,872,without_possible_reposts,country_category,12.616242
+blockchain,329,without_possible_reposts,country_category,43.488245
+blog,519,without_possible_reposts,country_category,-20.475323
+book,657,without_possible_reposts,country_category,-5.955097
+bookkeeper,513,without_possible_reposts,country_category,-42.682997
+brand,1418,without_possible_reposts,country_category,14.239353
+branding,308,without_possible_reposts,country_category,13.986101
+build,1635,without_possible_reposts,country_category,6.834022
+builder,436,without_possible_reposts,country_category,-18.508196
+building,499,without_possible_reposts,country_category,-8.81886
+business,2508,without_possible_reposts,country_category,6.783761
+buyer,269,without_possible_reposts,country_category,-1.877104
+call,427,without_possible_reposts,country_category,-12.815442
+calling,378,without_possible_reposts,country_category,-24.704267
+campaign,649,without_possible_reposts,country_category,22.007754
+can,519,without_possible_reposts,country_category,15.944146
+canva,295,without_possible_reposts,country_category,-36.343555
+channel,644,without_possible_reposts,country_category,5.606744
+client,335,without_possible_reposts,country_category,-14.121622
+cloud,300,without_possible_reposts,country_category,23.660051
+code,421,without_possible_reposts,country_category,0.611523
+cold,931,without_possible_reposts,country_category,-21.908922
+cold caller,296,without_possible_reposts,country_category,-31.234398
+cold calling,299,without_possible_reposts,country_category,-25.220803
+com,318,without_possible_reposts,country_category,-3.838033
+company,1804,without_possible_reposts,country_category,5.38313
+construction,335,without_possible_reposts,country_category,10.793086
+consultant,879,without_possible_reposts,country_category,75.38842
+consultation,321,without_possible_reposts,country_category,87.87951
+content,2946,without_possible_reposts,country_category,-16.594977
+content creator,648,without_possible_reposts,country_category,-21.162666
+content writer,459,without_possible_reposts,country_category,-16.031315
+contract,363,without_possible_reposts,country_category,13.325827
+conversion,382,without_possible_reposts,country_category,28.438338
+coordinator,329,without_possible_reposts,country_category,-32.22327
+copy,539,without_possible_reposts,country_category,1.348064
+copywriter,591,without_possible_reposts,country_category,21.694766
+course,342,without_possible_reposts,country_category,8.885297
+create,2036,without_possible_reposts,country_category,1.42879
+creation,1128,without_possible_reposts,country_category,-11.360782
+creative,744,without_possible_reposts,country_category,-3.033786
+creator,1201,without_possible_reposts,country_category,-16.82549
+crm,527,without_possible_reposts,country_category,2.63544
+crypto,399,without_possible_reposts,country_category,23.420273
+custom,690,without_possible_reposts,country_category,16.347607
+customer,1009,without_possible_reposts,country_category,-29.763869
+customer service,482,without_possible_reposts,country_category,-42.416393
+data,2760,without_possible_reposts,country_category,-15.454161
+data entry,714,without_possible_reposts,country_category,-19.251217
+database,352,without_possible_reposts,country_category,-1.29459
+de,437,without_possible_reposts,country_category,-14.148378
+design,4498,without_possible_reposts,country_category,4.599018
+designer,5478,without_possible_reposts,country_category,-2.469716
+dev,305,without_possible_reposts,country_category,4.35879
+develop,303,without_possible_reposts,country_category,18.191194
+developer,7374,without_possible_reposts,country_category,2.838774
+development,2450,without_possible_reposts,country_category,9.048741
+different,161,without_possible_reposts,country_category,-21.085018
+digital,1302,without_possible_reposts,country_category,-3.855397
+digital marketing,642,without_possible_reposts,country_category,-3.882229
+document,351,without_possible_reposts,country_category,3.174624
+e,1060,without_possible_reposts,country_category,2.412536
+e commerce,787,without_possible_reposts,country_category,0.755993
+ecommerce,643,without_possible_reposts,country_category,2.059021
+edit,413,without_possible_reposts,country_category,-10.017213
+editing,995,without_possible_reposts,country_category,-15.265398
+editor,2929,without_possible_reposts,country_category,-22.514638
+email,1726,without_possible_reposts,country_category,0.841657
+email marketing,514,without_possible_reposts,country_category,8.039441
+end,630,without_possible_reposts,country_category,10.8421
+engineer,1483,without_possible_reposts,country_category,17.319801
+english,1396,without_possible_reposts,country_category,-21.11754
+event,397,without_possible_reposts,country_category,28.766235
+excel,706,without_possible_reposts,country_category,-20.369519
+executive,525,without_possible_reposts,country_category,0.574718
+existing,492,without_possible_reposts,country_category,5.049877
+experience,1358,without_possible_reposts,country_category,2.025202
+experienced,1810,without_possible_reposts,country_category,3.951621
+expert,6719,without_possible_reposts,country_category,13.631692
+expertise,360,without_possible_reposts,country_category,16.994747
+facebook,1584,without_possible_reposts,country_category,12.852946
+facebook ads,517,without_possible_reposts,country_category,21.637788
+figma,550,without_possible_reposts,country_category,-0.794328
+file,378,without_possible_reposts,country_category,10.120739
+financial,530,without_possible_reposts,country_category,39.905729
+fix,474,without_possible_reposts,country_category,8.345607
+flutter,297,without_possible_reposts,country_category,-13.343021
+form,563,without_possible_reposts,country_category,-13.226987
+freelance,436,without_possible_reposts,country_category,0.121638
+freelancer,284,without_possible_reposts,country_category,20.870468
+french,314,without_possible_reposts,country_category,-16.745759
+front end,421,without_possible_reposts,country_category,5.221412
+full stack,1114,without_possible_reposts,country_category,8.711176
+full time,401,without_possible_reposts,country_category,-32.538351
+game,531,without_possible_reposts,country_category,7.570872
+german,401,without_possible_reposts,country_category,0.025889
+google,2633,without_possible_reposts,country_category,15.054911
+google ads,905,without_possible_reposts,country_category,29.186536
+graphic design,402,without_possible_reposts,country_category,-14.390396
+graphic designer,1742,without_possible_reposts,country_category,-13.66819
+graphics,329,without_possible_reposts,country_category,-4.041307
+growth,418,without_possible_reposts,country_category,-14.396507
+health,349,without_possible_reposts,country_category,9.695793
+help,2158,without_possible_reposts,country_category,11.277543
+high,608,without_possible_reposts,country_category,7.13193
+hiring,290,without_possible_reposts,country_category,-8.361352
+home,372,without_possible_reposts,country_category,-0.634833
+hubspot,401,without_possible_reposts,country_category,30.302115
+illustrator,309,without_possible_reposts,country_category,-5.882365
+image,409,without_possible_reposts,country_category,-12.648535
+implementation,305,without_possible_reposts,country_category,25.777549
+instagram,965,without_possible_reposts,country_category,-26.413956
+integration,967,without_possible_reposts,country_category,8.696042
+into,561,without_possible_reposts,country_category,-12.740808
+ios,399,without_possible_reposts,country_category,5.444745
+it,501,without_possible_reposts,country_category,2.644387
+job,739,without_possible_reposts,country_category,7.678985
+join,293,without_possible_reposts,country_category,-4.957679
+js,730,without_possible_reposts,country_category,3.65678
+landing page,515,without_possible_reposts,country_category,8.826951
+lead,1456,without_possible_reposts,country_category,-25.752271
+lead generation,862,without_possible_reposts,country_category,-29.817664
+leads,288,without_possible_reposts,country_category,-32.782881
+legal,411,without_possible_reposts,country_category,-16.401982
+level,392,without_possible_reposts,country_category,-1.724081
+linkedin,662,without_possible_reposts,country_category,-14.589288
+list,439,without_possible_reposts,country_category,-36.913343
+logo,1402,without_possible_reposts,country_category,6.48903
+logo design,363,without_possible_reposts,country_category,9.158119
+long term,586,without_possible_reposts,country_category,-18.510269
+make,488,without_possible_reposts,country_category,-3.200973
+management,1367,without_possible_reposts,country_category,-12.34907
+manager,3659,without_possible_reposts,country_category,-21.247961
+market,526,without_possible_reposts,country_category,8.749224
+marketer,369,without_possible_reposts,country_category,-6.900729
+marketing,4208,without_possible_reposts,country_category,1.393611
+marketing agency,336,without_possible_reposts,country_category,-2.434627
+marketing expert,307,without_possible_reposts,country_category,15.333733
+marketing specialist,441,without_possible_reposts,country_category,-1.460992
+me,480,without_possible_reposts,country_category,2.750254
+media content,332,without_possible_reposts,country_category,-20.781238
+media manager,831,without_possible_reposts,country_category,-29.666604
+media marketing,385,without_possible_reposts,country_category,-27.100448
+medical,376,without_possible_reposts,country_category,-3.699535
+meta,421,without_possible_reposts,country_category,30.039326
+microsoft,383,without_possible_reposts,country_category,33.967645
+mobile,964,without_possible_reposts,country_category,3.77157
+mobile app,468,without_possible_reposts,country_category,5.276463
+model,435,without_possible_reposts,country_category,18.337629
+native,610,without_possible_reposts,country_category,-7.615947
+net,320,without_possible_reposts,country_category,5.286742
+new,1124,without_possible_reposts,country_category,17.703238
+no,265,without_possible_reposts,country_category,16.677868
+office,301,without_possible_reposts,country_category,16.143811
+ongoing,376,without_possible_reposts,country_category,-1.343531
+online,1159,without_possible_reposts,country_category,-6.682066
+only,417,without_possible_reposts,country_category,1.600814
+operations,290,without_possible_reposts,country_category,-19.407306
+opportunity,294,without_possible_reposts,country_category,-31.111299
+optimization,650,without_possible_reposts,country_category,9.091442
+outreach,376,without_possible_reposts,country_category,-29.040374
+page,1341,without_possible_reposts,country_category,0.827716
+pages,365,without_possible_reposts,country_category,-6.209683
+part time,535,without_possible_reposts,country_category,-14.869948
+paste,221,without_possible_reposts,country_category,-14.110617
+pdf,369,without_possible_reposts,country_category,-6.231163
+personal,587,without_possible_reposts,country_category,-0.162103
+photo,394,without_possible_reposts,country_category,-23.018761
+photographer,330,without_possible_reposts,country_category,79.261053
+php,424,without_possible_reposts,country_category,-3.364826
+plan,316,without_possible_reposts,country_category,23.445231
+platform,725,without_possible_reposts,country_category,13.414907
+podcast,365,without_possible_reposts,country_category,-20.636835
+post,348,without_possible_reposts,country_category,-16.528287
+power,363,without_possible_reposts,country_category,6.676647
+presentation,391,without_possible_reposts,country_category,26.034417
+pro,387,without_possible_reposts,country_category,0.659609
+product,1847,without_possible_reposts,country_category,3.087343
+products,330,without_possible_reposts,country_category,-10.451703
+professional,590,without_possible_reposts,country_category,15.066416
+project,2373,without_possible_reposts,country_category,3.010183
+project manager,436,without_possible_reposts,country_category,-17.816517
+projects,338,without_possible_reposts,country_category,-1.453837
+python,804,without_possible_reposts,country_category,-7.570219
+qa,279,without_possible_reposts,country_category,-30.870786
+quickbooks,391,without_possible_reposts,country_category,-22.581351
+react,1076,without_possible_reposts,country_category,4.725473
+real estate,1239,without_possible_reposts,country_category,-25.077724
+redesign,377,without_possible_reposts,country_category,7.479587
+reels,311,without_possible_reposts,country_category,-32.037941
+remote,655,without_possible_reposts,country_category,8.76885
+representative,531,without_possible_reposts,country_category,2.123254
+required,869,without_possible_reposts,country_category,4.223571
+research,1047,without_possible_reposts,country_category,-0.949172
+review,468,without_possible_reposts,country_category,33.497695
+s,677,without_possible_reposts,country_category,6.43519
+saas,654,without_possible_reposts,country_category,4.02853
+sales,1904,without_possible_reposts,country_category,14.472537
+scraping,318,without_possible_reposts,country_category,-43.136315
+script,477,without_possible_reposts,country_category,8.905386
+search,309,without_possible_reposts,country_category,2.165749
+seeking,1220,without_possible_reposts,country_category,10.030179
+senior,893,without_possible_reposts,country_category,28.085331
+seo,1686,without_possible_reposts,country_category,-19.397923
+server,323,without_possible_reposts,country_category,22.056281
+service,902,without_possible_reposts,country_category,-18.18218
+services,454,without_possible_reposts,country_category,11.61174
+set up,492,without_possible_reposts,country_category,14.874843
+setup,1018,without_possible_reposts,country_category,15.62532
+shopify,2277,without_possible_reposts,country_category,-7.964917
+shopify website,297,without_possible_reposts,country_category,-9.020226
+short,774,without_possible_reposts,country_category,-9.474289
+simple,562,without_possible_reposts,country_category,10.258151
+site,1110,without_possible_reposts,country_category,3.066612
+skills,327,without_possible_reposts,country_category,-12.808971
+small,583,without_possible_reposts,country_category,4.291394
+social media,3521,without_possible_reposts,country_category,-26.322969
+software,931,without_possible_reposts,country_category,11.443013
+someone,413,without_possible_reposts,country_category,-5.370227
+sourcing,301,without_possible_reposts,country_category,-23.997989
+spanish,710,without_possible_reposts,country_category,-19.877102
+speaking,327,without_possible_reposts,country_category,-15.484542
+specialist,4375,without_possible_reposts,country_category,-4.883462
+stack developer,654,without_possible_reposts,country_category,7.884376
+startup,547,without_possible_reposts,country_category,20.410809
+store,804,without_possible_reposts,country_category,-1.112202
+strategist,340,without_possible_reposts,country_category,30.219787
+strategy,369,without_possible_reposts,country_category,50.897928
+support,1338,without_possible_reposts,country_category,6.883945
+system,545,without_possible_reposts,country_category,28.588912
+tax,631,without_possible_reposts,country_category,77.814283
+team,565,without_possible_reposts,country_category,-1.118354
+tech,477,without_possible_reposts,country_category,9.494604
+technical,504,without_possible_reposts,country_category,11.878874
+template,420,without_possible_reposts,country_category,1.908195
+testing,278,without_possible_reposts,country_category,-11.716614
+text,348,without_possible_reposts,country_category,-10.658037
+that,457,without_possible_reposts,country_category,-1.618474
+theme,302,without_possible_reposts,country_category,-6.069985
+tiktok,829,without_possible_reposts,country_category,-20.691156
+translation,582,without_possible_reposts,country_category,14.768497
+translator,443,without_possible_reposts,country_category,1.147073
+tutor,316,without_possible_reposts,country_category,-22.586086
+ui,1081,without_possible_reposts,country_category,10.310087
+ui ux,522,without_possible_reposts,country_category,9.233172
+uk,334,without_possible_reposts,country_category,14.271357
+up,1141,without_possible_reposts,country_category,9.148595
+update,553,without_possible_reposts,country_category,4.516837
+urgent,402,without_possible_reposts,country_category,7.594516
+us,704,without_possible_reposts,country_category,12.177035
+using,752,without_possible_reposts,country_category,0.144632
+ux designer,394,without_possible_reposts,country_category,6.447293
+ux ui,296,without_possible_reposts,country_category,21.219392
+va,663,without_possible_reposts,country_category,-47.669661
+video,4415,without_possible_reposts,country_category,-15.467977
+video editing,437,without_possible_reposts,country_category,-17.039978
+video editor,1910,without_possible_reposts,country_category,-24.477439
+videographer,406,without_possible_reposts,country_category,120.967682
+videos,598,without_possible_reposts,country_category,-11.768322
+virtual,2281,without_possible_reposts,country_category,-35.686913
+virtual assistant,1749,without_possible_reposts,country_category,-37.824805
+voice,403,without_possible_reposts,country_category,29.683444
+wanted,735,without_possible_reposts,country_category,-15.417025
+web,2568,without_possible_reposts,country_category,-1.867359
+web designer,341,without_possible_reposts,country_category,-2.261653
+web developer,498,without_possible_reposts,country_category,2.313759
+webflow,570,without_possible_reposts,country_category,8.641015
+website,5642,without_possible_reposts,country_category,-1.454503
+website design,362,without_possible_reposts,country_category,-5.075684
+website development,381,without_possible_reposts,country_category,-4.284422
+websites,317,without_possible_reposts,country_category,-23.110949
+who,424,without_possible_reposts,country_category,1.451591
+wix,324,without_possible_reposts,country_category,-9.891479
+woocommerce,296,without_possible_reposts,country_category,-7.511978
+word,296,without_possible_reposts,country_category,-0.529075
+wordpress,2608,without_possible_reposts,country_category,-8.781815
+wordpress developer,347,without_possible_reposts,country_category,-7.752092
+wordpress site,316,without_possible_reposts,country_category,-3.443261
+wordpress website,405,without_possible_reposts,country_category,-7.288631
+work,864,without_possible_reposts,country_category,5.254234
+write,441,without_possible_reposts,country_category,8.538133
+writer,1716,without_possible_reposts,country_category,3.949684
+writers,262,without_possible_reposts,country_category,5.152418
+writing,582,without_possible_reposts,country_category,1.883116
+youtube,1833,without_possible_reposts,country_category,-7.040497
+youtube channel,464,without_possible_reposts,country_category,7.69393
+2,434,low_end_of_range,raw,4.77225
+3d,845,low_end_of_range,raw,8.399936
+account,738,low_end_of_range,raw,-23.180787
+accountant,443,low_end_of_range,raw,1.800549
+accounting,351,low_end_of_range,raw,-6.126612
+accounts,356,low_end_of_range,raw,-53.411826
+ad,947,low_end_of_range,raw,-2.547765
+admin,473,low_end_of_range,raw,-32.733567
+administrative,321,low_end_of_range,raw,-19.759456
+ads,2688,low_end_of_range,raw,-6.559903
+ads expert,371,low_end_of_range,raw,9.217185
+advertising,372,low_end_of_range,raw,-3.449147
+agency,1149,low_end_of_range,raw,-16.49668
+agent,490,low_end_of_range,raw,-21.556251
+ai,1700,low_end_of_range,raw,15.352921
+amazon,979,low_end_of_range,raw,-24.763262
+analysis,463,low_end_of_range,raw,21.766365
+analyst,647,low_end_of_range,raw,25.845256
+analytics,410,low_end_of_range,raw,47.952196
+android,364,low_end_of_range,raw,19.199695
+animation,432,low_end_of_range,raw,16.832048
+api,843,low_end_of_range,raw,26.375105
+app,2586,low_end_of_range,raw,18.324256
+app developer,305,low_end_of_range,raw,20.871021
+application,816,low_end_of_range,raw,19.550766
+appointment,726,low_end_of_range,raw,-50.865046
+appointment setter,550,low_end_of_range,raw,-50.686658
+architect,326,low_end_of_range,raw,70.40821
+artist,558,low_end_of_range,raw,26.171919
+assistance,552,low_end_of_range,raw,0.917478
+assistant,3860,low_end_of_range,raw,-50.480867
+audio,321,low_end_of_range,raw,1.842813
+automation,828,low_end_of_range,raw,12.35202
+aws,449,low_end_of_range,raw,53.681024
+b2b,568,low_end_of_range,raw,-11.786707
+backend,402,low_end_of_range,raw,39.757826
+based,883,low_end_of_range,raw,8.859495
+blockchain,345,low_end_of_range,raw,90.664355
+blog,537,low_end_of_range,raw,-10.350331
+book,670,low_end_of_range,raw,5.172335
+bookkeeper,530,low_end_of_range,raw,-18.238847
+brand,1432,low_end_of_range,raw,10.144425
+branding,309,low_end_of_range,raw,22.833312
+build,1650,low_end_of_range,raw,16.68606
+builder,445,low_end_of_range,raw,-18.058494
+building,504,low_end_of_range,raw,-14.379401
+business,2530,low_end_of_range,raw,4.042223
+buyer,308,low_end_of_range,raw,-11.211964
+call,443,low_end_of_range,raw,-34.881245
+calling,383,low_end_of_range,raw,-45.497289
+campaign,660,low_end_of_range,raw,-1.932372
+can,593,low_end_of_range,raw,-3.761269
+canva,302,low_end_of_range,raw,-30.492909
+channel,793,low_end_of_range,raw,-3.28667
+client,339,low_end_of_range,raw,-10.504528
+cloud,309,low_end_of_range,raw,48.670177
+code,423,low_end_of_range,raw,18.444595
+cold,962,low_end_of_range,raw,-47.649101
+cold caller,317,low_end_of_range,raw,-55.268432
+cold calling,304,low_end_of_range,raw,-47.746861
+com,318,low_end_of_range,raw,3.993388
+company,1835,low_end_of_range,raw,4.445941
+construction,339,low_end_of_range,raw,20.001195
+consultant,885,low_end_of_range,raw,79.892651
+consultation,325,low_end_of_range,raw,99.053383
+content,3048,low_end_of_range,raw,-17.86822
+content creator,670,low_end_of_range,raw,-31.390071
+content writer,501,low_end_of_range,raw,-9.233935
+contract,371,low_end_of_range,raw,76.304796
+conversion,392,low_end_of_range,raw,28.736466
+coordinator,339,low_end_of_range,raw,-20.679958
+copy,836,low_end_of_range,raw,-28.282522
+copywriter,607,low_end_of_range,raw,27.422483
+course,369,low_end_of_range,raw,-1.11709
+create,2065,low_end_of_range,raw,7.128942
+creation,1139,low_end_of_range,raw,-11.636529
+creative,754,low_end_of_range,raw,-3.270328
+creator,1232,low_end_of_range,raw,-25.197365
+crm,535,low_end_of_range,raw,5.243755
+crypto,404,low_end_of_range,raw,12.98911
+custom,695,low_end_of_range,raw,28.045934
+customer,1029,low_end_of_range,raw,-38.632265
+customer service,492,low_end_of_range,raw,-48.460094
+data,3032,low_end_of_range,raw,-22.916288
+data entry,769,low_end_of_range,raw,-46.985851
+database,357,low_end_of_range,raw,13.641196
+de,498,low_end_of_range,raw,-20.867888
+design,4583,low_end_of_range,raw,15.740645
+designer,5603,low_end_of_range,raw,10.798033
+dev,311,low_end_of_range,raw,17.823757
+develop,306,low_end_of_range,raw,25.594519
+developer,7572,low_end_of_range,raw,24.973709
+development,2493,low_end_of_range,raw,12.629986
+different,327,low_end_of_range,raw,-48.161645
+digital,1325,low_end_of_range,raw,-10.928081
+digital marketing,657,low_end_of_range,raw,-14.990123
+document,380,low_end_of_range,raw,23.599041
+e,1093,low_end_of_range,raw,-3.768036
+e commerce,800,low_end_of_range,raw,-4.678406
+ecommerce,657,low_end_of_range,raw,-6.456168
+edit,414,low_end_of_range,raw,0.129061
+editing,1019,low_end_of_range,raw,-13.919499
+editor,3052,low_end_of_range,raw,-17.993034
+email,1752,low_end_of_range,raw,-8.016292
+email marketing,526,low_end_of_range,raw,-2.550439
+end,637,low_end_of_range,raw,24.526782
+engineer,1509,low_end_of_range,raw,47.97567
+english,1512,low_end_of_range,raw,-24.06808
+event,401,low_end_of_range,raw,37.121771
+excel,959,low_end_of_range,raw,-34.039251
+executive,539,low_end_of_range,raw,-30.016065
+existing,495,low_end_of_range,raw,21.929737
+experience,1385,low_end_of_range,raw,12.3741
+experienced,1851,low_end_of_range,raw,4.546906
+expert,7041,low_end_of_range,raw,9.765796
+expertise,366,low_end_of_range,raw,26.071741
+facebook,1791,low_end_of_range,raw,-19.329013
+facebook ads,663,low_end_of_range,raw,-15.815554
+figma,558,low_end_of_range,raw,11.112277
+file,410,low_end_of_range,raw,10.407413
+financial,553,low_end_of_range,raw,56.182146
+fix,481,low_end_of_range,raw,16.409359
+flutter,303,low_end_of_range,raw,3.311578
+form,564,low_end_of_range,raw,-11.993999
+freelance,457,low_end_of_range,raw,-2.080806
+freelancer,300,low_end_of_range,raw,7.428179
+french,324,low_end_of_range,raw,-17.674705
+front end,427,low_end_of_range,raw,20.178351
+full stack,1160,low_end_of_range,raw,30.681162
+full time,406,low_end_of_range,raw,-30.514805
+game,535,low_end_of_range,raw,24.561879
+german,409,low_end_of_range,raw,-4.614544
+google,2751,low_end_of_range,raw,3.968024
+google ads,919,low_end_of_range,raw,9.081078
+graphic design,405,low_end_of_range,raw,-0.550893
+graphic designer,1792,low_end_of_range,raw,0.494372
+graphics,329,low_end_of_range,raw,9.305181
+growth,769,low_end_of_range,raw,-32.30897
+health,353,low_end_of_range,raw,5.069299
+help,2180,low_end_of_range,raw,17.413625
+high,618,low_end_of_range,raw,-7.118599
+hiring,300,low_end_of_range,raw,-12.598204
+home,375,low_end_of_range,raw,-1.774878
+hubspot,404,low_end_of_range,raw,40.619429
+illustrator,320,low_end_of_range,raw,5.635519
+image,412,low_end_of_range,raw,-9.009961
+implementation,305,low_end_of_range,raw,41.457821
+instagram,996,low_end_of_range,raw,-36.51899
+integration,975,low_end_of_range,raw,28.728499
+into,650,low_end_of_range,raw,-19.673143
+ios,410,low_end_of_range,raw,26.621904
+it,649,low_end_of_range,raw,-16.604798
+job,789,low_end_of_range,raw,-7.019091
+join,326,low_end_of_range,raw,-20.74025
+js,742,low_end_of_range,raw,18.955127
+landing page,525,low_end_of_range,raw,14.58859
+lead,1481,low_end_of_range,raw,-45.615797
+lead generation,881,low_end_of_range,raw,-53.240356
+leads,309,low_end_of_range,raw,-50.921377
+legal,413,low_end_of_range,raw,58.225805
+level,399,low_end_of_range,raw,-3.799732
+linkedin,672,low_end_of_range,raw,-29.32618
+list,446,low_end_of_range,raw,-50.250603
+logo,1466,low_end_of_range,raw,19.034886
+logo design,394,low_end_of_range,raw,21.163047
+long term,601,low_end_of_range,raw,-20.406056
+make,519,low_end_of_range,raw,3.422522
+management,1493,low_end_of_range,raw,-18.194582
+manager,3879,low_end_of_range,raw,-23.140208
+market,531,low_end_of_range,raw,-2.321602
+marketer,376,low_end_of_range,raw,-15.820958
+marketing,4323,low_end_of_range,raw,-10.741905
+marketing agency,342,low_end_of_range,raw,-14.079765
+marketing expert,316,low_end_of_range,raw,-6.043204
+marketing specialist,456,low_end_of_range,raw,-13.542032
+me,485,low_end_of_range,raw,-0.303166
+media content,347,low_end_of_range,raw,-25.785068
+media manager,902,low_end_of_range,raw,-36.453282
+media marketing,401,low_end_of_range,raw,-36.781695
+medical,383,low_end_of_range,raw,-9.071335
+meta,428,low_end_of_range,raw,-5.328031
+microsoft,401,low_end_of_range,raw,60.587826
+mobile,994,low_end_of_range,raw,17.450643
+mobile app,479,low_end_of_range,raw,21.365591
+model,438,low_end_of_range,raw,29.476804
+native,632,low_end_of_range,raw,2.823135
+net,324,low_end_of_range,raw,35.217974
+new,1193,low_end_of_range,raw,13.829228
+no,300,low_end_of_range,raw,10.988818
+office,310,low_end_of_range,raw,17.369903
+ongoing,382,low_end_of_range,raw,6.618831
+online,1243,low_end_of_range,raw,-15.500134
+only,430,low_end_of_range,raw,-14.575888
+operations,317,low_end_of_range,raw,-25.740161
+opportunity,306,low_end_of_range,raw,-45.781008
+optimization,660,low_end_of_range,raw,6.756978
+outreach,379,low_end_of_range,raw,-48.362562
+page,1392,low_end_of_range,raw,1.855042
+pages,366,low_end_of_range,raw,4.190181
+part time,549,low_end_of_range,raw,-11.762085
+paste,485,low_end_of_range,raw,-50.454626
+pdf,383,low_end_of_range,raw,-1.472429
+personal,596,low_end_of_range,raw,-17.564107
+photo,397,low_end_of_range,raw,-6.287477
+photographer,332,low_end_of_range,raw,76.299491
+php,429,low_end_of_range,raw,6.486532
+plan,321,low_end_of_range,raw,34.602766
+platform,744,low_end_of_range,raw,17.489099
+podcast,370,low_end_of_range,raw,-7.733313
+post,352,low_end_of_range,raw,-19.549204
+power,365,low_end_of_range,raw,26.909884
+presentation,391,low_end_of_range,raw,38.04384
+pro,404,low_end_of_range,raw,1.176081
+product,1872,low_end_of_range,raw,0.605817
+products,339,low_end_of_range,raw,-17.189055
+professional,592,low_end_of_range,raw,13.526486
+project,2444,low_end_of_range,raw,14.313031
+project manager,441,low_end_of_range,raw,-0.10288
+projects,342,low_end_of_range,raw,6.84461
+python,824,low_end_of_range,raw,17.320027
+qa,304,low_end_of_range,raw,0.238067
+quickbooks,394,low_end_of_range,raw,-1.44353
+react,1098,low_end_of_range,raw,25.675431
+real estate,1277,low_end_of_range,raw,-34.030931
+redesign,382,low_end_of_range,raw,19.111962
+reels,316,low_end_of_range,raw,-38.526323
+remote,714,low_end_of_range,raw,20.133232
+representative,557,low_end_of_range,raw,-23.474926
+required,922,low_end_of_range,raw,-6.17625
+research,1075,low_end_of_range,raw,-28.144905
+review,474,low_end_of_range,raw,51.105748
+s,720,low_end_of_range,raw,16.14851
+saas,683,low_end_of_range,raw,12.214608
+sales,1999,low_end_of_range,raw,-19.108249
+scraping,325,low_end_of_range,raw,-37.718023
+script,491,low_end_of_range,raw,29.709517
+search,316,low_end_of_range,raw,-3.657931
+seeking,1248,low_end_of_range,raw,10.898844
+senior,928,low_end_of_range,raw,63.403039
+seo,1703,low_end_of_range,raw,-23.925132
+server,325,low_end_of_range,raw,51.576685
+service,934,low_end_of_range,raw,-27.316493
+services,457,low_end_of_range,raw,11.116237
+set up,493,low_end_of_range,raw,15.015822
+setup,1024,low_end_of_range,raw,17.508304
+shopify,2323,low_end_of_range,raw,-7.754127
+shopify website,314,low_end_of_range,raw,-2.27303
+short,834,low_end_of_range,raw,-13.286247
+simple,702,low_end_of_range,raw,-22.570756
+site,1126,low_end_of_range,raw,15.293737
+skills,337,low_end_of_range,raw,-7.36912
+small,588,low_end_of_range,raw,11.900001
+social media,3657,low_end_of_range,raw,-31.589643
+software,967,low_end_of_range,raw,25.88513
+someone,441,low_end_of_range,raw,-17.55443
+sourcing,301,low_end_of_range,raw,-30.303301
+spanish,797,low_end_of_range,raw,-17.579896
+speaking,331,low_end_of_range,raw,-24.790622
+specialist,4712,low_end_of_range,raw,-13.085763
+stack developer,693,low_end_of_range,raw,28.728192
+startup,552,low_end_of_range,raw,21.308736
+store,894,low_end_of_range,raw,-19.461833
+strategist,348,low_end_of_range,raw,17.645143
+strategy,369,low_end_of_range,raw,41.146104
+support,1365,low_end_of_range,raw,-9.627059
+system,556,low_end_of_range,raw,40.281721
+tax,640,low_end_of_range,raw,84.578213
+team,603,low_end_of_range,raw,-12.384614
+tech,480,low_end_of_range,raw,7.874211
+technical,506,low_end_of_range,raw,16.653035
+template,423,low_end_of_range,raw,11.304564
+testing,328,low_end_of_range,raw,20.274509
+text,480,low_end_of_range,raw,-30.729335
+that,468,low_end_of_range,raw,0.344831
+theme,304,low_end_of_range,raw,2.592278
+tiktok,852,low_end_of_range,raw,-31.175204
+translation,618,low_end_of_range,raw,3.787194
+translator,454,low_end_of_range,raw,-1.019203
+tutor,319,low_end_of_range,raw,-12.641667
+ui,1103,low_end_of_range,raw,25.867548
+ui ux,535,low_end_of_range,raw,24.599632
+uk,340,low_end_of_range,raw,6.793689
+up,1156,low_end_of_range,raw,9.52204
+update,557,low_end_of_range,raw,22.597655
+urgent,430,low_end_of_range,raw,10.365857
+us,720,low_end_of_range,raw,3.602361
+using,758,low_end_of_range,raw,8.705305
+ux designer,404,low_end_of_range,raw,19.9836
+ux ui,301,low_end_of_range,raw,40.229652
+va,675,low_end_of_range,raw,-62.807287
+video,4561,low_end_of_range,raw,-13.03648
+video editing,456,low_end_of_range,raw,-23.120199
+video editor,2007,low_end_of_range,raw,-22.412653
+videographer,409,low_end_of_range,raw,103.241465
+videos,610,low_end_of_range,raw,-20.126994
+virtual,2404,low_end_of_range,raw,-53.581016
+virtual assistant,1848,low_end_of_range,raw,-57.554671
+voice,415,low_end_of_range,raw,36.398346
+wanted,768,low_end_of_range,raw,-29.784256
+web,2623,low_end_of_range,raw,8.127588
+web designer,349,low_end_of_range,raw,4.994506
+web developer,508,low_end_of_range,raw,12.952205
+webflow,579,low_end_of_range,raw,18.163199
+website,5770,low_end_of_range,raw,7.486755
+website design,376,low_end_of_range,raw,3.426669
+website development,389,low_end_of_range,raw,3.347239
+websites,494,low_end_of_range,raw,-42.186257
+who,451,low_end_of_range,raw,-9.235336
+wix,327,low_end_of_range,raw,0.537582
+woocommerce,302,low_end_of_range,raw,2.775903
+word,304,low_end_of_range,raw,1.729671
+wordpress,2648,low_end_of_range,raw,3.939507
+wordpress developer,350,low_end_of_range,raw,3.891737
+wordpress site,320,low_end_of_range,raw,7.966122
+wordpress website,414,low_end_of_range,raw,5.266238
+work,913,low_end_of_range,raw,-4.980824
+write,493,low_end_of_range,raw,12.763109
+writer,1831,low_end_of_range,raw,14.112566
+writers,301,low_end_of_range,raw,-5.888761
+writing,642,low_end_of_range,raw,2.285048
+youtube,2455,low_end_of_range,raw,-20.60534
+youtube channel,606,low_end_of_range,raw,-3.820072
+2,434,low_end_of_range,country_category,1.862062
+3d,845,low_end_of_range,country_category,1.287198
+account,738,low_end_of_range,country_category,-16.128427
+accountant,443,low_end_of_range,country_category,-12.738914
+accounting,351,low_end_of_range,country_category,-19.015884
+accounts,356,low_end_of_range,country_category,-47.764457
+ad,947,low_end_of_range,country_category,11.973429
+admin,473,low_end_of_range,country_category,-5.795934
+administrative,321,low_end_of_range,country_category,35.681543
+ads,2688,low_end_of_range,country_category,11.144949
+ads expert,371,low_end_of_range,country_category,30.090322
+advertising,372,low_end_of_range,country_category,10.120515
+agency,1149,low_end_of_range,country_category,-4.517485
+agent,490,low_end_of_range,country_category,-9.564445
+ai,1700,low_end_of_range,country_category,0.68102
+amazon,979,low_end_of_range,country_category,-11.794383
+analysis,463,low_end_of_range,country_category,7.158185
+analyst,647,low_end_of_range,country_category,12.650907
+analytics,410,low_end_of_range,country_category,46.3724
+android,364,low_end_of_range,country_category,1.678937
+animation,432,low_end_of_range,country_category,23.142116
+api,843,low_end_of_range,country_category,3.58275
+app,2586,low_end_of_range,country_category,5.048798
+app developer,305,low_end_of_range,country_category,-0.521182
+application,816,low_end_of_range,country_category,4.616602
+appointment,726,low_end_of_range,country_category,-24.486997
+appointment setter,550,low_end_of_range,country_category,-22.07451
+architect,326,low_end_of_range,country_category,48.010903
+artist,558,low_end_of_range,country_category,9.82749
+assistance,552,low_end_of_range,country_category,1.204945
+assistant,3860,low_end_of_range,country_category,-32.157602
+audio,321,low_end_of_range,country_category,-12.600282
+automation,828,low_end_of_range,country_category,-6.817807
+aws,449,low_end_of_range,country_category,26.02593
+b2b,568,low_end_of_range,country_category,10.147735
+backend,402,low_end_of_range,country_category,22.436925
+based,883,low_end_of_range,country_category,11.745033
+blockchain,345,low_end_of_range,country_category,53.25379
+blog,537,low_end_of_range,country_category,-20.032223
+book,670,low_end_of_range,country_category,-5.4142
+bookkeeper,530,low_end_of_range,country_category,-36.355645
+brand,1432,low_end_of_range,country_category,11.990318
+branding,309,low_end_of_range,country_category,11.598912
+build,1650,low_end_of_range,country_category,4.547733
+builder,445,low_end_of_range,country_category,-21.606193
+building,504,low_end_of_range,country_category,-10.597169
+business,2530,low_end_of_range,country_category,3.982008
+buyer,308,low_end_of_range,country_category,7.641555
+call,443,low_end_of_range,country_category,-13.319795
+calling,383,low_end_of_range,country_category,-19.984055
+campaign,660,low_end_of_range,country_category,12.848608
+can,593,low_end_of_range,country_category,1.877719
+canva,302,low_end_of_range,country_category,-34.482363
+channel,793,low_end_of_range,country_category,-2.249383
+client,339,low_end_of_range,country_category,-8.282821
+cloud,309,low_end_of_range,country_category,26.07572
+code,423,low_end_of_range,country_category,-0.717382
+cold,962,low_end_of_range,country_category,-21.909988
+cold caller,317,low_end_of_range,country_category,-29.365231
+cold calling,304,low_end_of_range,country_category,-21.365672
+com,318,low_end_of_range,country_category,-5.915268
+company,1835,low_end_of_range,country_category,5.237363
+construction,339,low_end_of_range,country_category,6.977398
+consultant,885,low_end_of_range,country_category,73.809174
+consultation,325,low_end_of_range,country_category,80.296785
+content,3048,low_end_of_range,country_category,-16.064513
+content creator,670,low_end_of_range,country_category,-22.241192
+content writer,501,low_end_of_range,country_category,-17.180021
+contract,371,low_end_of_range,country_category,23.89185
+conversion,392,low_end_of_range,country_category,26.618738
+coordinator,339,low_end_of_range,country_category,-20.327628
+copy,836,low_end_of_range,country_category,-10.776394
+copywriter,607,low_end_of_range,country_category,24.078294
+course,369,low_end_of_range,country_category,3.896001
+create,2065,low_end_of_range,country_category,1.207597
+creation,1139,low_end_of_range,country_category,-11.839844
+creative,754,low_end_of_range,country_category,-5.650206
+creator,1232,low_end_of_range,country_category,-18.709247
+crm,535,low_end_of_range,country_category,0.228024
+crypto,404,low_end_of_range,country_category,9.876438
+custom,695,low_end_of_range,country_category,12.844909
+customer,1029,low_end_of_range,country_category,-26.379568
+customer service,492,low_end_of_range,country_category,-36.090991
+data,3032,low_end_of_range,country_category,-16.824129
+data entry,769,low_end_of_range,country_category,-15.213934
+database,357,low_end_of_range,country_category,-4.998327
+de,498,low_end_of_range,country_category,-14.157312
+design,4583,low_end_of_range,country_category,3.263109
+designer,5603,low_end_of_range,country_category,-1.709755
+dev,311,low_end_of_range,country_category,6.151042
+develop,306,low_end_of_range,country_category,16.236834
+developer,7572,low_end_of_range,country_category,8.357833
+development,2493,low_end_of_range,country_category,7.492243
+different,327,low_end_of_range,country_category,-31.124368
+digital,1325,low_end_of_range,country_category,-1.775732
+digital marketing,657,low_end_of_range,country_category,1.148008
+document,380,low_end_of_range,country_category,4.167958
+e,1093,low_end_of_range,country_category,3.176959
+e commerce,800,low_end_of_range,country_category,2.718016
+ecommerce,657,low_end_of_range,country_category,1.955009
+edit,414,low_end_of_range,country_category,-6.661266
+editing,1019,low_end_of_range,country_category,-14.625179
+editor,3052,low_end_of_range,country_category,-18.737729
+email,1752,low_end_of_range,country_category,1.359759
+email marketing,526,low_end_of_range,country_category,11.688504
+end,637,low_end_of_range,country_category,12.268817
+engineer,1509,low_end_of_range,country_category,22.159226
+english,1512,low_end_of_range,country_category,-16.736321
+event,401,low_end_of_range,country_category,34.41331
+excel,959,low_end_of_range,country_category,-30.342358
+executive,539,low_end_of_range,country_category,3.207392
+existing,495,low_end_of_range,country_category,8.865499
+experience,1385,low_end_of_range,country_category,6.966658
+experienced,1851,low_end_of_range,country_category,4.350415
+expert,7041,low_end_of_range,country_category,9.339789
+expertise,366,low_end_of_range,country_category,18.448524
+facebook,1791,low_end_of_range,country_category,-4.770226
+facebook ads,663,low_end_of_range,country_category,0.875686
+figma,558,low_end_of_range,country_category,-0.225075
+file,410,low_end_of_range,country_category,5.911273
+financial,553,low_end_of_range,country_category,44.098657
+fix,481,low_end_of_range,country_category,6.654113
+flutter,303,low_end_of_range,country_category,-10.827682
+form,564,low_end_of_range,country_category,-12.039928
+freelance,457,low_end_of_range,country_category,-1.206944
+freelancer,300,low_end_of_range,country_category,21.115951
+french,324,low_end_of_range,country_category,-13.772405
+front end,427,low_end_of_range,country_category,7.068785
+full stack,1160,low_end_of_range,country_category,16.160138
+full time,406,low_end_of_range,country_category,-25.344231
+game,535,low_end_of_range,country_category,8.924895
+german,409,low_end_of_range,country_category,2.690028
+google,2751,low_end_of_range,country_category,11.638212
+google ads,919,low_end_of_range,country_category,30.389915
+graphic design,405,low_end_of_range,country_category,-12.193555
+graphic designer,1792,low_end_of_range,country_category,-11.884012
+graphics,329,low_end_of_range,country_category,-2.741296
+growth,769,low_end_of_range,country_category,-23.188023
+health,353,low_end_of_range,country_category,5.459567
+help,2180,low_end_of_range,country_category,9.889382
+high,618,low_end_of_range,country_category,-3.069557
+hiring,300,low_end_of_range,country_category,-6.349605
+home,375,low_end_of_range,country_category,-0.79935
+hubspot,404,low_end_of_range,country_category,31.211748
+illustrator,320,low_end_of_range,country_category,-6.63316
+image,412,low_end_of_range,country_category,-15.717931
+implementation,305,low_end_of_range,country_category,27.679571
+instagram,996,low_end_of_range,country_category,-26.724785
+integration,975,low_end_of_range,country_category,7.774003
+into,650,low_end_of_range,country_category,-16.979661
+ios,410,low_end_of_range,country_category,7.792646
+it,649,low_end_of_range,country_category,-3.695856
+job,789,low_end_of_range,country_category,4.008089
+join,326,low_end_of_range,country_category,-13.329478
+js,742,low_end_of_range,country_category,8.981682
+landing page,525,low_end_of_range,country_category,4.191845
+lead,1481,low_end_of_range,country_category,-27.295854
+lead generation,881,low_end_of_range,country_category,-32.692448
+leads,309,low_end_of_range,country_category,-30.626367
+legal,413,low_end_of_range,country_category,-17.525544
+level,399,low_end_of_range,country_category,-3.825233
+linkedin,672,low_end_of_range,country_category,-17.048446
+list,446,low_end_of_range,country_category,-39.94818
+logo,1466,low_end_of_range,country_category,5.645114
+logo design,394,low_end_of_range,country_category,6.687455
+long term,601,low_end_of_range,country_category,-17.22551
+make,519,low_end_of_range,country_category,-6.001797
+management,1493,low_end_of_range,country_category,-12.254302
+manager,3879,low_end_of_range,country_category,-18.018661
+market,531,low_end_of_range,country_category,3.067915
+marketer,376,low_end_of_range,country_category,-3.553736
+marketing,4323,low_end_of_range,country_category,3.686615
+marketing agency,342,low_end_of_range,country_category,3.77238
+marketing expert,316,low_end_of_range,country_category,12.888498
+marketing specialist,456,low_end_of_range,country_category,0.749904
+me,485,low_end_of_range,country_category,0.570574
+media content,347,low_end_of_range,country_category,-16.511995
+media manager,902,low_end_of_range,country_category,-26.099481
+media marketing,401,low_end_of_range,country_category,-26.292563
+medical,383,low_end_of_range,country_category,-7.144314
+meta,428,low_end_of_range,country_category,9.392368
+microsoft,401,low_end_of_range,country_category,46.903735
+mobile,994,low_end_of_range,country_category,3.610077
+mobile app,479,low_end_of_range,country_category,5.383478
+model,438,low_end_of_range,country_category,14.756727
+native,632,low_end_of_range,country_category,-0.533548
+net,324,low_end_of_range,country_category,13.50915
+new,1193,low_end_of_range,country_category,14.460047
+no,300,low_end_of_range,country_category,7.603499
+office,310,low_end_of_range,country_category,23.740955
+ongoing,382,low_end_of_range,country_category,1.856628
+online,1243,low_end_of_range,country_category,-8.72545
+only,430,low_end_of_range,country_category,-4.994714
+operations,317,low_end_of_range,country_category,-15.487066
+opportunity,306,low_end_of_range,country_category,-38.763793
+optimization,660,low_end_of_range,country_category,7.426734
+outreach,379,low_end_of_range,country_category,-28.150485
+page,1392,low_end_of_range,country_category,-3.785429
+pages,366,low_end_of_range,country_category,-3.10532
+part time,549,low_end_of_range,country_category,-4.15427
+paste,485,low_end_of_range,country_category,-32.932974
+pdf,383,low_end_of_range,country_category,-5.51313
+personal,596,low_end_of_range,country_category,-1.420429
+photo,397,low_end_of_range,country_category,-22.352709
+photographer,332,low_end_of_range,country_category,72.952601
+php,429,low_end_of_range,country_category,-2.324993
+plan,321,low_end_of_range,country_category,19.293074
+platform,744,low_end_of_range,country_category,10.718055
+podcast,370,low_end_of_range,country_category,-20.461509
+post,352,low_end_of_range,country_category,-18.047938
+power,365,low_end_of_range,country_category,8.187848
+presentation,391,low_end_of_range,country_category,26.878551
+pro,404,low_end_of_range,country_category,-0.920096
+product,1872,low_end_of_range,country_category,2.57928
+products,339,low_end_of_range,country_category,-11.541088
+professional,592,low_end_of_range,country_category,10.713361
+project,2444,low_end_of_range,country_category,7.20145
+project manager,441,low_end_of_range,country_category,-10.979834
+projects,342,low_end_of_range,country_category,0.091868
+python,824,low_end_of_range,country_category,-4.027772
+qa,304,low_end_of_range,country_category,-20.045871
+quickbooks,394,low_end_of_range,country_category,-23.073771
+react,1098,low_end_of_range,country_category,12.101466
+real estate,1277,low_end_of_range,country_category,-26.408296
+redesign,382,low_end_of_range,country_category,7.053301
+reels,316,low_end_of_range,country_category,-33.345995
+remote,714,low_end_of_range,country_category,27.55368
+representative,557,low_end_of_range,country_category,14.191587
+required,922,low_end_of_range,country_category,2.448088
+research,1075,low_end_of_range,country_category,-6.425791
+review,474,low_end_of_range,country_category,34.205815
+s,720,low_end_of_range,country_category,8.38319
+saas,683,low_end_of_range,country_category,0.824817
+sales,1999,low_end_of_range,country_category,19.521326
+scraping,325,low_end_of_range,country_category,-49.228777
+script,491,low_end_of_range,country_category,8.486975
+search,316,low_end_of_range,country_category,1.394588
+seeking,1248,low_end_of_range,country_category,9.555483
+senior,928,low_end_of_range,country_category,43.356892
+seo,1703,low_end_of_range,country_category,-15.784527
+server,325,low_end_of_range,country_category,26.257422
+service,934,low_end_of_range,country_category,-16.230656
+services,457,low_end_of_range,country_category,14.291214
+set up,493,low_end_of_range,country_category,13.707482
+setup,1024,low_end_of_range,country_category,13.327407
+shopify,2323,low_end_of_range,country_category,-7.090925
+shopify website,314,low_end_of_range,country_category,-9.984757
+short,834,low_end_of_range,country_category,-8.480664
+simple,702,low_end_of_range,country_category,-10.360222
+site,1126,low_end_of_range,country_category,4.18491
+skills,337,low_end_of_range,country_category,-6.413258
+small,588,low_end_of_range,country_category,2.984464
+social media,3657,low_end_of_range,country_category,-23.108211
+software,967,low_end_of_range,country_category,8.68707
+someone,441,low_end_of_range,country_category,-13.671572
+sourcing,301,low_end_of_range,country_category,-25.694685
+spanish,797,low_end_of_range,country_category,-14.371459
+speaking,331,low_end_of_range,country_category,-9.59349
+specialist,4712,low_end_of_range,country_category,-4.77921
+stack developer,693,low_end_of_range,country_category,14.511848
+startup,552,low_end_of_range,country_category,16.141983
+store,894,low_end_of_range,country_category,-2.765102
+strategist,348,low_end_of_range,country_category,27.976211
+strategy,369,low_end_of_range,country_category,42.788937
+support,1365,low_end_of_range,country_category,12.203235
+system,556,low_end_of_range,country_category,32.246019
+tax,640,low_end_of_range,country_category,65.697115
+team,603,low_end_of_range,country_category,-5.627449
+tech,480,low_end_of_range,country_category,12.818484
+technical,506,low_end_of_range,country_category,16.864977
+template,423,low_end_of_range,country_category,0.37821
+testing,328,low_end_of_range,country_category,1.278866
+text,480,low_end_of_range,country_category,-17.479756
+that,468,low_end_of_range,country_category,-4.634532
+theme,304,low_end_of_range,country_category,-6.83503
+tiktok,852,low_end_of_range,country_category,-23.276275
+translation,618,low_end_of_range,country_category,14.936886
+translator,454,low_end_of_range,country_category,3.788673
+tutor,319,low_end_of_range,country_category,-20.839095
+ui,1103,low_end_of_range,country_category,14.350467
+ui ux,535,low_end_of_range,country_category,13.573785
+uk,340,low_end_of_range,country_category,10.824451
+up,1156,low_end_of_range,country_category,7.527052
+update,557,low_end_of_range,country_category,8.848337
+urgent,430,low_end_of_range,country_category,9.270031
+us,720,low_end_of_range,country_category,5.471496
+using,758,low_end_of_range,country_category,-0.574767
+ux designer,404,low_end_of_range,country_category,9.12338
+ux ui,301,low_end_of_range,country_category,25.493356
+va,675,low_end_of_range,country_category,-43.317205
+video,4561,low_end_of_range,country_category,-11.778772
+video editing,456,low_end_of_range,country_category,-16.798519
+video editor,2007,low_end_of_range,country_category,-20.528397
+videographer,409,low_end_of_range,country_category,118.269977
+videos,610,low_end_of_range,country_category,-14.711222
+virtual,2404,low_end_of_range,country_category,-32.283842
+virtual assistant,1848,low_end_of_range,country_category,-34.915009
+voice,415,low_end_of_range,country_category,18.320896
+wanted,768,low_end_of_range,country_category,-22.925553
+web,2623,low_end_of_range,country_category,-2.444003
+web designer,349,low_end_of_range,country_category,-6.394528
+web developer,508,low_end_of_range,country_category,1.793039
+webflow,579,low_end_of_range,country_category,7.662535
+website,5770,low_end_of_range,country_category,-3.342095
+website design,376,low_end_of_range,country_category,-8.04465
+website development,389,low_end_of_range,country_category,-6.204126
+websites,494,low_end_of_range,country_category,-32.730906
+who,451,low_end_of_range,country_category,-4.602505
+wix,327,low_end_of_range,country_category,-11.680838
+woocommerce,302,low_end_of_range,country_category,-4.370349
+word,304,low_end_of_range,country_category,0.325257
+wordpress,2648,low_end_of_range,country_category,-7.222454
+wordpress developer,350,low_end_of_range,country_category,-5.635641
+wordpress site,320,low_end_of_range,country_category,-2.372375
+wordpress website,414,low_end_of_range,country_category,-6.640967
+work,913,low_end_of_range,country_category,-1.627973
+write,493,low_end_of_range,country_category,5.431505
+writer,1831,low_end_of_range,country_category,1.285154
+writers,301,low_end_of_range,country_category,0.141203
+writing,642,low_end_of_range,country_category,-2.126197
+youtube,2455,low_end_of_range,country_category,-18.266564
+youtube channel,606,low_end_of_range,country_category,-2.434686
+2,434,high_end_of_range,raw,2.971907
+3d,845,high_end_of_range,raw,9.384454
+account,738,high_end_of_range,raw,-21.511047
+accountant,443,high_end_of_range,raw,-1.531554
+accounting,351,high_end_of_range,raw,-12.305005
+accounts,356,high_end_of_range,raw,-40.986121
+ad,947,high_end_of_range,raw,3.806992
+admin,473,high_end_of_range,raw,-43.896306
+administrative,321,high_end_of_range,raw,-38.6644
+ads,2688,high_end_of_range,raw,25.451633
+ads expert,371,high_end_of_range,raw,35.959204
+advertising,372,high_end_of_range,raw,19.935356
+agency,1149,high_end_of_range,raw,-16.746371
+agent,490,high_end_of_range,raw,-23.39933
+ai,1700,high_end_of_range,raw,21.04458
+amazon,979,high_end_of_range,raw,-21.642372
+analysis,463,high_end_of_range,raw,24.503959
+analyst,647,high_end_of_range,raw,18.579789
+analytics,410,high_end_of_range,raw,43.609222
+android,364,high_end_of_range,raw,10.338572
+animation,432,high_end_of_range,raw,14.075701
+api,843,high_end_of_range,raw,20.48383
+app,2586,high_end_of_range,raw,10.63229
+app developer,305,high_end_of_range,raw,8.508626
+application,816,high_end_of_range,raw,13.518878
+appointment,726,high_end_of_range,raw,-53.620733
+appointment setter,550,high_end_of_range,raw,-51.837902
+architect,326,high_end_of_range,raw,52.436086
+artist,558,high_end_of_range,raw,23.998811
+assistance,552,high_end_of_range,raw,0.677872
+assistant,3860,high_end_of_range,raw,-58.131535
+audio,321,high_end_of_range,raw,-6.417434
+automation,828,high_end_of_range,raw,16.999208
+aws,449,high_end_of_range,raw,36.933365
+b2b,568,high_end_of_range,raw,-9.530347
+backend,402,high_end_of_range,raw,18.095767
+based,883,high_end_of_range,raw,7.477038
+blockchain,345,high_end_of_range,raw,68.255148
+blog,537,high_end_of_range,raw,-8.805241
+book,670,high_end_of_range,raw,3.145899
+bookkeeper,530,high_end_of_range,raw,-30.919782
+brand,1432,high_end_of_range,raw,17.088836
+branding,309,high_end_of_range,raw,26.229664
+build,1650,high_end_of_range,raw,15.60527
+builder,445,high_end_of_range,raw,-16.460528
+building,504,high_end_of_range,raw,-13.182837
+business,2530,high_end_of_range,raw,6.149104
+buyer,308,high_end_of_range,raw,-3.622726
+call,443,high_end_of_range,raw,-40.548828
+calling,383,high_end_of_range,raw,-52.450087
+campaign,660,high_end_of_range,raw,19.071266
+can,593,high_end_of_range,raw,43.736755
+canva,302,high_end_of_range,raw,-31.798273
+channel,793,high_end_of_range,raw,8.635253
+client,339,high_end_of_range,raw,-20.297775
+cloud,309,high_end_of_range,raw,37.601713
+code,423,high_end_of_range,raw,15.223572
+cold,962,high_end_of_range,raw,-51.811081
+cold caller,317,high_end_of_range,raw,-60.494813
+cold calling,304,high_end_of_range,raw,-53.973266
+com,318,high_end_of_range,raw,5.719244
+company,1835,high_end_of_range,raw,4.596592
+construction,339,high_end_of_range,raw,23.497172
+consultant,885,high_end_of_range,raw,85.110247
+consultation,325,high_end_of_range,raw,110.720834
+content,3048,high_end_of_range,raw,-14.08061
+content creator,670,high_end_of_range,raw,-25.88439
+content writer,501,high_end_of_range,raw,-0.348576
+contract,371,high_end_of_range,raw,58.914903
+conversion,392,high_end_of_range,raw,36.772804
+coordinator,339,high_end_of_range,raw,-36.459471
+copy,836,high_end_of_range,raw,-20.103873
+copywriter,607,high_end_of_range,raw,28.423049
+course,369,high_end_of_range,raw,4.435479
+create,2065,high_end_of_range,raw,8.770502
+creation,1139,high_end_of_range,raw,-9.500396
+creative,754,high_end_of_range,raw,1.939015
+creator,1232,high_end_of_range,raw,-19.034625
+crm,535,high_end_of_range,raw,6.306139
+crypto,404,high_end_of_range,raw,32.36311
+custom,695,high_end_of_range,raw,29.805096
+customer,1029,high_end_of_range,raw,-47.813233
+customer service,492,high_end_of_range,raw,-59.325118
+data,3032,high_end_of_range,raw,-24.156664
+data entry,769,high_end_of_range,raw,-53.466387
+database,357,high_end_of_range,raw,13.316928
+de,498,high_end_of_range,raw,-12.647805
+design,4583,high_end_of_range,raw,15.139641
+designer,5603,high_end_of_range,raw,7.497502
+dev,311,high_end_of_range,raw,9.83864
+develop,306,high_end_of_range,raw,26.515566
+developer,7572,high_end_of_range,raw,10.051888
+development,2493,high_end_of_range,raw,10.367422
+different,327,high_end_of_range,raw,-39.866193
+digital,1325,high_end_of_range,raw,-7.90928
+digital marketing,657,high_end_of_range,raw,-10.64517
+document,380,high_end_of_range,raw,29.046393
+e,1093,high_end_of_range,raw,-2.81501
+e commerce,800,high_end_of_range,raw,-6.006276
+ecommerce,657,high_end_of_range,raw,-5.682811
+edit,414,high_end_of_range,raw,-3.113373
+editing,1019,high_end_of_range,raw,-11.03121
+editor,3052,high_end_of_range,raw,-15.141378
+email,1752,high_end_of_range,raw,-6.507807
+email marketing,526,high_end_of_range,raw,3.972397
+end,637,high_end_of_range,raw,13.934876
+engineer,1509,high_end_of_range,raw,34.257162
+english,1512,high_end_of_range,raw,-31.514888
+event,401,high_end_of_range,raw,30.147245
+excel,959,high_end_of_range,raw,-26.279858
+executive,539,high_end_of_range,raw,-39.365216
+existing,495,high_end_of_range,raw,11.792037
+experience,1385,high_end_of_range,raw,3.207972
+experienced,1851,high_end_of_range,raw,1.505923
+expert,7041,high_end_of_range,raw,16.597753
+expertise,366,high_end_of_range,raw,21.104168
+facebook,1791,high_end_of_range,raw,17.48803
+facebook ads,663,high_end_of_range,raw,33.937623
+figma,558,high_end_of_range,raw,7.390904
+file,410,high_end_of_range,raw,16.612895
+financial,553,high_end_of_range,raw,69.356872
+fix,481,high_end_of_range,raw,14.331943
+flutter,303,high_end_of_range,raw,-8.787831
+form,564,high_end_of_range,raw,-11.352579
+freelance,457,high_end_of_range,raw,0.191814
+freelancer,300,high_end_of_range,raw,9.548376
+french,324,high_end_of_range,raw,-23.208587
+front end,427,high_end_of_range,raw,8.062086
+full stack,1160,high_end_of_range,raw,10.402088
+full time,406,high_end_of_range,raw,-41.733495
+game,535,high_end_of_range,raw,20.506144
+german,409,high_end_of_range,raw,-9.228089
+google,2751,high_end_of_range,raw,13.274721
+google ads,919,high_end_of_range,raw,22.472842
+graphic design,405,high_end_of_range,raw,-4.409167
+graphic designer,1792,high_end_of_range,raw,-3.07517
+graphics,329,high_end_of_range,raw,5.58269
+growth,769,high_end_of_range,raw,-19.386777
+health,353,high_end_of_range,raw,9.741097
+help,2180,high_end_of_range,raw,18.17765
+high,618,high_end_of_range,raw,5.102296
+hiring,300,high_end_of_range,raw,-15.607473
+home,375,high_end_of_range,raw,-2.65708
+hubspot,404,high_end_of_range,raw,37.565042
+illustrator,320,high_end_of_range,raw,7.110872
+image,412,high_end_of_range,raw,-5.54315
+implementation,305,high_end_of_range,raw,37.724505
+instagram,996,high_end_of_range,raw,-28.848265
+integration,975,high_end_of_range,raw,25.117547
+into,650,high_end_of_range,raw,-18.074315
+ios,410,high_end_of_range,raw,12.901826
+it,649,high_end_of_range,raw,-14.469953
+job,789,high_end_of_range,raw,-1.762145
+join,326,high_end_of_range,raw,-1.681175
+js,742,high_end_of_range,raw,3.104423
+landing page,525,high_end_of_range,raw,13.295103
+lead,1481,high_end_of_range,raw,-47.605291
+lead generation,881,high_end_of_range,raw,-54.085144
+leads,309,high_end_of_range,raw,-51.198544
+legal,413,high_end_of_range,raw,70.337354
+level,399,high_end_of_range,raw,-6.057505
+linkedin,672,high_end_of_range,raw,-22.903074
+list,446,high_end_of_range,raw,-49.406698
+logo,1466,high_end_of_range,raw,20.723327
+logo design,394,high_end_of_range,raw,27.330829
+long term,601,high_end_of_range,raw,-23.20905
+make,519,high_end_of_range,raw,16.285671
+management,1493,high_end_of_range,raw,-15.230774
+manager,3879,high_end_of_range,raw,-20.321672
+market,531,high_end_of_range,raw,3.441111
+marketer,376,high_end_of_range,raw,-11.210394
+marketing,4323,high_end_of_range,raw,-4.12061
+marketing agency,342,high_end_of_range,raw,-15.469157
+marketing expert,316,high_end_of_range,raw,8.262002
+marketing specialist,456,high_end_of_range,raw,-6.082619
+me,485,high_end_of_range,raw,2.590029
+media content,347,high_end_of_range,raw,-23.326808
+media manager,902,high_end_of_range,raw,-32.75654
+media marketing,401,high_end_of_range,raw,-28.947963
+medical,383,high_end_of_range,raw,-10.443867
+meta,428,high_end_of_range,raw,27.111678
+microsoft,401,high_end_of_range,raw,48.27183
+mobile,994,high_end_of_range,raw,16.177529
+mobile app,479,high_end_of_range,raw,12.410633
+model,438,high_end_of_range,raw,37.359062
+native,632,high_end_of_range,raw,-9.936911
+net,324,high_end_of_range,raw,13.411335
+new,1193,high_end_of_range,raw,21.238086
+no,300,high_end_of_range,raw,46.864026
+office,310,high_end_of_range,raw,6.908248
+ongoing,382,high_end_of_range,raw,-0.188684
+online,1243,high_end_of_range,raw,-7.972358
+only,430,high_end_of_range,raw,-2.212843
+operations,317,high_end_of_range,raw,-31.631688
+opportunity,306,high_end_of_range,raw,-28.984987
+optimization,660,high_end_of_range,raw,12.361666
+outreach,379,high_end_of_range,raw,-50.908803
+page,1392,high_end_of_range,raw,5.376741
+pages,366,high_end_of_range,raw,-2.538426
+part time,549,high_end_of_range,raw,-26.148728
+paste,485,high_end_of_range,raw,-40.554812
+pdf,383,high_end_of_range,raw,-1.011829
+personal,596,high_end_of_range,raw,-20.103935
+photo,397,high_end_of_range,raw,-4.961967
+photographer,332,high_end_of_range,raw,88.966227
+php,429,high_end_of_range,raw,-3.199682
+plan,321,high_end_of_range,raw,41.200807
+platform,744,high_end_of_range,raw,24.981889
+podcast,370,high_end_of_range,raw,-7.768009
+post,352,high_end_of_range,raw,-14.382565
+power,365,high_end_of_range,raw,23.273221
+presentation,391,high_end_of_range,raw,36.145918
+pro,404,high_end_of_range,raw,6.55175
+product,1872,high_end_of_range,raw,3.091821
+products,339,high_end_of_range,raw,-14.603474
+professional,592,high_end_of_range,raw,18.887754
+project,2444,high_end_of_range,raw,6.919721
+project manager,441,high_end_of_range,raw,-7.895676
+projects,342,high_end_of_range,raw,3.780015
+python,824,high_end_of_range,raw,7.7976
+qa,304,high_end_of_range,raw,-17.552896
+quickbooks,394,high_end_of_range,raw,-4.194023
+react,1098,high_end_of_range,raw,6.061332
+real estate,1277,high_end_of_range,raw,-37.809979
+redesign,382,high_end_of_range,raw,15.716869
+reels,316,high_end_of_range,raw,-31.760949
+remote,714,high_end_of_range,raw,6.051879
+representative,557,high_end_of_range,raw,-32.864481
+required,922,high_end_of_range,raw,0.919009
+research,1075,high_end_of_range,raw,-27.931016
+review,474,high_end_of_range,raw,51.138216
+s,720,high_end_of_range,raw,15.046562
+saas,683,high_end_of_range,raw,13.016888
+sales,1999,high_end_of_range,raw,-18.9734
+scraping,325,high_end_of_range,raw,-30.921608
+script,491,high_end_of_range,raw,32.901872
+search,316,high_end_of_range,raw,1.106836
+seeking,1248,high_end_of_range,raw,11.605688
+senior,928,high_end_of_range,raw,32.537871
+seo,1703,high_end_of_range,raw,-21.993635
+server,325,high_end_of_range,raw,38.790744
+service,934,high_end_of_range,raw,-34.912322
+services,457,high_end_of_range,raw,6.644411
+set up,493,high_end_of_range,raw,19.692215
+setup,1024,high_end_of_range,raw,22.06983
+shopify,2323,high_end_of_range,raw,-12.122462
+shopify website,314,high_end_of_range,raw,-7.054357
+short,834,high_end_of_range,raw,-7.710658
+simple,702,high_end_of_range,raw,15.780211
+site,1126,high_end_of_range,raw,6.813912
+skills,337,high_end_of_range,raw,-19.122572
+small,588,high_end_of_range,raw,11.257817
+social media,3657,high_end_of_range,raw,-29.016714
+software,967,high_end_of_range,raw,24.19302
+someone,441,high_end_of_range,raw,-6.87746
+sourcing,301,high_end_of_range,raw,-27.093634
+spanish,797,high_end_of_range,raw,-21.704488
+speaking,331,high_end_of_range,raw,-33.455094
+specialist,4712,high_end_of_range,raw,-11.831827
+stack developer,693,high_end_of_range,raw,8.951605
+startup,552,high_end_of_range,raw,25.869109
+store,894,high_end_of_range,raw,-13.544806
+strategist,348,high_end_of_range,raw,30.542889
+strategy,369,high_end_of_range,raw,60.912054
+support,1365,high_end_of_range,raw,-20.037674
+system,556,high_end_of_range,raw,35.932902
+tax,640,high_end_of_range,raw,96.280655
+team,603,high_end_of_range,raw,-3.699652
+tech,480,high_end_of_range,raw,1.753973
+technical,506,high_end_of_range,raw,8.569595
+template,423,high_end_of_range,raw,11.255311
+testing,328,high_end_of_range,raw,4.078177
+text,480,high_end_of_range,raw,-25.335311
+that,468,high_end_of_range,raw,7.573589
+theme,304,high_end_of_range,raw,-1.879976
+tiktok,852,high_end_of_range,raw,-21.169306
+translation,618,high_end_of_range,raw,-5.254821
+translator,454,high_end_of_range,raw,-12.016705
+tutor,319,high_end_of_range,raw,-19.830456
+ui,1103,high_end_of_range,raw,16.755624
+ui ux,535,high_end_of_range,raw,15.211149
+uk,340,high_end_of_range,raw,13.558298
+up,1156,high_end_of_range,raw,11.555514
+update,557,high_end_of_range,raw,11.866148
+urgent,430,high_end_of_range,raw,5.259478
+us,720,high_end_of_range,raw,19.600699
+using,758,high_end_of_range,raw,7.566564
+ux designer,404,high_end_of_range,raw,13.788865
+ux ui,301,high_end_of_range,raw,30.817518
+va,675,high_end_of_range,raw,-69.010377
+video,4561,high_end_of_range,raw,-8.910064
+video editing,456,high_end_of_range,raw,-17.61955
+video editor,2007,high_end_of_range,raw,-18.533573
+videographer,409,high_end_of_range,raw,119.346803
+videos,610,high_end_of_range,raw,-12.387046
+virtual,2404,high_end_of_range,raw,-60.561402
+virtual assistant,1848,high_end_of_range,raw,-64.301622
+voice,415,high_end_of_range,raw,45.830204
+wanted,768,high_end_of_range,raw,-17.812611
+web,2623,high_end_of_range,raw,1.886497
+web designer,349,high_end_of_range,raw,1.397257
+web developer,508,high_end_of_range,raw,4.626794
+webflow,579,high_end_of_range,raw,12.363444
+website,5770,high_end_of_range,raw,3.807816
+website design,376,high_end_of_range,raw,0.739594
+website development,389,high_end_of_range,raw,-0.658781
+websites,494,high_end_of_range,raw,-34.573971
+who,451,high_end_of_range,raw,-0.622248
+wix,327,high_end_of_range,raw,-3.76395
+woocommerce,302,high_end_of_range,raw,-5.946207
+word,304,high_end_of_range,raw,1.105254
+wordpress,2648,high_end_of_range,raw,-4.973356
+wordpress developer,350,high_end_of_range,raw,-7.100634
+wordpress site,320,high_end_of_range,raw,-0.608844
+wordpress website,414,high_end_of_range,raw,-3.325324
+work,913,high_end_of_range,raw,20.341132
+write,493,high_end_of_range,raw,27.573666
+writer,1831,high_end_of_range,raw,23.683741
+writers,301,high_end_of_range,raw,13.364822
+writing,642,high_end_of_range,raw,15.555846
+youtube,2455,high_end_of_range,raw,-6.174907
+youtube channel,606,high_end_of_range,raw,8.966516
+2,434,high_end_of_range,country_category,-0.463644
+3d,845,high_end_of_range,country_category,1.154846
+account,738,high_end_of_range,country_category,-18.444672
+accountant,443,high_end_of_range,country_category,-15.542787
+accounting,351,high_end_of_range,country_category,-22.114693
+accounts,356,high_end_of_range,country_category,-41.290214
+ad,947,high_end_of_range,country_category,10.785954
+admin,473,high_end_of_range,country_category,-12.293661
+administrative,321,high_end_of_range,country_category,17.717471
+ads,2688,high_end_of_range,country_category,37.199667
+ads expert,371,high_end_of_range,country_category,44.885802
+advertising,372,high_end_of_range,country_category,23.8004
+agency,1149,high_end_of_range,country_category,-8.16493
+agent,490,high_end_of_range,country_category,-8.416359
+ai,1700,high_end_of_range,country_category,4.264881
+amazon,979,high_end_of_range,country_category,-9.618249
+analysis,463,high_end_of_range,country_category,7.705058
+analyst,647,high_end_of_range,country_category,7.019314
+analytics,410,high_end_of_range,country_category,36.294757
+android,364,high_end_of_range,country_category,3.802319
+animation,432,high_end_of_range,country_category,13.43032
+api,843,high_end_of_range,country_category,2.76339
+app,2586,high_end_of_range,country_category,2.889739
+app developer,305,high_end_of_range,country_category,-2.55544
+application,816,high_end_of_range,country_category,3.703697
+appointment,726,high_end_of_range,country_category,-27.087452
+appointment setter,550,high_end_of_range,country_category,-21.718355
+architect,326,high_end_of_range,country_category,32.662642
+artist,558,high_end_of_range,country_category,8.535749
+assistance,552,high_end_of_range,country_category,2.61096
+assistant,3860,high_end_of_range,country_category,-39.140345
+audio,321,high_end_of_range,country_category,-17.377545
+automation,828,high_end_of_range,country_category,0.348534
+aws,449,high_end_of_range,country_category,17.806322
+b2b,568,high_end_of_range,country_category,11.533203
+backend,402,high_end_of_range,country_category,10.67164
+based,883,high_end_of_range,country_category,11.511229
+blockchain,345,high_end_of_range,country_category,40.723099
+blog,537,high_end_of_range,country_category,-20.668331
+book,670,high_end_of_range,country_category,-5.690317
+bookkeeper,530,high_end_of_range,country_category,-45.657617
+brand,1432,high_end_of_range,country_category,15.291457
+branding,309,high_end_of_range,country_category,15.22088
+build,1650,high_end_of_range,country_category,7.882504
+builder,445,high_end_of_range,country_category,-17.414032
+building,504,high_end_of_range,country_category,-8.565757
+business,2530,high_end_of_range,country_category,7.402234
+buyer,308,high_end_of_range,country_category,2.375372
+call,443,high_end_of_range,country_category,-15.14525
+calling,383,high_end_of_range,country_category,-28.957184
+campaign,660,high_end_of_range,country_category,25.185407
+can,593,high_end_of_range,country_category,26.13167
+canva,302,high_end_of_range,country_category,-35.151237
+channel,793,high_end_of_range,country_category,2.819455
+client,339,high_end_of_range,country_category,-16.766271
+cloud,309,high_end_of_range,country_category,21.234276
+code,423,high_end_of_range,country_category,0.992349
+cold,962,high_end_of_range,country_category,-27.07695
+cold caller,317,high_end_of_range,country_category,-36.623658
+cold calling,304,high_end_of_range,country_category,-29.313345
+com,318,high_end_of_range,country_category,-2.26893
+company,1835,high_end_of_range,country_category,6.016857
+construction,339,high_end_of_range,country_category,12.276854
+consultant,885,high_end_of_range,country_category,77.461426
+consultation,325,high_end_of_range,country_category,87.851093
+content,3048,high_end_of_range,country_category,-17.053309
+content creator,670,high_end_of_range,country_category,-23.232197
+content writer,501,high_end_of_range,country_category,-15.748811
+contract,371,high_end_of_range,country_category,9.345494
+conversion,392,high_end_of_range,country_category,29.484039
+coordinator,339,high_end_of_range,country_category,-35.98227
+copy,836,high_end_of_range,country_category,-4.654528
+copywriter,607,high_end_of_range,country_category,19.808125
+course,369,high_end_of_range,country_category,11.066526
+create,2065,high_end_of_range,country_category,2.263468
+creation,1139,high_end_of_range,country_category,-10.750976
+creative,754,high_end_of_range,country_category,-2.143119
+creator,1232,high_end_of_range,country_category,-18.043584
+crm,535,high_end_of_range,country_category,4.027424
+crypto,404,high_end_of_range,country_category,27.886664
+custom,695,high_end_of_range,country_category,18.115031
+customer,1029,high_end_of_range,country_category,-31.951063
+customer service,492,high_end_of_range,country_category,-44.830939
+data,3032,high_end_of_range,country_category,-14.820729
+data entry,769,high_end_of_range,country_category,-16.817076
+database,357,high_end_of_range,country_category,-1.01986
+de,498,high_end_of_range,country_category,-12.488062
+design,4583,high_end_of_range,country_category,5.3817
+designer,5603,high_end_of_range,country_category,-3.216758
+dev,311,high_end_of_range,country_category,2.540692
+develop,306,high_end_of_range,country_category,19.444539
+developer,7572,high_end_of_range,country_category,0.941616
+development,2493,high_end_of_range,country_category,9.133399
+different,327,high_end_of_range,country_category,-23.255243
+digital,1325,high_end_of_range,country_category,-4.437318
+digital marketing,657,high_end_of_range,country_category,-3.83826
+document,380,high_end_of_range,country_category,5.844732
+e,1093,high_end_of_range,country_category,2.821399
+e commerce,800,high_end_of_range,country_category,0.370413
+ecommerce,657,high_end_of_range,country_category,1.572511
+edit,414,high_end_of_range,country_category,-10.61313
+editing,1019,high_end_of_range,country_category,-14.787394
+editor,3052,high_end_of_range,country_category,-21.105451
+email,1752,high_end_of_range,country_category,0.685302
+email marketing,526,high_end_of_range,country_category,7.488396
+end,637,high_end_of_range,country_category,9.802376
+engineer,1509,high_end_of_range,country_category,14.801194
+english,1512,high_end_of_range,country_category,-22.605287
+event,401,high_end_of_range,country_category,26.072451
+excel,959,high_end_of_range,country_category,-20.96296
+executive,539,high_end_of_range,country_category,-2.691222
+existing,495,high_end_of_range,country_category,3.622667
+experience,1385,high_end_of_range,country_category,0.16227
+experienced,1851,high_end_of_range,country_category,2.469685
+expert,7041,high_end_of_range,country_category,14.163496
+expertise,366,high_end_of_range,country_category,15.594603
+facebook,1791,high_end_of_range,country_category,26.104426
+facebook ads,663,high_end_of_range,country_category,41.269869
+figma,558,high_end_of_range,country_category,-0.537483
+file,410,high_end_of_range,country_category,11.554657
+financial,553,high_end_of_range,country_category,59.40401
+fix,481,high_end_of_range,country_category,9.055595
+flutter,303,high_end_of_range,country_category,-13.163467
+form,564,high_end_of_range,country_category,-13.042346
+freelance,457,high_end_of_range,country_category,-1.476651
+freelancer,300,high_end_of_range,country_category,19.51921
+french,324,high_end_of_range,country_category,-18.659721
+front end,427,high_end_of_range,country_category,3.957417
+full stack,1160,high_end_of_range,country_category,5.458766
+full time,406,high_end_of_range,country_category,-35.351986
+game,535,high_end_of_range,country_category,7.197222
+german,409,high_end_of_range,country_category,-1.843241
+google,2751,high_end_of_range,country_category,15.239836
+google ads,919,high_end_of_range,country_category,31.1968
+graphic design,405,high_end_of_range,country_category,-14.96742
+graphic designer,1792,high_end_of_range,country_category,-14.625853
+graphics,329,high_end_of_range,country_category,-4.618213
+growth,769,high_end_of_range,country_category,-18.718241
+health,353,high_end_of_range,country_category,10.398627
+help,2180,high_end_of_range,country_category,11.921236
+high,618,high_end_of_range,country_category,9.250169
+hiring,300,high_end_of_range,country_category,-8.046076
+home,375,high_end_of_range,country_category,-0.799742
+hubspot,404,high_end_of_range,country_category,30.769327
+illustrator,320,high_end_of_range,country_category,-5.022351
+image,412,high_end_of_range,country_category,-11.812275
+implementation,305,high_end_of_range,country_category,25.967645
+instagram,996,high_end_of_range,country_category,-23.628232
+integration,975,high_end_of_range,country_category,9.270947
+into,650,high_end_of_range,country_category,-14.118934
+ios,410,high_end_of_range,country_category,3.865152
+it,649,high_end_of_range,country_category,-2.125524
+job,789,high_end_of_range,country_category,8.817509
+join,326,high_end_of_range,country_category,-3.985072
+js,742,high_end_of_range,country_category,1.059015
+landing page,525,high_end_of_range,country_category,8.623033
+lead,1481,high_end_of_range,country_category,-28.279639
+lead generation,881,high_end_of_range,country_category,-31.931385
+leads,309,high_end_of_range,country_category,-32.313416
+legal,413,high_end_of_range,country_category,-16.118877
+level,399,high_end_of_range,country_category,-1.516324
+linkedin,672,high_end_of_range,country_category,-14.263708
+list,446,high_end_of_range,country_category,-37.256368
+logo,1466,high_end_of_range,country_category,8.706098
+logo design,394,high_end_of_range,country_category,14.039285
+long term,601,high_end_of_range,country_category,-19.299632
+make,519,high_end_of_range,country_category,-1.411409
+management,1493,high_end_of_range,country_category,-12.233617
+manager,3879,high_end_of_range,country_category,-20.629846
+market,531,high_end_of_range,country_category,10.258131
+marketer,376,high_end_of_range,country_category,-6.367509
+marketing,4323,high_end_of_range,country_category,1.37027
+marketing agency,342,high_end_of_range,country_category,-4.858554
+marketing expert,316,high_end_of_range,country_category,16.230466
+marketing specialist,456,high_end_of_range,country_category,-0.941416
+me,485,high_end_of_range,country_category,3.605357
+media content,347,high_end_of_range,country_category,-20.753364
+media manager,902,high_end_of_range,country_category,-30.132883
+media marketing,401,high_end_of_range,country_category,-25.370513
+medical,383,high_end_of_range,country_category,-5.581975
+meta,428,high_end_of_range,country_category,34.617377
+microsoft,401,high_end_of_range,country_category,39.548708
+mobile,994,high_end_of_range,country_category,4.468781
+mobile app,479,high_end_of_range,country_category,4.773892
+model,438,high_end_of_range,country_category,20.204916
+native,632,high_end_of_range,country_category,-10.282789
+net,324,high_end_of_range,country_category,1.890513
+new,1193,high_end_of_range,country_category,20.780715
+no,300,high_end_of_range,country_category,21.960659
+office,310,high_end_of_range,country_category,19.008032
+ongoing,382,high_end_of_range,country_category,-2.950732
+online,1243,high_end_of_range,country_category,-1.9807
+only,430,high_end_of_range,country_category,-0.116597
+operations,317,high_end_of_range,country_category,-21.409232
+opportunity,306,high_end_of_range,country_category,-30.228498
+optimization,660,high_end_of_range,country_category,10.567942
+outreach,379,high_end_of_range,country_category,-31.429832
+page,1392,high_end_of_range,country_category,1.170726
+pages,366,high_end_of_range,country_category,-7.059382
+part time,549,high_end_of_range,country_category,-18.492296
+paste,485,high_end_of_range,country_category,-18.248182
+pdf,383,high_end_of_range,country_category,-4.833409
+personal,596,high_end_of_range,country_category,-0.054467
+photo,397,high_end_of_range,country_category,-22.735282
+photographer,332,high_end_of_range,country_category,79.337113
+php,429,high_end_of_range,country_category,-4.627162
+plan,321,high_end_of_range,country_category,25.161684
+platform,744,high_end_of_range,country_category,15.563293
+podcast,370,high_end_of_range,country_category,-20.860373
+post,352,high_end_of_range,country_category,-15.698479
+power,365,high_end_of_range,country_category,7.673888
+presentation,391,high_end_of_range,country_category,25.981895
+pro,404,high_end_of_range,country_category,2.437238
+product,1872,high_end_of_range,country_category,3.605969
+products,339,high_end_of_range,country_category,-9.421249
+professional,592,high_end_of_range,country_category,15.810713
+project,2444,high_end_of_range,country_category,2.117861
+project manager,441,high_end_of_range,country_category,-19.277671
+projects,342,high_end_of_range,country_category,-2.003548
+python,824,high_end_of_range,country_category,-8.779751
+qa,304,high_end_of_range,country_category,-29.300606
+quickbooks,394,high_end_of_range,country_category,-22.226113
+react,1098,high_end_of_range,country_category,2.127687
+real estate,1277,high_end_of_range,country_category,-27.853331
+redesign,382,high_end_of_range,country_category,8.666954
+reels,316,high_end_of_range,country_category,-30.116512
+remote,714,high_end_of_range,country_category,16.401451
+representative,557,high_end_of_range,country_category,7.994069
+required,922,high_end_of_range,country_category,5.046145
+research,1075,high_end_of_range,country_category,-0.697673
+review,474,high_end_of_range,country_category,32.963343
+s,720,high_end_of_range,country_category,5.817273
+saas,683,high_end_of_range,country_category,3.558894
+sales,1999,high_end_of_range,country_category,23.135601
+scraping,325,high_end_of_range,country_category,-41.713004
+script,491,high_end_of_range,country_category,11.357506
+search,316,high_end_of_range,country_category,3.421581
+seeking,1248,high_end_of_range,country_category,10.540967
+senior,928,high_end_of_range,country_category,21.506345
+seo,1703,high_end_of_range,country_category,-20.832995
+server,325,high_end_of_range,country_category,20.714217
+service,934,high_end_of_range,country_category,-20.205206
+services,457,high_end_of_range,country_category,10.232112
+set up,493,high_end_of_range,country_category,16.527975
+setup,1024,high_end_of_range,country_category,17.266396
+shopify,2323,high_end_of_range,country_category,-8.077531
+shopify website,314,high_end_of_range,country_category,-7.829272
+short,834,high_end_of_range,country_category,-7.660143
+simple,702,high_end_of_range,country_category,16.19646
+site,1126,high_end_of_range,country_category,3.014889
+skills,337,high_end_of_range,country_category,-16.221639
+small,588,high_end_of_range,country_category,4.680323
+social media,3657,high_end_of_range,country_category,-26.623
+software,967,high_end_of_range,country_category,10.504139
+someone,441,high_end_of_range,country_category,-4.925862
+sourcing,301,high_end_of_range,country_category,-23.014746
+spanish,797,high_end_of_range,country_category,-19.854949
+speaking,331,high_end_of_range,country_category,-18.915526
+specialist,4712,high_end_of_range,country_category,-6.627279
+stack developer,693,high_end_of_range,country_category,4.742185
+startup,552,high_end_of_range,country_category,21.111122
+store,894,high_end_of_range,country_category,-0.789593
+strategist,348,high_end_of_range,country_category,31.160057
+strategy,369,high_end_of_range,country_category,55.081515
+support,1365,high_end_of_range,country_category,7.058538
+system,556,high_end_of_range,country_category,31.849949
+tax,640,high_end_of_range,country_category,84.015739
+team,603,high_end_of_range,country_category,-2.709821
+tech,480,high_end_of_range,country_category,7.743704
+technical,506,high_end_of_range,country_category,9.942044
+template,423,high_end_of_range,country_category,2.259976
+testing,328,high_end_of_range,country_category,-6.242864
+text,480,high_end_of_range,country_category,-13.39711
+that,468,high_end_of_range,country_category,-0.523093
+theme,304,high_end_of_range,country_category,-5.093525
+tiktok,852,high_end_of_range,country_category,-17.745747
+translation,618,high_end_of_range,country_category,15.533463
+translator,454,high_end_of_range,country_category,1.154937
+tutor,319,high_end_of_range,country_category,-23.27046
+ui,1103,high_end_of_range,country_category,8.045017
+ui ux,535,high_end_of_range,country_category,6.959588
+uk,340,high_end_of_range,country_category,13.829819
+up,1156,high_end_of_range,country_category,9.225111
+update,557,high_end_of_range,country_category,3.097222
+urgent,430,high_end_of_range,country_category,6.38939
+us,720,high_end_of_range,country_category,13.892311
+using,758,high_end_of_range,country_category,0.763395
+ux designer,404,high_end_of_range,country_category,4.745457
+ux ui,301,high_end_of_range,country_category,18.677504
+va,675,high_end_of_range,country_category,-49.663852
+video,4561,high_end_of_range,country_category,-13.832508
+video editing,456,high_end_of_range,country_category,-15.880235
+video editor,2007,high_end_of_range,country_category,-22.482401
+videographer,409,high_end_of_range,country_category,122.197291
+videos,610,high_end_of_range,country_category,-10.950414
+virtual,2404,high_end_of_range,country_category,-37.4698
+virtual assistant,1848,high_end_of_range,country_category,-39.364886
+voice,415,high_end_of_range,country_category,33.153616
+wanted,768,high_end_of_range,country_category,-14.85689
+web,2623,high_end_of_range,country_category,-2.040443
+web designer,349,high_end_of_range,country_category,-3.427945
+web developer,508,high_end_of_range,country_category,1.748064
+webflow,579,high_end_of_range,country_category,8.717997
+website,5770,high_end_of_range,country_category,0.077757
+website design,376,high_end_of_range,country_category,-3.69438
+website development,389,high_end_of_range,country_category,-3.178597
+websites,494,high_end_of_range,country_category,-23.773209
+who,451,high_end_of_range,country_category,3.358231
+wix,327,high_end_of_range,country_category,-9.41816
+woocommerce,302,high_end_of_range,country_category,-7.822216
+word,304,high_end_of_range,country_category,0.090375
+wordpress,2648,high_end_of_range,country_category,-9.293562
+wordpress developer,350,high_end_of_range,country_category,-8.893407
+wordpress site,320,high_end_of_range,country_category,-2.948775
+wordpress website,414,high_end_of_range,country_category,-8.205286
+work,913,high_end_of_range,country_category,8.820126
+write,493,high_end_of_range,country_category,9.127059
+writer,1831,high_end_of_range,country_category,4.891883
+writers,301,high_end_of_range,country_category,6.215613
+writing,642,high_end_of_range,country_category,3.482615
+youtube,2455,high_end_of_range,country_category,-9.282174
+youtube channel,606,high_end_of_range,country_category,2.835665

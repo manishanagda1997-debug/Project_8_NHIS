@@ -59,6 +59,16 @@
       "raw_csv": "data/raw/all_upwork_jobs_2024-02-07-2024-03-24.csv",
       "reports_dir": "reports"
     },
+    "pay": {
+      "index_bootstrap_reps": 200,
+      "keyword_overlap": 0.8,
+      "median_bootstrap_reps": 500,
+      "min_country_jobs": 30,
+      "min_keyword_jobs": 300,
+      "min_keyword_title_keys": 100,
+      "ridge_alpha": 1.0,
+      "test_share": 0.2
+    },
     "project": {
       "name": "job-market-analysis",
       "random_seed": 42
@@ -83,11 +93,14 @@
     "blind_accuracy": 0.6886,
     "blind_labels": "scored",
     "blind_labels_sha256": "b4a52aff32ac384a27ad299dfa238c667c68a65d80777fb272ccca9f68c30370",
+    "budget_jobs": 103891,
+    "budget_keywords": 340,
     "calendar_days_with_postings": 89,
     "categorizer_version": "1.0",
     "classifier_threshold": 0.7,
     "classifier_trained": true,
     "clean_rows": 244828,
+    "countries_with_enough_jobs": 91,
     "dev_accuracy": 0.8333,
     "dev_labels": "scored",
     "dev_labels_sha256": "0c7924e2d1a8567d8ae1daf752a841129788f90cb4011aebdc46e760184560f1",
@@ -99,6 +112,8 @@
     "fallback_list_matches_proxy_rule": true,
     "first_posting_utc": "2023-11-02T09:22:02Z",
     "fixed_price_rows": 103891,
+    "hourly_keywords": 322,
+    "hourly_rated_jobs": 98775,
     "hourly_rows": 140937,
     "last_posting_utc": "2024-03-24T14:16:47Z",
     "missing_link": 1,
@@ -143,6 +158,7 @@
       "numpy": "1.26.4",
       "openpyxl": "3.1.5",
       "pandas": "2.2.3",
+      "plotly": "5.24.1",
       "pyarrow": "17.0.0",
       "pytest": "8.3.3",
       "python-pptx": "1.0.2",
@@ -264,9 +280,9 @@
     "2024-03-24"
   ],
   "fingerprints": {
-    "code_sha256": "c44d982de7327de8d97d228239e655dac9c01d28ad7f97bfa41249da6031e288",
-    "config_sha256": "0160b1a2ea306f6230cea77828f605f3fc4af70d9c1788aad23dde8b0715e03a",
-    "environment_sha256": "984229d962aa79d91e494358a278b9408c261bd92cb6e0abfa2d05719164ebd7",
+    "code_sha256": "ef5dfc5b8ee06c75dc4d495e2c975d037e915aaf84a3158028d7d6ebc43c75c2",
+    "config_sha256": "6145500a9dd37f51cd54d0ccb68d25741453bb1e085d44d38b7804ea42891e2f",
+    "environment_sha256": "16395497efe48498ffe44d037ec2020318fdbc12dca3fd624ff97cdb6db099ce",
     "source_sha256": "6513e9a744f15726bdb40d6435a60834e864ace08a75e1d7feb75e10ddb78b11"
   },
   "manifest_version": 1,
@@ -365,12 +381,48 @@
       "path": "data/processed/label_evaluation_confusion.csv",
       "rows": 122,
       "sha256": "6480da504e9a9b3791288f15a9cda3410226ab897fd35b6c358ca15cfe04bd77"
+    },
+    {
+      "bytes": 50691,
+      "path": "data/processed/pay_keywords_hourly.csv",
+      "rows": 322,
+      "sha256": "df67fc315edfa1968ac080322997b8f7618d7fac7891c86067046e3ea6e6d7f1"
+    },
+    {
+      "bytes": 55057,
+      "path": "data/processed/pay_keywords_budget.csv",
+      "rows": 340,
+      "sha256": "83e631453a14b07b5ce7543c1ac7173bacb85bcb17ed3442089b576b39719c31"
+    },
+    {
+      "bytes": 163260,
+      "path": "data/processed/pay_keyword_sensitivity.csv",
+      "rows": 3220,
+      "sha256": "363bf3eed63c2bebc0db278dcf58cb2c257ae436f052c897c29f0efd5dad6e48"
+    },
+    {
+      "bytes": 7100,
+      "path": "data/processed/pay_countries.csv",
+      "rows": 91,
+      "sha256": "f8f22ff1d872f1ff5616980eb8a82bea7ef6e51389150e49b5ecc2ebd6a4a46d"
+    },
+    {
+      "bytes": 16131,
+      "path": "data/processed/pay_country_sensitivity.csv",
+      "rows": 455,
+      "sha256": "2d449359c3e74094d2d37dd724cdb24d28506bd5f96790712055e483456c7b01"
+    },
+    {
+      "bytes": 349,
+      "path": "data/processed/pay_prediction.csv",
+      "rows": 4,
+      "sha256": "44488f725673fa57444a8cb1ef350d188be99104acb939d8a9f5ca40c676606c"
     }
   ],
   "project_version": "1.0.0",
-  "run_finished_utc": "2026-10-04T10:16:51Z",
-  "run_id": "20261004T101309Z-e3768b0636",
-  "run_started_utc": "2026-10-04T10:13:09Z",
+  "run_finished_utc": "2026-10-04T10:56:02Z",
+  "run_id": "20261004T105055Z-00d4a45438",
+  "run_started_utc": "2026-10-04T10:50:55Z",
   "source": {
     "bytes": 50577682,
     "columns": [
@@ -421,7 +473,7 @@
           "sha256": "e0b856e875048ac0468bdd7783028da2603718923cb6c9b2f3439acea5746d43"
         }
       ],
-      "seconds": 4.338
+      "seconds": 6.325
     },
     {
       "description": "Clean titles, add time, pay, quality, repeat and eligibility columns; keep every raw row.",
@@ -467,7 +519,7 @@
           "sha256": "f94c6171261976f7014fa8dd56d665fa907a4ecd72af58664ec1d6dd19d3a900"
         }
       ],
-      "seconds": 8.083
+      "seconds": 12.461
     },
     {
       "description": "Give every job one job-function category: keyword rules first, a TF-IDF classifier for the rest.",
@@ -528,7 +580,7 @@
           "sha256": "a1302994d11854a7fb2fe2e12714af445c842c84d798bcbae4ea1b46ccfa51ed"
         }
       ],
-      "seconds": 207.29
+      "seconds": 224.013
     },
     {
       "description": "Score the job categories against the development and blind human labels.",
@@ -567,7 +619,57 @@
           "sha256": "6480da504e9a9b3791288f15a9cda3410226ab897fd35b6c358ca15cfe04bd77"
         }
       ],
-      "seconds": 1.657
+      "seconds": 1.271
+    },
+    {
+      "description": "Keyword-pay associations (Task 1) and client-country hourly rates (Task 4).",
+      "metrics": {
+        "budget_jobs": 103891,
+        "budget_keywords": 340,
+        "countries_with_enough_jobs": 91,
+        "hourly_keywords": 322,
+        "hourly_rated_jobs": 98775
+      },
+      "name": "pay",
+      "outputs": [
+        {
+          "bytes": 50691,
+          "path": "data/processed/pay_keywords_hourly.csv",
+          "rows": 322,
+          "sha256": "df67fc315edfa1968ac080322997b8f7618d7fac7891c86067046e3ea6e6d7f1"
+        },
+        {
+          "bytes": 55057,
+          "path": "data/processed/pay_keywords_budget.csv",
+          "rows": 340,
+          "sha256": "83e631453a14b07b5ce7543c1ac7173bacb85bcb17ed3442089b576b39719c31"
+        },
+        {
+          "bytes": 163260,
+          "path": "data/processed/pay_keyword_sensitivity.csv",
+          "rows": 3220,
+          "sha256": "363bf3eed63c2bebc0db278dcf58cb2c257ae436f052c897c29f0efd5dad6e48"
+        },
+        {
+          "bytes": 7100,
+          "path": "data/processed/pay_countries.csv",
+          "rows": 91,
+          "sha256": "f8f22ff1d872f1ff5616980eb8a82bea7ef6e51389150e49b5ecc2ebd6a4a46d"
+        },
+        {
+          "bytes": 16131,
+          "path": "data/processed/pay_country_sensitivity.csv",
+          "rows": 455,
+          "sha256": "2d449359c3e74094d2d37dd724cdb24d28506bd5f96790712055e483456c7b01"
+        },
+        {
+          "bytes": 349,
+          "path": "data/processed/pay_prediction.csv",
+          "rows": 4,
+          "sha256": "44488f725673fa57444a8cb1ef350d188be99104acb939d8a9f5ca40c676606c"
+        }
+      ],
+      "seconds": 63.215
     }
   ],
   "taxonomy_version": "1.0"

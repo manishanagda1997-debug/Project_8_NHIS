@@ -116,3 +116,21 @@ fallback_categories = [
     "web_development",
     "writing_content",
 ]
+
+[pay]
+# Keyword-pay associations and client-country rates (decision D-031).
+# A keyword needs this many rated jobs and this many distinct title keys, so a
+# single heavily repeated title cannot carry it.
+min_keyword_jobs = 300
+min_keyword_title_keys = 100
+# A single word is dropped when at least this share of its jobs also contain a
+# kept two-word phrase with that word ("social" inside "social media").
+keyword_overlap = 0.8
+# Countries need at least 30 rated jobs for their own result (decision D-020).
+min_country_jobs = 30
+# Cluster-bootstrap repetitions (resampling whole title_key groups).
+median_bootstrap_reps = 500
+index_bootstrap_reps = 200
+# Held-out share for the explanatory-power check (split by title_key).
+test_share = 0.2
+ridge_alpha = 1.0

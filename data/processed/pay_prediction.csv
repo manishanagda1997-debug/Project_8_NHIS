@@ -1,0 +1,5 @@
+model,test_jobs,test_title_keys,mae_usd,median_abs_error_usd,r2_log,title_keys_shared_with_training
+median baseline,19469,16507,16.830808,10.0,-4.5e-05,0
+country + category,19469,16507,15.960925,9.234858,0.109322,0
+country + category + title words,19469,16507,14.797398,8.399423,0.260489,0
+title words only,19469,16507,14.920871,8.425569,0.247915,0
