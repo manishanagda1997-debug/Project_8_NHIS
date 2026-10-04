@@ -134,3 +134,19 @@ index_bootstrap_reps = 200
 # Held-out share for the explanatory-power check (split by title_key).
 test_share = 0.2
 ridge_alpha = 1.0
+
+[trends]
+# Emerging categories and online-hiring signals (decision D-032).
+# Newey-West lag in days, fixed before any result was seen: one week.
+newey_west_lag = 7
+# Fewer days than this in the window: no trend is estimated.
+min_days = 21
+# Keyword trends: the support rules of Notebook 04, plus presence in at least
+# this many ISO weeks so one short burst cannot pose as a five-week trend.
+min_keyword_jobs = 300
+min_keyword_title_keys = 100
+min_keyword_weeks = 3
+keyword_overlap = 0.8
+# New or notable terms counted per week only (too rare for trend inference).
+watch_terms = ["sora", "gemini", "claude", "devin", "midjourney", "llm", "ai agent", "gpt", "chatgpt",
+               "vision pro", "tiktok shop", "faceless", "ugc"]

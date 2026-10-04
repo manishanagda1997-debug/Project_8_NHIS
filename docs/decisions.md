@@ -579,3 +579,36 @@ check the reasoning.
   value, and low-end rankings of mid-sized countries are unstable.
 - **Evidence:** `src/job_market/pay.py`, `steps/pay.py`, `tests/test_pay.py`,
   `pay_*.csv`, Notebook 04.
+
+### D-032 Short-window trends and the Task 7 framing
+
+- **What:** Trends use only the 37-day time-series window. For each of the 22
+  job functions, the daily share of jobs is regressed on time with weekday
+  effects; the standard error uses Newey-West with a 7-day lag fixed before
+  any result was seen; p-values are FDR-adjusted. Changes are reported in
+  percentage points and as relative changes. Other / Unclear is monitored
+  separately, never tested as an emerging category. Checks: without
+  possible reposts, without the intraday-gap days, and the first two versus
+  the last two complete Monday-Sunday weeks (2024-W08/W09 versus W10/W11).
+  Keyword trends use the Notebook 04 support rules plus presence in at least
+  3 ISO weeks; rare new terms are only counted per week.
+- **Task 7:** Upwork is primarily an online freelance marketplace and the
+  data has no structured remote/on-site field, so the share of remote jobs
+  cannot be estimated. Task 7 measures client geography (World Bank regions,
+  HHI and the effective number of countries = 1/HHI, weekly distinct
+  countries as a volume-sensitive description), engagement structure (hourly
+  share; full-time, part-time, long-term mentions) and explicit
+  work-arrangement mentions in titles (whole words only; "local" alone is
+  excluded because of "local seo"). Forecasts for the signals with enough data
+  are made in Notebook 06; rare signals get none.
+- **Why:** Shares cancel the weekly rhythm and collection gaps. The window is
+  short and serially correlated, so effect sizes with intervals matter more
+  than p-values.
+- **Limit:** Five weeks cannot show long-term trends and may contain seasonal
+  effects. An exploratory check (split date 26 February, chosen after seeing
+  the daily charts) shows that part of the full-window change is an early
+  step; gradual change continues for Writing (down) and AI & ML, Sales and
+  E-commerce (up). The collection method is undocumented, so a collection
+  change cannot be ruled out.
+- **Evidence:** `src/job_market/trends.py`, `steps/trends.py`,
+  `tests/test_trends.py`, `trend_*.csv`, `remote_*.csv`, Notebook 05.
