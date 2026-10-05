@@ -223,7 +223,7 @@ data/processed/          generated tables and the run manifest
 docs/decisions.md        every decision with its plain-English reason
 sql/                     SQLite schema and the eight cross-check queries
 docker/, docker-compose.yml  app (Gunicorn + Flask) and Nginx images, Compose setup
-.github/workflows/ci.yml tests and notebook check on every push
+.github/workflows/ci.yml tests, notebook check and Docker build on every push (pinned runner)
 docs/assignment_brief.pdf
 environment.yml          pinned analysis environment of the official build
 notebooks/               narrative analysis, reading verified pipeline outputs

@@ -879,5 +879,14 @@ check the reasoning.
   non-root user, and runs `nginx -t`. It cannot start the real app because
   the processed data is not in the repository; the end-to-end test runs
   locally with the mounted build.
+- **CI pinning (added 5 Oct, after the first green Docker run):** both jobs run on
+  `ubuntu-24.04` instead of `ubuntu-latest`, which GitHub moves to Ubuntu 26 from
+  19 October 2026, so a later re-run uses the system CI was verified on. The
+  actions are `actions/checkout@v7` and `conda-incubator/setup-miniconda@v4.1.0`
+  (Node 24; removes the Node 20 deprecation warnings), and
+  `conda-remove-defaults: "true"` states the `nodefaults` policy of
+  `environment.yml` in CI too. Installed packages do not change. These versions
+  are frozen for submission. The remaining libmamba "package scripts" messages are
+  conda's generic notice for any package with install scripts, not a failure.
 - **Evidence:** `docker/`, `docker-compose.yml`, `.dockerignore`,
   `src/job_market_web/wsgi.py`, `tests/test_docker.py`, `.github/workflows/ci.yml`.

@@ -4,6 +4,8 @@
 # The raw CSV is not in the repository (decision D-011): the tests build a
 # small fixture project instead, and the notebook check reads the committed
 # run manifest.
+# The runner image and the action versions are pinned and frozen (decision
+# D-038): CI keeps testing on the system it was verified on.
 name: CI
 
 on:
@@ -12,20 +14,21 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     defaults:
       run:
         shell: bash -el {0}
     env:
       JOB_MARKET_STRICT: "1"
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: conda-incubator/setup-miniconda@v3
+      - uses: conda-incubator/setup-miniconda@v4.1.0
         with:
           environment-file: environment.yml
           activate-environment: jobmarket
           miniforge-version: latest
+          conda-remove-defaults: "true"
 
       - name: Install the project
         run: pip install -e . --no-deps
@@ -40,9 +43,9 @@ jobs:
   # processed data (the raw CSV is not in the repository), so it does not start
   # the real application; that end-to-end test runs locally with the mounted build.
   docker:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: Validate the Compose file
         run: |
