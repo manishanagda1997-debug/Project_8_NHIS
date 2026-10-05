@@ -1,0 +1,59 @@
+# Job market app: Nginx (web server) -> Gunicorn + Flask (application server).
+# Decision D-038. Commands (from the project root, Docker Desktop running):
+#
+#   docker compose build                                  build both images
+#   docker compose up -d                                  start; open http://localhost:8080
+#   docker compose ps                                     status (app becomes "healthy")
+#   docker compose logs -f app                            application logs
+#   docker compose down                                   stop and remove the containers
+#   docker compose --profile pipeline run --rm pipeline   rebuild data/processed inside Docker
+#
+# The app needs a finished build in data/processed (python -m job_market rebuild,
+# on the host or with the pipeline service).
+name: job-market
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    image: job-market-app:1.0
+    expose:
+      - "8000"                       # internal only; Nginx is the single public entry
+    volumes:
+      - ./data/processed:/app/data/processed:ro
+    healthcheck:
+      test: ["CMD", "/opt/conda/bin/python", "-c",
+             "import sys, urllib.request; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=5).status == 200 else 1)"]
+      interval: 10s
+      timeout: 6s
+      retries: 6
+      start_period: 180s             # verifying the build and loading the search index takes time
+    restart: unless-stopped
+
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+    image: job-market-nginx:1.0
+    ports:
+      - "8080:80"
+    depends_on:
+      app:
+        condition: service_healthy
+    restart: unless-stopped
+
+  # On demand only: raw data + labels -> the tested pipeline -> data/processed.
+  # Reuses the app image (the same project runtime), so it has no Dockerfile of its own.
+  pipeline:
+    build:
+      context: .
+      dockerfile: docker/app/Dockerfile
+    image: job-market-app:1.0
+    profiles: ["pipeline"]
+    command: ["python", "-m", "job_market", "rebuild"]
+    volumes:
+      - ./data/raw:/app/data/raw:ro
+      - ./data/labels:/app/data/labels:ro
+      - ./data/interim:/app/data/interim
+      - ./data/processed:/app/data/processed

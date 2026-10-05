@@ -1,0 +1,26 @@
+# Only environment.yml, config/, sql/, src/ and docker/nginx/nginx.conf are needed
+# to build the images; data is mounted at run time, never copied in.
+.git
+.github
+.gitattributes
+.gitignore
+**/__pycache__
+**/*.py[cod]
+**/*.egg-info
+.pytest_cache
+.ruff_cache
+**/.ipynb_checkpoints
+.virtual_documents
+anaconda_projects
+data
+notebooks
+tests
+reports
+docs
+**/*.sqlite
+**/*.parquet
+.env
+.env.*
+.vscode
+.idea
+*.bat

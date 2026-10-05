@@ -73,10 +73,11 @@ def layout(**extra: Any) -> dict:
     base = {
         "font": {"family": "system-ui, -apple-system, Segoe UI, Roboto, sans-serif", "size": 12, "color": INK},
         "paper_bgcolor": "rgba(0,0,0,0)", "plot_bgcolor": "rgba(0,0,0,0)",
-        "margin": {"l": 56, "r": 16, "t": 12, "b": 44}, "hovermode": "closest",
+        "margin": {"l": 56, "r": 16, "t": 44, "b": 48}, "hovermode": "closest",
         "xaxis": {"gridcolor": GRID, "linecolor": "#cfccc5", "zeroline": False},
         "yaxis": {"gridcolor": GRID, "linecolor": "#cfccc5", "zeroline": False},
-        "legend": {"orientation": "h", "y": -0.18, "x": 0, "font": {"color": MUTED}},
+        # Legends sit above the plot, inside the figure, so they can never spill out of the card.
+        "legend": {"orientation": "h", "x": 0, "y": 1.02, "yanchor": "bottom", "font": {"color": MUTED}},
         "hoverlabel": {"bgcolor": "#ffffff", "bordercolor": "#cfccc5", "font": {"color": INK}},
     }
     for key, value in extra.items():
@@ -193,7 +194,7 @@ def fig_monthly_categories(data: DashboardData) -> dict | None:
                        "hovertemplate": "%{y}<br>" + labels[month] + ": %{x:.1f}% of jobs<extra></extra>"})
     return {"data": traces, "layout": layout(height=620, margin={"l": 190},
                                              xaxis={"title": {"text": "Share of the period's jobs (%)"}, "rangemode": "tozero"},
-                                             yaxis={"automargin": True}, legend={"y": -0.12})}
+                                             yaxis={"automargin": True})}
 
 
 def fig_weekly_category(data: DashboardData) -> tuple[dict | None, list[dict]]:
@@ -247,9 +248,8 @@ def fig_trend_tests(data: DashboardData) -> dict | None:
     order = [name_of(c) for c in table["primary_category"]]
     return {"data": traces, "layout": layout(height=560, margin={"l": 190}, barmode="overlay",
                                              yaxis={"categoryorder": "array", "categoryarray": order, "automargin": True},
-                                             xaxis={"title": {"text": "Change in share (percentage points)"},
-                                                    "zeroline": True, "zerolinecolor": "#9a978f"},
-                                             legend={"y": -0.1})}
+                                             xaxis={"title": {"text": "Change in share (pp)"},
+                                                    "zeroline": True, "zerolinecolor": "#9a978f"})}
 
 
 def fig_pay_keywords(data: DashboardData, k: int = 10) -> dict | None:
@@ -276,8 +276,7 @@ def fig_pay_keywords(data: DashboardData, k: int = 10) -> dict | None:
                                              yaxis={"categoryorder": "array", "categoryarray": chosen["keyword"].tolist(),
                                                     "automargin": True},
                                              xaxis={"title": {"text": "Hourly offer difference (%)"},
-                                                    "zeroline": True, "zerolinecolor": "#9a978f"},
-                                             legend={"y": -0.1})}
+                                                    "zeroline": True, "zerolinecolor": "#9a978f"})}
 
 
 GEOJSON_URL = "/static/world_countries.geojson"
@@ -381,8 +380,7 @@ def fig_signals(data: DashboardData) -> dict | None:
     if end is not None:
         start = forecast["date"].min()
         shapes = [forecast_shape(start, end)]
-    return {"data": traces, "layout": layout(shapes=shapes, yaxis={"title": {"text": "Share of jobs (%)"}},
-                                             legend={"y": -0.22})}
+    return {"data": traces, "layout": layout(shapes=shapes, yaxis={"title": {"text": "Share of jobs (%)"}})}
 
 
 # ------------------------------------------------------------------ tables

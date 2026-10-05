@@ -35,3 +35,28 @@ jobs:
 
       - name: Check the committed notebooks
         run: python -m job_market check-notebooks -v
+
+  # Docker (decision D-038): the images build and pass smoke checks. CI has no
+  # processed data (the raw CSV is not in the repository), so it does not start
+  # the real application; that end-to-end test runs locally with the mounted build.
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Validate the Compose file
+        run: |
+          docker compose config --quiet
+          docker compose --profile pipeline config --quiet
+
+      - name: Build the app and Nginx images
+        run: docker compose build app nginx
+
+      - name: Smoke-test the app image (imports and CLI, no data needed)
+        run: |
+          docker run --rm job-market-app:1.0 python -c "import job_market, job_market_web, gunicorn, flask, sklearn; print('imports ok')"
+          docker run --rm job-market-app:1.0 python -m job_market --help
+          test "$(docker run --rm job-market-app:1.0 id -u)" != "0"   # non-root user
+
+      - name: Check the Nginx configuration
+        run: docker run --rm --add-host app:127.0.0.1 job-market-nginx:1.0 nginx -t

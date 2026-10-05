@@ -841,3 +841,43 @@ check the reasoning.
   differ from the current build; the manifest also records its SHA-256.
 - **Evidence:** `sql/`, `src/job_market/database.py`, `steps/database.py`,
   `tests/test_database.py`, Notebook 08.
+
+### D-038 Docker: Nginx web server, Gunicorn application server
+
+- **What:** Two images, each with its own Dockerfile: `docker/app`
+  (Gunicorn serving the Flask app) and `docker/nginx` (Nginx forwarding to
+  the app on the internal Compose network). Only Nginx publishes a port
+  (8080); the app uses `expose`. Base images are pinned
+  (`mambaorg/micromamba:1.5.10-bookworm-slim`, `nginx:1.27.3-alpine`).
+- **Environment:** Docker builds the Linux runtime from the same pinned
+  project environment specification (`environment.yml`) used for local
+  development and CI. Gunicorn (23.0.0) is pinned in the app Dockerfile and
+  installed from the same conda-forge channel, not in `environment.yml`:
+  conda-forge has no Windows build of it (it runs on Linux and macOS only),
+  so adding it to `environment.yml` made the project environment impossible
+  to install on Windows. It was tried and reverted. On Windows the local
+  command stays `python -m job_market serve`.
+- **Data:** the image holds code and environment only; `data/processed` is
+  bind-mounted read-only into the app, so a new data build needs no new image
+  and the app cannot modify verified outputs. The app's startup check
+  (code, settings, file hashes) still protects lineage.
+- **One worker:** the recommender's search index is large and read-only; each
+  Gunicorn worker process would hold its own copy, so one worker with four
+  threads serves requests. Scaling would add containers, not workers.
+- **Startup order:** the app has a Docker health check on `/api/health`
+  (Python's urllib, no curl needed; a 180-second start period for build
+  verification and index loading), and Nginx waits for `service_healthy`.
+- **Pipeline service:** an on-demand Compose profile reusing the app image:
+  `data/raw` and `data/labels` read-only, `data/interim` and `data/processed`
+  read-write, command `python -m job_market rebuild`. It is not a third image
+  and never runs when the website starts.
+- **Security and hygiene:** containers run as non-root users; `.dockerignore`
+  keeps data, notebooks, tests, Git metadata, databases and `.env` files out
+  of the build context; no secrets exist or are copied.
+- **CI:** a `docker` job validates the Compose file, builds both images,
+  imports the project and runs the CLI in the app image, confirms the
+  non-root user, and runs `nginx -t`. It cannot start the real app because
+  the processed data is not in the repository; the end-to-end test runs
+  locally with the mounted build.
+- **Evidence:** `docker/`, `docker-compose.yml`, `.dockerignore`,
+  `src/job_market_web/wsgi.py`, `tests/test_docker.py`, `.github/workflows/ci.yml`.

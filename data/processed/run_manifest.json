@@ -847,9 +847,9 @@
     }
   ],
   "project_version": "1.0.0",
-  "run_finished_utc": "2026-10-05T08:10:04Z",
-  "run_id": "20261005T080528Z-90e95d23f3",
-  "run_started_utc": "2026-10-05T08:05:28Z",
+  "run_finished_utc": "2026-10-05T08:55:41Z",
+  "run_id": "20261005T085046Z-90e95d23f3",
+  "run_started_utc": "2026-10-05T08:50:46Z",
   "source": {
     "bytes": 50577682,
     "columns": [
@@ -900,7 +900,7 @@
           "sha256": "e0b856e875048ac0468bdd7783028da2603718923cb6c9b2f3439acea5746d43"
         }
       ],
-      "seconds": 3.229
+      "seconds": 3.422
     },
     {
       "description": "Clean titles, add time, pay, quality, repeat and eligibility columns; keep every raw row.",
@@ -946,7 +946,7 @@
           "sha256": "f94c6171261976f7014fa8dd56d665fa907a4ecd72af58664ec1d6dd19d3a900"
         }
       ],
-      "seconds": 7.531
+      "seconds": 17.378
     },
     {
       "description": "Give every job one job-function category: keyword rules first, a TF-IDF classifier for the rest.",
@@ -1007,7 +1007,7 @@
           "sha256": "a1302994d11854a7fb2fe2e12714af445c842c84d798bcbae4ea1b46ccfa51ed"
         }
       ],
-      "seconds": 124.483
+      "seconds": 125.0
     },
     {
       "description": "Score the job categories against the development and blind human labels.",
@@ -1046,7 +1046,7 @@
           "sha256": "6480da504e9a9b3791288f15a9cda3410226ab897fd35b6c358ca15cfe04bd77"
         }
       ],
-      "seconds": 0.579
+      "seconds": 0.647
     },
     {
       "description": "Keyword-pay associations (Task 1) and client-country hourly rates (Task 4).",
@@ -1096,7 +1096,7 @@
           "sha256": "44488f725673fa57444a8cb1ef350d188be99104acb939d8a9f5ca40c676606c"
         }
       ],
-      "seconds": 51.11
+      "seconds": 53.818
     },
     {
       "description": "Emerging categories and keywords (Task 2); geography, engagement and work-arrangement signals (Task 7).",
@@ -1168,7 +1168,7 @@
           "sha256": "bd6c801ddeae6f1182d9367d0d7f5ccfc85318d08741a8676ea43bc79e5c2a99"
         }
       ],
-      "seconds": 20.99
+      "seconds": 21.156
     },
     {
       "description": "Short-horizon demand forecasts (Tasks 3, 8) and online-hiring signal forecasts (Task 7).",
@@ -1231,7 +1231,7 @@
           "sha256": "ee5b2694cfac4e9910821b86f4352b7f6f14dff66b6d767aa8bde9dc1ae6e01d"
         }
       ],
-      "seconds": 1.267
+      "seconds": 1.191
     },
     {
       "description": "Job recommendations: index, label-free checks and the blind relevance evaluation (Task 5).",
@@ -1292,7 +1292,7 @@
           "sha256": "fbbb8aeffbf71f598bee55c09b92897808df30bc7a82f86bfd7cc62d9571022e"
         }
       ],
-      "seconds": 53.334
+      "seconds": 57.651
     },
     {
       "description": "Monthly and weekly market tables for the dashboard (Task 6).",
@@ -1335,7 +1335,7 @@
           "sha256": "2660dc97502c5dc2187957a9c837960e43400bd10ea1775bcc2aba54ed99ccbd"
         }
       ],
-      "seconds": 2.074
+      "seconds": 2.032
     },
     {
       "description": "SQLite database of row-level tables for the SQL cross-checks.",
@@ -1356,7 +1356,7 @@
           "sha256": "7373dc81c0a9412ca27f0b1e077bdb885bcf541093ac0eb7a5cc60b425badb6a"
         }
       ],
-      "seconds": 11.021
+      "seconds": 10.702
     }
   ],
   "taxonomy_version": "1.0"

@@ -140,6 +140,55 @@ pipeline. To explore the database yourself:
 python -c "import sqlite3; c = sqlite3.connect('data/processed/job_market.sqlite'); print(c.execute('SELECT COUNT(*) FROM jobs').fetchone())"
 ```
 
+## Docker
+
+Two services, each with its own Dockerfile, managed by `docker-compose.yml`:
+
+```text
+Browser -> http://localhost:8080 -> nginx (web server, docker/nginx)
+                                     -> app: Gunicorn + Flask (application server, docker/app)
+                                          -> data/processed mounted read-only
+```
+
+The app image holds code and environment only; Docker builds the Linux
+runtime from the same pinned project environment specification
+(`environment.yml`) used for local development and CI. Only Nginx publishes a
+port. Gunicorn runs one worker with four threads, because each worker process
+would hold its own copy of the large search index. Nginx starts only after
+the app reports healthy at `/api/health` (verifying the build and loading the
+index takes up to a few minutes on first start). The containers run as
+non-root users.
+
+Prerequisites: Docker Desktop running, and a finished build in
+`data/processed` (`python -m job_market rebuild`, or the pipeline service
+below).
+
+| Task | Command |
+|---|---|
+| Build both images | `docker compose build` |
+| Start (then open http://localhost:8080) | `docker compose up -d` |
+| Status (app should become `healthy`) | `docker compose ps` |
+| Application logs | `docker compose logs -f app` |
+| Stop and remove the containers | `docker compose down` |
+| Rebuild the analytical outputs inside Docker | `docker compose --profile pipeline run --rm pipeline` |
+
+The `pipeline` service is an on-demand command, not a third application: it
+reuses the app image, reads `data/raw` and `data/labels` read-only and writes
+`data/processed`. It never runs automatically when the website starts.
+
+**Refresh after a new data extract:** put the CSV in `data/raw/` (and point
+`raw_csv` in `config/pipeline.toml` to it); run
+`docker compose --profile pipeline run --rm pipeline` (or `rebuild` on the
+host); run `python -m job_market run-notebooks` and `python -m job_market check`
+on the host; then `docker compose restart app`. The dashboard shows the new
+months.
+
+**Deploy on a server:** copy the repository and a finished `data/processed`
+folder to a Linux host with Docker, run `docker compose up -d --build`, and
+put the host's HTTPS proxy or firewall in front of port 8080. CI builds both
+images and checks them on every push; it cannot start the app because the
+data is not in the repository.
+
 ## Opening notebooks interactively
 
 Start JupyterLab from the project environment, so the default kernel is the
@@ -173,6 +222,7 @@ data/raw/                source CSV, never modified
 data/processed/          generated tables and the run manifest
 docs/decisions.md        every decision with its plain-English reason
 sql/                     SQLite schema and the eight cross-check queries
+docker/, docker-compose.yml  app (Gunicorn + Flask) and Nginx images, Compose setup
 .github/workflows/ci.yml tests and notebook check on every push
 docs/assignment_brief.pdf
 environment.yml          pinned analysis environment of the official build
