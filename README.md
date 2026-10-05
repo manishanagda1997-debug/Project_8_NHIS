@@ -16,6 +16,8 @@ notebook is checked by code in the same notebook. Continuous integration runs
 the tests, checks the committed notebooks and builds the Docker images on
 every push.
 
+**Final report:** [`reports/final_report.md`](reports/final_report.md) (also as [PDF](reports/final_report.pdf)) brings the results of all eight tasks together in one document.
+
 ![Job recommendation page: skills entered, ten matching jobs with pay, related market keywords and the filters applied](docs/images/recommender.png)
 
 ## Quick start for reviewers
@@ -254,8 +256,10 @@ runtime from the same pinned project environment specification
 port. Gunicorn runs one worker with four threads, because each worker process
 would hold its own copy of the large search index. Nginx starts only after
 the app reports healthy at `/api/health` (verifying the build and loading the
-index takes up to a few minutes on first start). The containers run as
-non-root users.
+index takes up to a few minutes on first start). The application container
+runs as a non-root user; Nginx uses the standard image, whose master process
+starts as root while the worker processes that handle requests run as the
+unprivileged `nginx` user.
 
 Prerequisites: Docker Desktop running, and a finished build in
 `data/processed` (`python -m job_market rebuild`, or the pipeline service
@@ -340,6 +344,7 @@ docs/decisions.md        every decision with its plain-English reason
 docs/labelling_guide.md  rules the human labellers followed
 docs/images/             screenshots used in this README
 docs/assignment_brief.pdf
+reports/                 final report (Markdown and PDF), its figures and the scripts that build them
 sql/                     SQLite schema and the eight cross-check queries
 docker/, docker-compose.yml  app (Gunicorn + Flask) and Nginx images, Compose setup
 .github/workflows/ci.yml tests, notebook check and Docker build on every push (pinned runner)

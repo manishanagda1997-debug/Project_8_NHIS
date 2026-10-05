@@ -871,7 +871,11 @@ check the reasoning.
   `data/raw` and `data/labels` read-only, `data/interim` and `data/processed`
   read-write, command `python -m job_market rebuild`. It is not a third image
   and never runs when the website starts.
-- **Security and hygiene:** containers run as non-root users; `.dockerignore`
+- **Security and hygiene:** the application container runs as a non-root
+  user (`mambauser`); Nginx uses the standard image, whose master process starts
+  as root while its request-handling workers run as the unprivileged `nginx`
+  user (corrected 5 Oct: an earlier version said both containers run as
+  non-root); `.dockerignore`
   keeps data, notebooks, tests, Git metadata, databases and `.env` files out
   of the build context; no secrets exist or are copied.
 - **CI:** a `docker` job validates the Compose file, builds both images,
