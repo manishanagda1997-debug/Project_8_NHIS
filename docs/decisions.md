@@ -886,7 +886,12 @@ check the reasoning.
   (Node 24; removes the Node 20 deprecation warnings), and
   `conda-remove-defaults: "true"` states the `nodefaults` policy of
   `environment.yml` in CI too. Installed packages do not change. These versions
-  are frozen for submission. The remaining libmamba "package scripts" messages are
-  conda's generic notice for any package with install scripts, not a failure.
+  are frozen for submission. Three warnings remain and are accepted: two libmamba
+  "package scripts" messages (conda's generic notice for any package with install
+  scripts, not a failure) and the "'nodefaults' channel detected" message.
+  setup-miniconda v4.1.0 prints that one whenever `environment.yml` lists
+  `nodefaults`, even with `conda-remove-defaults: "true"` set (source:
+  `src/conda.ts`); removing `nodefaults` from `environment.yml` would change the
+  environment fingerprint and the local install for a cosmetic CI message, so it stays.
 - **Evidence:** `docker/`, `docker-compose.yml`, `.dockerignore`,
   `src/job_market_web/wsgi.py`, `tests/test_docker.py`, `.github/workflows/ci.yml`.
