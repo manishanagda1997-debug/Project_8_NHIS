@@ -33,3 +33,7 @@ Thumbs.db
 
 # Personal scratch notebooks for trying things out (never project evidence)
 notebooks/scratch*.ipynb
+
+# Files created by JupyterLab / Anaconda Navigator when opened in the project folder
+.virtual_documents/
+anaconda_projects/
