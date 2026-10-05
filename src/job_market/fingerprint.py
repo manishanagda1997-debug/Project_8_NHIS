@@ -11,6 +11,7 @@ from __future__ import annotations
 from pathlib import Path
 
 from .config import Settings
+from .database import sql_sha256
 from .environment import ENVIRONMENT_FILE, environment_sha256
 from .manifest import code_fingerprint, sha256_file
 
@@ -24,6 +25,7 @@ LABELS = {
     "config_sha256": "configuration",
     "code_sha256": "source code",
     "environment_sha256": f"pinned environment ({ENVIRONMENT_FILE})",
+    "sql_sha256": "SQL schema and queries (sql/)",
 }
 
 
@@ -66,6 +68,7 @@ def current_fingerprints(settings: Settings) -> dict[str, str | None]:
         "config_sha256": settings.config_sha256,
         "code_sha256": project_code_sha256(settings),
         "environment_sha256": environment_sha256(settings.root),
+        "sql_sha256": sql_sha256(settings.root),
     }
 
 

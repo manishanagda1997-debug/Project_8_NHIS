@@ -800,3 +800,44 @@ check the reasoning.
 - **Evidence:** `src/job_market/monitor.py`, `steps/monitor.py`,
   `src/job_market_web/dashboard.py`, `templates/dashboard.html`,
   `tests/test_monitor.py`, `tests/test_dashboard.py`.
+
+### D-037 SQL layer: SQLite database and cross-checks
+
+- **What:** A pipeline step, `database`, deletes and recreates
+  `data/processed/job_market.sqlite` from the committed `sql/schema.sql`. It
+  holds row-level tables only: `jobs` (cleaned key fields), `job_categories`
+  (frozen predictions), `category_labels` (read from the label sheets),
+  `relevance_labels` (read from the relevance sheet) and
+  `recommendation_results` (each method's ranked top 5, without labels), plus
+  `build_info` (schema version and the build's input fingerprints: raw data,
+  settings, code, environment and SQL). Identity is by content, not time:
+  a build ID or creation time would make every rebuild differ, and the
+  project requires a rebuild from the same inputs to be byte-identical (a
+  first version stored them and failed that test). Keys and CHECK constraints guard the rows; indexes exist
+  only for the columns the queries use. The file is regenerable and large, so
+  it is not committed; the `.sql` files are, and their fingerprint is part of
+  the build fingerprints.
+- **Why SQLite:** built into Python, no server, works locally and in Docker,
+  and supports joins, CTEs, window functions and indexes.
+- **Queries:** eight files recompute the reliable window, monthly volume
+  (plain and weekday-standardized), monthly category and country shares (all
+  known countries), weekly hourly share, the median hourly offer by country
+  (window-function median: the middle row for odd counts, the mean of the two
+  middle rows for even counts, as NumPy), category label accuracy (labels
+  joined to predictions, no stored accuracy read) and the recommender's
+  nDCG@5 and strict Precision@5 (frozen D-034 definition: gains 0/1/3, the
+  pooled ideal per profile, full-precision discount constants because
+  SQLite builds may lack log2()).
+- **Claim:** SQL independently reproduces selected aggregations and
+  evaluation metrics from the pipeline's verified row-level outputs. It does
+  not verify the whole project: the cleaned fields, taxonomy predictions and
+  recommender rankings come from Python.
+- **Comparison rule:** counts exactly equal. The pipeline's CSV tables store
+  decimals rounded to 6 places, so a decimal passes when it is within half a
+  unit of the 6th place plus 1e-9 of the stored value; medians and label
+  accuracy are compared without that allowance. Result: all 1,176 compared
+  values pass; the largest decimal difference is 4.99e-7 (rounding only).
+- **Checks:** `check` fails when the database's `build_info` fingerprints
+  differ from the current build; the manifest also records its SHA-256.
+- **Evidence:** `sql/`, `src/job_market/database.py`, `steps/database.py`,
+  `tests/test_database.py`, Notebook 08.

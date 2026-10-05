@@ -23,6 +23,8 @@ data/raw/*
 # Large generated table (rebuilt by `python -m job_market rebuild`); small
 # audit tables and the run manifest are committed.
 data/processed/*.parquet
+# Generated SQLite database (rebuilt by `python -m job_market rebuild`; the .sql files are committed)
+data/processed/*.sqlite
 
 # Environment and editor files
 .env

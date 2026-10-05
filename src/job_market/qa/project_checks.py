@@ -57,4 +57,20 @@ def check_installed_package(settings: Settings, manifest: dict[str, Any], report
     report.add(OK, "package", "installed job_market package matches src/job_market")
 
 
-CHECKS = (check_build_environment, check_current_environment, check_installed_package)
+def check_database(settings: Settings, manifest: dict[str, Any], report: Report) -> None:
+    """The SQLite database's build_info must carry the current build's input fingerprints."""
+    from ..database import DATABASE_FILE, build_info, matches_build
+
+    path = settings.path("processed_dir") / DATABASE_FILE
+    if settings.relative(path) not in {entry["path"] for entry in manifest["outputs"]}:
+        return                                          # this build has no database step
+    if not path.is_file():
+        report.add(ERROR, "database", "database file is missing", settings.relative(path))
+        return
+    if matches_build(build_info(path), manifest):
+        report.add(OK, "database", "build_info fingerprints match the current build")
+    else:
+        report.add(ERROR, "database", "database build_info fingerprints differ from the current build; rebuild")
+
+
+CHECKS = (check_build_environment, check_current_environment, check_installed_package, check_database)

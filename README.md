@@ -20,6 +20,7 @@ with a dashboard.
 | `05_trends_and_online_hiring` | Task 2: which job functions and title words grow or shrink in the 37-day window (weekday-adjusted, with checks); Task 7: client geography, engagement structure and explicit work-arrangement mentions over time |
 | `06_forecasts` | Tasks 3, 8 and 7: 14-day forecasts of job demand by category, category direction (rising, stable or no reliable direction) and online-hiring signals, with backtests, a reserved final week and empirical ranges |
 | `07_job_recommendations` | Task 5: recommend recent jobs from a freelancer's skills (strict pay filters, similar jobs, related market keywords), with a pooled blind relevance evaluation of three matching methods |
+| `08_sql_cross_checks` | SQL: eight queries recompute selected aggregations and evaluation metrics from the row-level SQLite database and match the Python pipeline |
 
 ## Data setup
 
@@ -124,6 +125,21 @@ New months and weeks appear automatically; partial months are labelled and
 compared per day and as shares. There is no automatic schedule, because the
 source has no live feed.
 
+## SQL layer
+
+`rebuild` also writes `data/processed/job_market.sqlite` (SQLite, built into
+Python; not committed because it is large and regenerable). It is deleted and
+recreated from `sql/schema.sql` on every build and holds row-level tables:
+jobs, category predictions, human labels and the recommender's ranked results,
+plus a `build_info` table of input fingerprints that `check` compares with the current build. The
+eight queries in `sql/01_*.sql` - `sql/08_*.sql` recompute selected results
+from those rows; Notebook 08 runs them and compares every value with the
+pipeline. To explore the database yourself:
+
+```bash
+python -c "import sqlite3; c = sqlite3.connect('data/processed/job_market.sqlite'); print(c.execute('SELECT COUNT(*) FROM jobs').fetchone())"
+```
+
 ## Opening notebooks interactively
 
 Start JupyterLab from the project environment, so the default kernel is the
@@ -156,6 +172,7 @@ config/pipeline.toml     every threshold and path, in one place
 data/raw/                source CSV, never modified
 data/processed/          generated tables and the run manifest
 docs/decisions.md        every decision with its plain-English reason
+sql/                     SQLite schema and the eight cross-check queries
 .github/workflows/ci.yml tests and notebook check on every push
 docs/assignment_brief.pdf
 environment.yml          pinned analysis environment of the official build

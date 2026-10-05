@@ -88,6 +88,7 @@ def mini_project(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
     shutil.copy(REPO_ROOT / "config" / "pipeline.toml", tmp_path / "config" / "pipeline.toml")
     # The mini project carries its own copy of the source code, like a real checkout.
     shutil.copytree(REPO_ROOT / "src", tmp_path / "src", ignore=shutil.ignore_patterns("__pycache__", "*.egg-info"))
+    shutil.copytree(REPO_ROOT / "sql", tmp_path / "sql")
     write_local_pins(tmp_path)
     settings = load_settings(tmp_path)
     raw_path = settings.path("raw_csv")

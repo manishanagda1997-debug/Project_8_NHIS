@@ -73,6 +73,7 @@ def run_pipeline(
     reset_generated_dirs(settings)
     context: dict[str, Any] = {
         "run_id": run_id,
+        "fingerprints": fingerprints,
         "source": {
             "path": settings.relative(raw_path),
             "sha256": fingerprints["source_sha256"],
