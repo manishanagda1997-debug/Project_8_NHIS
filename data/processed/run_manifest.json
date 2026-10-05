@@ -387,7 +387,7 @@
     "window_jobs": 229520
   },
   "environment": {
-    "executable": "python.exe",
+    "executable": "python",
     "implementation": "CPython",
     "packages": {
       "flask": "3.0.3",
@@ -406,7 +406,7 @@
       "scipy": "1.14.1"
     },
     "pins_file": "environment.yml",
-    "platform": "Windows-10-10.0.26200-SP0",
+    "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.36",
     "python": "3.11.16"
   },
   "environment_matches_pins": true,
@@ -541,10 +541,10 @@
       "sha256": "e0b856e875048ac0468bdd7783028da2603718923cb6c9b2f3439acea5746d43"
     },
     {
-      "bytes": 38859219,
+      "bytes": 38798999,
       "path": "data/processed/jobs_clean.parquet",
       "rows": 244828,
-      "sha256": "f0302e02f4dda4a3119b969b0653efb2a9ff40c9ed54373265d5326fd10f98d7"
+      "sha256": "d9e3af84f2a7c4a69c6e0f26d02df3f72c4e087b9e3c1ee636940094c6bf10cb"
     },
     {
       "bytes": 2784,
@@ -571,10 +571,10 @@
       "sha256": "f94c6171261976f7014fa8dd56d665fa907a4ecd72af58664ec1d6dd19d3a900"
     },
     {
-      "bytes": 4854627,
+      "bytes": 4873890,
       "path": "data/processed/job_categories.parquet",
       "rows": 244828,
-      "sha256": "afd1cfdab99558612df25fbe4b55a50ce1a4d3d64e70af79a4326b7f3e07292f"
+      "sha256": "93c5ca18201898c372a37380042b0faff7b0e0ea8a55bbf2df3b2c1ea3c28a9d"
     },
     {
       "bytes": 1721,
@@ -600,10 +600,10 @@
       "sha256": "a1302994d11854a7fb2fe2e12714af445c842c84d798bcbae4ea1b46ccfa51ed"
     },
     {
-      "bytes": 94697,
+      "bytes": 94709,
       "path": "data/processed/label_evaluation_items.csv",
       "rows": 500,
-      "sha256": "2882289b5a09320014bdb037368159ff1fb04498cd6ba15b2abfcde0bb01d727"
+      "sha256": "4c96f36d7c1e7f5c274bffa941a78fc70f7cbe490bd1cff52464480503110663"
     },
     {
       "bytes": 695,
@@ -657,7 +657,7 @@
       "bytes": 349,
       "path": "data/processed/pay_prediction.csv",
       "rows": 4,
-      "sha256": "44488f725673fa57444a8cb1ef350d188be99104acb939d8a9f5ca40c676606c"
+      "sha256": "204d763d29b6eddf7a4e5965dc50bfed9015bae5be3633ea867e80ddb6a0fb00"
     },
     {
       "bytes": 36388,
@@ -768,10 +768,10 @@
       "sha256": "ee5b2694cfac4e9910821b86f4352b7f6f14dff66b6d767aa8bde9dc1ae6e01d"
     },
     {
-      "bytes": 27337700,
+      "bytes": 27298557,
       "path": "data/processed/recommend_jobs.parquet",
       "rows": 229520,
-      "sha256": "8e04beaeba27bde7d08b8202331983406b910c8ebdf78bd1303b937d55007003"
+      "sha256": "72f7d4a9465d2d3ab0e68fa2e4279e3fee734907f73f83158d8406b6a35ec72c"
     },
     {
       "bytes": 9340,
@@ -847,9 +847,9 @@
     }
   ],
   "project_version": "1.0.0",
-  "run_finished_utc": "2026-10-05T08:55:41Z",
-  "run_id": "20261005T085046Z-90e95d23f3",
-  "run_started_utc": "2026-10-05T08:50:46Z",
+  "run_finished_utc": "2026-10-05T12:38:51Z",
+  "run_id": "20261005T122621Z-90e95d23f3",
+  "run_started_utc": "2026-10-05T12:26:21Z",
   "source": {
     "bytes": 50577682,
     "columns": [
@@ -900,7 +900,7 @@
           "sha256": "e0b856e875048ac0468bdd7783028da2603718923cb6c9b2f3439acea5746d43"
         }
       ],
-      "seconds": 3.422
+      "seconds": 5.341
     },
     {
       "description": "Clean titles, add time, pay, quality, repeat and eligibility columns; keep every raw row.",
@@ -916,10 +916,10 @@
       "name": "clean",
       "outputs": [
         {
-          "bytes": 38859219,
+          "bytes": 38798999,
           "path": "data/processed/jobs_clean.parquet",
           "rows": 244828,
-          "sha256": "f0302e02f4dda4a3119b969b0653efb2a9ff40c9ed54373265d5326fd10f98d7"
+          "sha256": "d9e3af84f2a7c4a69c6e0f26d02df3f72c4e087b9e3c1ee636940094c6bf10cb"
         },
         {
           "bytes": 2784,
@@ -946,7 +946,7 @@
           "sha256": "f94c6171261976f7014fa8dd56d665fa907a4ecd72af58664ec1d6dd19d3a900"
         }
       ],
-      "seconds": 17.378
+      "seconds": 13.201
     },
     {
       "description": "Give every job one job-function category: keyword rules first, a TF-IDF classifier for the rest.",
@@ -978,10 +978,10 @@
       "name": "categorize",
       "outputs": [
         {
-          "bytes": 4854627,
+          "bytes": 4873890,
           "path": "data/processed/job_categories.parquet",
           "rows": 244828,
-          "sha256": "afd1cfdab99558612df25fbe4b55a50ce1a4d3d64e70af79a4326b7f3e07292f"
+          "sha256": "93c5ca18201898c372a37380042b0faff7b0e0ea8a55bbf2df3b2c1ea3c28a9d"
         },
         {
           "bytes": 1721,
@@ -1007,7 +1007,7 @@
           "sha256": "a1302994d11854a7fb2fe2e12714af445c842c84d798bcbae4ea1b46ccfa51ed"
         }
       ],
-      "seconds": 125.0
+      "seconds": 165.769
     },
     {
       "description": "Score the job categories against the development and blind human labels.",
@@ -1022,10 +1022,10 @@
       "name": "evaluate",
       "outputs": [
         {
-          "bytes": 94697,
+          "bytes": 94709,
           "path": "data/processed/label_evaluation_items.csv",
           "rows": 500,
-          "sha256": "2882289b5a09320014bdb037368159ff1fb04498cd6ba15b2abfcde0bb01d727"
+          "sha256": "4c96f36d7c1e7f5c274bffa941a78fc70f7cbe490bd1cff52464480503110663"
         },
         {
           "bytes": 695,
@@ -1046,7 +1046,7 @@
           "sha256": "6480da504e9a9b3791288f15a9cda3410226ab897fd35b6c358ca15cfe04bd77"
         }
       ],
-      "seconds": 0.647
+      "seconds": 1.052
     },
     {
       "description": "Keyword-pay associations (Task 1) and client-country hourly rates (Task 4).",
@@ -1093,10 +1093,10 @@
           "bytes": 349,
           "path": "data/processed/pay_prediction.csv",
           "rows": 4,
-          "sha256": "44488f725673fa57444a8cb1ef350d188be99104acb939d8a9f5ca40c676606c"
+          "sha256": "204d763d29b6eddf7a4e5965dc50bfed9015bae5be3633ea867e80ddb6a0fb00"
         }
       ],
-      "seconds": 53.818
+      "seconds": 92.016
     },
     {
       "description": "Emerging categories and keywords (Task 2); geography, engagement and work-arrangement signals (Task 7).",
@@ -1168,7 +1168,7 @@
           "sha256": "bd6c801ddeae6f1182d9367d0d7f5ccfc85318d08741a8676ea43bc79e5c2a99"
         }
       ],
-      "seconds": 21.156
+      "seconds": 30.973
     },
     {
       "description": "Short-horizon demand forecasts (Tasks 3, 8) and online-hiring signal forecasts (Task 7).",
@@ -1231,7 +1231,7 @@
           "sha256": "ee5b2694cfac4e9910821b86f4352b7f6f14dff66b6d767aa8bde9dc1ae6e01d"
         }
       ],
-      "seconds": 1.191
+      "seconds": 2.01
     },
     {
       "description": "Job recommendations: index, label-free checks and the blind relevance evaluation (Task 5).",
@@ -1250,10 +1250,10 @@
       "name": "recommend",
       "outputs": [
         {
-          "bytes": 27337700,
+          "bytes": 27298557,
           "path": "data/processed/recommend_jobs.parquet",
           "rows": 229520,
-          "sha256": "8e04beaeba27bde7d08b8202331983406b910c8ebdf78bd1303b937d55007003"
+          "sha256": "72f7d4a9465d2d3ab0e68fa2e4279e3fee734907f73f83158d8406b6a35ec72c"
         },
         {
           "bytes": 9340,
@@ -1292,7 +1292,7 @@
           "sha256": "fbbb8aeffbf71f598bee55c09b92897808df30bc7a82f86bfd7cc62d9571022e"
         }
       ],
-      "seconds": 57.651
+      "seconds": 81.063
     },
     {
       "description": "Monthly and weekly market tables for the dashboard (Task 6).",
@@ -1335,7 +1335,7 @@
           "sha256": "2660dc97502c5dc2187957a9c837960e43400bd10ea1775bcc2aba54ed99ccbd"
         }
       ],
-      "seconds": 2.032
+      "seconds": 2.41
     },
     {
       "description": "SQLite database of row-level tables for the SQL cross-checks.",
@@ -1356,7 +1356,7 @@
           "sha256": "7373dc81c0a9412ca27f0b1e077bdb885bcf541093ac0eb7a5cc60b425badb6a"
         }
       ],
-      "seconds": 10.702
+      "seconds": 354.276
     }
   ],
   "taxonomy_version": "1.0"
