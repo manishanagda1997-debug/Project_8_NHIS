@@ -1,0 +1,3 @@
+month,label,days_in_month,first_day,last_day,days_observed,jobs,jobs_per_day,jobs_per_day_weekday_std,hourly_share_pct,median_hourly_rate,hourly_rate_jobs,known_country_pct,hhi,effective_countries,partial
+2024-02,Feb 2024 (14 days),29,2024-02-16,2024-02-29,14,88871,6347.928571,6347.928571,58.139326,22.5,36740,98.094992,0.190613,5.246237,True
+2024-03,Mar 2024 (23 days),31,2024-03-01,2024-03-23,23,140649,6115.173913,6170.785714,57.044842,22.5,55736,97.864187,0.192695,5.189538,True

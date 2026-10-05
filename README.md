@@ -104,6 +104,26 @@ hourly range reaches it), `min_budget` (only with `contract=fixed`). Invalid
 or unknown parameters get a 400 error with a plain message; an unknown job
 ID gets 404.
 
+### Market dashboard (Task 6)
+
+The same app serves the dashboard at `http://localhost:5000/dashboard`:
+headline numbers per observed month, volume and category shares by week and
+month, the tested emerging/falling categories, pay keywords, the country map,
+forecasts and online-hiring signals. The page computes nothing: it draws the
+verified tables of the current build (the `monitor`, `trends`, `pay` and
+`forecast` steps). Charts and the map work without an internet connection.
+
+**Monthly refresh.** When a newer Upwork extract is available:
+
+1. Put the CSV in `data/raw/` and point `raw_csv` in `config/pipeline.toml` to it.
+2. Run `python -m job_market rebuild`, then `python -m job_market run-notebooks`
+   and `python -m job_market check`.
+3. Restart `python -m job_market serve`.
+
+New months and weeks appear automatically; partial months are labelled and
+compared per day and as shares. There is no automatic schedule, because the
+source has no live feed.
+
 ## Opening notebooks interactively
 
 Start JupyterLab from the project environment, so the default kernel is the

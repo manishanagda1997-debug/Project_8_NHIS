@@ -72,7 +72,7 @@ def test_signal_forecast_respects_bounds():
 
 
 def test_seasonal_scale_and_origins():
-    assert seasonal_scale(np.tile(WEEK, 3)) == 0.0
+    assert np.isnan(seasonal_scale(np.tile(WEEK, 3)))              # no week-on-week change: MASE undefined
     assert seasonal_scale(np.arange(14.0)) == 7.0
     assert rolling_origins(30, 14, 7) == list(range(14, 24))
 

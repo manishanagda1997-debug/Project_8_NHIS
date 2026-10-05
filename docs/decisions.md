@@ -757,3 +757,46 @@ check the reasoning.
   the pay text.
 - **Limit:** Flask's built-in server is for local use; the Docker image will
   use a production server (decided at that stage).
+
+### D-036 Market dashboard and monthly monitoring (Task 6)
+
+- **What:** A second page of the Flask app, `/dashboard`, with a navigation
+  bar shared with the recommendation page. It reads verified pipeline tables
+  only; no grouping, testing, trend fitting or forecasting happens in Flask.
+- **Monitor step:** a new pipeline step writes `monthly_market_summary.csv`,
+  `monthly_category_share.csv`, `monthly_country_share.csv`,
+  `weekly_market_summary.csv` and `weekly_category_share.csv` for the
+  reliable time-series window only (16 February - 23 March 2024); the
+  scattered earlier days are never mixed in.
+- **Comparable measures:** months can be partial (February 14 days, March 23),
+  so they are compared per day and as shares, never as totals. Volume is shown
+  as jobs per day and as weekday-standardized jobs per day (the average of the
+  seven weekday means; 1-23 March has four Fridays and Saturdays but three of
+  every other weekday); the headline change uses the standardized value.
+  Client geography uses the effective number of countries (1 / HHI), which
+  does not grow with the number of days or jobs, and country shares of jobs
+  with a known country; a missing country is never a country. The median
+  hourly rate uses Notebook 04's population (midpoints of complete stated
+  ranges). Changes between months are labelled "descriptive change between
+  the last two observed periods", never growth rates; the tested trends stay
+  those of Notebook 05.
+- **Updates monthly:** refresh driven by new data. A newer extract plus
+  `rebuild` adds new months and weeks with no code change (tested: a mini
+  project rebuilt with synthetic April data shows "Apr 2024 (14 days)" on
+  the page). The page shows the observed period and build ID. No scheduler is
+  claimed, because the source has no live feed.
+- **Forecasts:** shown dashed in a shaded period labelled "Forecast", with
+  "Observed through" and the forecast dates written out; direction labels are
+  Notebook 06's, including "No reliable direction", with no arrows.
+- **Offline:** plotly.js is served from the installed plotly package, and the
+  map uses a bundled Natural Earth 1:110m country outline (public domain;
+  five small countries such as Singapore are too small to draw and are
+  listed under the map). An empty base layer stops plotly.js from fetching
+  its own outline, so no internet connection is needed.
+- **Robustness fix found by the April test:** the forecast step divided by a
+  zero MASE scale when a series never changes week on week (possible in tiny
+  or synthetic data). The scale is now NaN in that case; outputs of the real
+  build are byte-identical.
+- **Evidence:** `src/job_market/monitor.py`, `steps/monitor.py`,
+  `src/job_market_web/dashboard.py`, `templates/dashboard.html`,
+  `tests/test_monitor.py`, `tests/test_dashboard.py`.

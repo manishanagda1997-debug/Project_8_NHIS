@@ -37,7 +37,7 @@ job-market = "job_market.cli:main"
 where = ["src"]
 
 [tool.setuptools.package-data]
-job_market_web = ["templates/*.html"]
+job_market_web = ["templates/*.html", "static/*"]
 
 [tool.pytest.ini_options]
 # pythonpath lets the ordinary tests import the package from src/. The

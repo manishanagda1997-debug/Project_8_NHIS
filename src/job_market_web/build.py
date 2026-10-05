@@ -31,8 +31,8 @@ def verified_path(settings: Settings, manifest: dict, name: str):
     raise AppBuildError(f"{name} is not an output of build {manifest['run_id']}. Run: python -m job_market rebuild")
 
 
-def load_service(settings: Settings | None = None) -> RecommenderService:
-    settings = settings or load_settings()
+def checked_manifest(settings: Settings) -> dict:
+    """The recorded build, after checking that code and settings still match it."""
     manifest = load_manifest(settings.path("manifest"))
     recorded = manifest.get("fingerprints", {})
     stale = [label for key, label, current in (
@@ -41,6 +41,12 @@ def load_service(settings: Settings | None = None) -> RecommenderService:
     ) if recorded.get(key) != current]
     if stale:
         raise AppBuildError(f"The build is stale ({', '.join(stale)} changed). Run: python -m job_market rebuild")
+    return manifest
+
+
+def load_service(settings: Settings | None = None, manifest: dict | None = None) -> RecommenderService:
+    settings = settings or load_settings()
+    manifest = manifest or checked_manifest(settings)
     steps = {step["name"]: step for step in manifest["steps"]}
     metrics = steps.get("recommend", {}).get("metrics", {})
     method = metrics.get("recommend_winner")
@@ -53,3 +59,12 @@ def load_service(settings: Settings | None = None) -> RecommenderService:
     service = RecommenderService.from_tables(jobs, settings.section("recommend"), method, manifest["run_id"], pay, trend)
     service.market_shares(int(settings.section("recommend")["pool_days"]))      # warm the default pool
     return service
+
+
+def load_app_parts(settings: Settings | None = None):
+    """The recommender service and the dashboard data, both from the same verified build."""
+    from .dashboard import load_dashboard
+
+    settings = settings or load_settings()
+    manifest = checked_manifest(settings)
+    return load_service(settings, manifest), load_dashboard(settings, manifest)

@@ -64,11 +64,16 @@ def forecast_series(history: np.ndarray, start_weekday: int, horizon: int, model
 
 
 def seasonal_scale(history: np.ndarray) -> float:
-    """In-sample mean absolute change versus seven days earlier (the MASE scale)."""
+    """In-sample mean absolute change versus seven days earlier (the MASE scale).
+
+    NaN when it cannot be computed or is zero (a series that never changes
+    week on week, such as an empty category): MASE is then undefined.
+    """
     y = np.asarray(history, dtype=float)
     if len(y) <= SEASON:
         return np.nan
-    return float(np.mean(np.abs(y[SEASON:] - y[:-SEASON])))
+    scale = float(np.mean(np.abs(y[SEASON:] - y[:-SEASON])))
+    return scale if scale > 0 else np.nan
 
 
 def clip_counts(values: np.ndarray) -> np.ndarray:
