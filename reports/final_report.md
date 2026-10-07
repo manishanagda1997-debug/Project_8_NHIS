@@ -4,20 +4,36 @@
 
 Repository: [github.com/manishanagda1997-debug/job-market-analysis](https://github.com/manishanagda1997-debug/job-market-analysis)
 
-**Contents:** 1. Executive summary · 2. Data and project scope · 3. Data quality and methodology · 4. Task 1: Keywords and pay · 5. Task 2: Emerging job categories · 6. Task 3: High-demand role forecasting · 7. Task 4: Client-country hourly rates · 8. Task 5: Recommendation engine · 9. Task 6: Monthly market dashboard · 10. Task 7: Online and remote hiring landscape · 11. Task 8: Future job-market outlook and scenarios · 12. Engineering and reproducibility · 13. Tools and technology choices · 14. Limitations · 15. Conclusion
+**Contents**
+
+1. Executive summary
+2. Data and project scope
+3. Data quality and methodology
+4. Task 1: Keywords and pay
+5. Task 2: Emerging job categories
+6. Task 3: High-demand role forecasting
+7. Task 4: Client-country hourly rates
+8. Task 5: Recommendation engine
+9. Task 6: Monthly market dashboard
+10. Task 7: Online and remote hiring landscape
+11. Task 8: Future job-market outlook and scenarios
+12. Engineering and reproducibility
+13. Tools and technology choices
+14. Limitations
+15. Conclusion
 
 ## 1. Executive summary
 
 This report analyses 244,828 Upwork job postings, mostly from February and March 2024. Results over time use the reliable collection window of 37 days, 16 February to 23 March 2024 (229,520 jobs). The data contains job titles, not descriptions, so every result describes titles. One reproducible pipeline produces all results, and code checks every number quoted in the analysis notebooks.
 
 **Task 1: Do title keywords relate to offered pay?**
-Yes, clearly, but as associations. Of 322 frequent title keywords, about two-thirds are linked with significantly higher or lower hourly offers, even among jobs from the same client country and job category (false discovery rate 5%).
+Of 322 frequent title keywords, about two-thirds are linked with significantly higher or lower hourly offers, even among jobs from the same client country and job category (false discovery rate 5%). These are associations, not causes.
 
 - **Higher offers:** titles containing words such as "consultant", "tax", "financial", "strategy" and "videographer". For example, titles with "consultant" offer about 77% more than similar jobs.
 - **Lower offers:** titles with "virtual assistant" (about 38% less), "customer service", "lead generation" and "Canva".
 
 Title words explain about a quarter of the variation in hourly offers.
-*Limit:* these are offers in postings, not earnings, and a word may stand for things the data does not measure, such as experience level or project size.
+*Limit:* these are offers in postings, not earnings. A title word may also be linked with other factors that are not included in the data.
 
 **Task 2: Which job categories are emerging?**
 Within the window, 9 of 22 job functions change their share of postings significantly.
@@ -33,7 +49,7 @@ Web Development, Design & Creative and Digital Marketing remain the highest-dema
 *Limit:* five weeks of history and one week of final testing; neighbouring ranks often overlap.
 
 **Task 4: How do hourly rates differ by client country?**
-91 client countries have at least 30 jobs with a complete hourly range. US clients offer the highest typical rate among large markets: a median of $25 an hour, about 9% above average for the same kinds of jobs. Part of the differences between countries comes from the mix of work. Australian clients, for example, have a near-average median but offer about 12% less for the same work. An interactive map shows both views.
+91 client countries have at least 30 jobs with a complete hourly range. US clients offer the highest typical rate among large markets: a median of $25 an hour, about 9% above average for the same kinds of jobs. Part of the differences between countries comes from the mix of work. Australian clients, for example, have a near-average median, but their adjusted index is about 12% below average after accounting for job-category mix. An interactive map shows both views.
 *Limit:* the rate is the midpoint of the range the client states. Small countries have wide uncertainty.
 
 **Task 5: Can we recommend relevant jobs from a freelancer's skills?**
@@ -54,7 +70,7 @@ It updates through a fixed chain: a new monthly extract → pipeline rebuild →
 *Limit:* there is no live data feed, and only two partial months exist so far.
 
 **Task 7: What is changing in online and remote hiring?**
-Upwork is mainly an online freelance marketplace, and this dataset has no structured remote or on-site field. Because of that, it cannot measure the percentage of jobs that are remote. Explicit work-arrangement words are rare: "remote" appears in about 0.5% of titles and on-site requirements in under 0.1%. The signals the data can measure are mostly stable:
+The dataset has no structured remote or on-site field, so it cannot measure the percentage of jobs that are remote or show a direct shift between office and remote work. Explicit work-arrangement words are rare: "remote" appears in about 0.5% of titles and on-site requirements in under 0.1%. The signals the data can measure are mostly stable:
 
 - **Client geography:** about 46% of clients are in North America, and the client base is as concentrated as if about 5 countries had equal shares.
 - **Hourly vs fixed-price:** fixed-price work gains slightly. The hourly share falls from 58.3% to 56.1%, a significant change of −2.2 points.
@@ -114,7 +130,7 @@ The source is the Upwork job-postings file supplied with the assignment: 244,828
 | Exact duplicate rows | 0 |
 | Reliable time-series window | 16 February - 23 March 2024 (37 days, 229,520 jobs) |
 
-One row has no title, link or country, so it does not meet the valid-job rule; every analysis uses the 244,827 valid rows.
+One row has no title, link or country, so it does not meet the valid-job rule and is excluded from analysis. Each analysis then uses the eligible subset needed for that question.
 
 The postings run from November 2023 to March 2024, but collection is thin before mid-February and the last day is cut off. I compare each day's volume with the median for the same weekday. A day with less than 90% of that median is incomplete. The primary time-series window runs from 16 February to 23 March. Every day in this window meets the daily-volume rule, while 17, 18 and 20 February still carry small intraday-gap flags and stay in sensitivity checks. Days outside the window are incomplete. All time-based analyses use this 37-day window. Among the 244,827 valid jobs, 15,307 fall outside it and remain available for analyses that do not depend on time.
 
@@ -130,7 +146,7 @@ The postings run from November 2023 to March 2024, but collection is thin before
 
 - **Titles:** 10,130 titles contain HTML codes (such as `&amp;`) and 208 contain garbled characters from a wrong text encoding. I repair both in a cleaned title and keep the raw title.
 - **Pay:** hourly and fixed-price fields never mix, and no range is inverted. About 27% of hourly jobs state no rate; I do not fill these gaps. Hourly pay is the midpoint of a complete stated range. Values at or above the 99.9% quantile ($500 an hour, $100,000 budgets) include placeholders such as $999 an hour, so I flag them and report pay results with and without them.
-- **Repeats:** a title can appear again because a client reposts it or because many clients need the same work. I flag a *possible repost* only when the title, country, contract type and exact pay all match a posting from the previous 3 days (9,190 jobs). I never delete these jobs; I use the flag for sensitivity checks.
+- **Repeats:** a title can appear again because a posting may be repeated or because several clients post similar jobs. I flag a *possible repost* only when the title, country, contract type and exact pay all match a posting from the previous 3 days (9,190 jobs). I never delete these jobs; I use the flag for sensitivity checks.
 - **Eligibility:** each analysis uses a stated subset. For example, hourly pay uses only jobs with a complete range, and trends use only the 37-day window.
 
 **Job categories.** The data has no category field, so I build one. Every job gets exactly one primary category: one of 22 job functions, or *Other / Unclear*. Transparent keyword rules decide 87% of jobs. A TF-IDF logistic-regression classifier, trained on titles the rules label, handles about 1% more. It only decides when its confidence is at least 0.70, and only in the 14 categories where it passes a reliability check on titles it does not see in training. The remaining titles go to *Other / Unclear*.
@@ -140,7 +156,7 @@ I test the categories against my own human labels in two sets:
 - 150 development titles, which I label and then use to tune the rules (83.3% agreement after tuning);
 - 350 blind titles, a random sample I draw before any tuning. I label them without seeing the system's predictions; the label sheet shows only the title. The categorizer stays frozen, and I score this set once.
 
-On the blind set, the system agrees with my label for 68.9% of titles (241 of 350; 95% interval 63.8%-73.5%). When it names a category rather than *Other*, it agrees 77.2% of the time. The system is cautious: it chooses *Other* about twice as often as I do. Software & IT, AI & ML, Engineering and Admin have low recall (31-46%), so their observed shares are likely to be understated. Every later result that uses categories inherits this uncertainty, and I show the *Other* share next to category results.
+On the blind set, the system agrees with my label for 68.9% of titles (241 of 350; 95% interval 63.8%-73.5%). When it names a category rather than *Other*, it agrees 77.2% of the time. On the blind set, the system chooses *Other / Unclear* for 13.4% of titles; I choose it for 6.3%. Software & IT, AI & ML, Engineering and Admin have low recall (31-46%), so their observed shares are likely to be understated. Every later result that uses categories inherits this uncertainty, and I show the *Other* share next to category results.
 
 **Statistical rules used throughout.**
 
@@ -175,15 +191,15 @@ On the blind set, the system agrees with my label for 68.9% of titles (241 of 35
 
 - **Higher offers:** consulting and specialist words, such as "consultant", "consultation", "tax", "financial", "strategy" and "videographer".
 - **Lower offers:** assistant and volume-work words, such as "virtual assistant", "customer service", "lead generation" and "list". Common platform skills are also lower than similar jobs: "Shopify", "WordPress" and "Flutter" by 8-13%, and "SEO", "Excel" and "Canva" by 19-35%.
-- **Adjustment changes the story for some words.** "Python" looks 10% higher in the raw comparison but 7.5% lower after country and category adjustment. This sign change shows that the raw association depends strongly on the mix of job categories. "AI" is 19% higher in the raw comparison, but the difference is not significant after adjustment.
+- **Adjustment changes the result for some words.** "Python" looks 10% higher in the raw comparison but 7.5% lower after country and category adjustment. This sign change shows that the raw association depends strongly on the mix of job categories. "AI" is 19% higher in the raw comparison, but the difference is not significant after adjustment.
 
 ![Figure 2: Title words linked with higher or lower hourly offers](figures/f2_pay_keywords.png)
 
 *Figure 2. Difference in hourly offers for jobs whose title contains the word, compared with jobs from the same client country and category. Black lines show 95% intervals; only significant words (FDR 5%) are shown, the 12 strongest in each direction.*
 
-**How much do titles explain?** On a 20% test split where no title appears in both training and test, country and category alone explain about 11% of the variation in log hourly offers. Adding title words raises this to about 26%, with a median error of about $8 an hour. So titles carry real information about pay, but most of the variation comes from things the title does not show. The keyword results are stable across five reasonable analysis choices (correlation with the main result at least 0.97; same direction for at least 93% of keywords).
+**How much do titles explain?** On a 20% test split where no title appears in both training and test, country and category alone explain about 11% of the variation in log hourly offers. Adding title words raises this to about 26%, with a median error of about $8 an hour. So title words add useful information, but the model still leaves most of the variation in hourly offers unexplained. The keyword results are stable across five reasonable analysis choices (correlation with the main result at least 0.97; same direction for at least 93% of keywords).
 
-*Limit:* these are associations, not causes. A word may stand for experience level, project size or client type. Pay is what clients offer, not what freelancers earn.
+*Limit:* these are associations, not causes. A title word may also be linked with other factors that are not included in the data. Pay is what clients offer, not what freelancers earn.
 
 **Evidence:** Notebook 04 (Task 1); `pay_keywords_hourly.csv`, `pay_keywords_budget.csv`, `pay_keyword_sensitivity.csv`, `pay_prediction.csv`.
 
@@ -211,7 +227,7 @@ On the blind set, the system agrees with my label for 68.9% of titles (241 of 35
 
 - **The directions hold in every check.** The sizes vary between checks, so I read them as ranges, not exact values. For example, Writing falls 35% in the trend line and 19% in the complete-week comparison.
 - **Part of the change is a step, not a smooth trend.** Around 26 February several shares shift at once. After that step, gradual change continues only for Writing (−13%) and for AI & ML (+13%), Sales (+9%) and E-commerce (+7%). For Admin, Translation, Marketing, Video and Design, the later period shows no clear trend.
-- **Title keywords tell the same story.** "Writers", "data entry", "translation", "writing" and "documents" lose about half or more of their share, while "crypto" nearly doubles (+97%).
+- **Title keywords show the same pattern.** "Writers", "data entry", "translation", "writing" and "documents" lose about half or more of their share, while "crypto" nearly doubles (+97%).
 - **No sign of changing classification coverage.** *Other / Unclear* stays near 12.5% of postings, so there is no sign that the main shifts come from changing classification coverage.
 
 ![Figure 3: Change in category share over the window](figures/f3_category_trends.png)
@@ -233,9 +249,9 @@ On the blind set, the system agrees with my label for 68.9% of titles (241 of 35
 
 Category forecasts are total jobs multiplied by the forecast category shares, so the 22 functions plus *Other* always add up to the total. Each forecast has an 80% empirical range from backtest errors for days 1-7 and a wider extended range for days 8-14 (Section 11).
 
-**Model choice.** The weekday mean wins: its mean MASE in development is 0.77, against 0.82 for the damped trend, 0.84 for the straight trend and 0.86 for the seasonal baseline. Averaged across the 24 demand series, its Relative MAE is 1.01, which is close to the seasonal baseline. The trend models add error, which is expected with so little history. A secondary 14-day check from three starting points gives the same winner.
+**Model choice.** The weekday mean wins: its mean MASE in development is 0.77, against 0.82 for the damped trend, 0.84 for the straight trend and 0.86 for the seasonal baseline. Averaged across the 24 demand series, its Relative MAE is 1.01, which is close to the seasonal baseline. The two trend models have higher backtest error. A secondary 14-day check from three starting points gives the same winner.
 
-**Final-week result.** For 20 of the 23 category series, the weekday mean beats the seasonal baseline (mean Relative MAE 0.84; below 1 means better than the baseline). For total jobs it does not: the baseline is best there, and every other model has a Relative MAE of about 1.5. I report this as it is: the model is useful for the mix of work, and the simple baseline is hard to beat for total volume.
+**Final-week result.** For 20 of the 23 category series, the weekday mean beats the seasonal baseline (mean Relative MAE 0.84; below 1 means better than the baseline). For total jobs it does not: the baseline is best there, and every other model has a Relative MAE of about 1.5.
 
 **Outlook for the next 7 days.**
 
@@ -277,8 +293,8 @@ Category forecasts are total jobs multiplied by the forecast category shares, so
 
 - **US clients offer the highest typical rate among large markets:** a median of $25 an hour and about 9% above average for the same kinds of jobs.
 - **The UK, Germany and Switzerland are close to average** once job mix is taken into account (within ±6%).
-- **Job mix matters.** Australia's median is close to the overall typical rate, but its clients offer about 12% less for the same work. India and the Philippines are about 20% below average after adjustment.
-- **Some large economies are clearly lower for the same work:** South Korea, Japan and Taiwan are 28-48% below average.
+- **Job mix matters.** Australia's median is close to the overall typical rate, but its adjusted index is about 12% below average after accounting for job-category mix. India and the Philippines are about 20% below average after adjustment.
+- South Korea, Japan and Taiwan have adjusted indexes 28-48% below average.
 
 **Stability.** Country rankings hardly change without extreme rates or without possible reposts (rank correlation at least 0.96). They change more if I use the high end of each range (0.90) or the low end (0.69), so the ranking of mid-sized countries at the low end is less certain.
 
@@ -292,7 +308,7 @@ Category forecasts are total jobs multiplied by the forecast category shares, so
 
 ## 8. Task 5: Recommendation engine
 
-**Question.** Can a freelancer type their skills and get relevant current jobs?
+**Question.** Can a freelancer type their skills and get relevant jobs from the available postings?
 
 **What it does.** A freelancer enters skills separated by commas. By default, the engine searches jobs from the last 14 days; the interface also allows 7 days, 30 days or all available jobs. The fixed evaluation uses the 14-day pool. The engine returns the 10 best-matching jobs, with pay shown as the client states it, for example `$15–$35/hr`.
 
@@ -300,7 +316,7 @@ The filters are strict. For an hourly filter, a job passes when the highest hour
 
 **Design choices.**
 
-- **Candidate pool:** 85,635 jobs from the last 14 days. A client often reposts the same job, so I keep only the newest posting of each possible-repost chain, which leaves 82,565 jobs.
+- **Candidate pool:** 85,635 jobs from the last 14 days. I keep only the newest posting of each possible-repost chain, which leaves 82,565 jobs.
 - **Diversity:** at most one result per title, unless too few different titles match, so the list does not show the same job ten times.
 - **Matching methods:** I build three methods, from simple to complex: keyword overlap, word TF-IDF, and a hybrid of word and character TF-IDF. Character pieces help with spelling variants and different word forms.
 
@@ -385,11 +401,9 @@ New months and weeks appear without any code change. An automated test checks th
 
 ## 10. Task 7: Online and remote hiring landscape
 
-This section works as a standalone report on Task 7.
-
 **Question.** What is changing in online and remote hiring?
 
-**What the data can and cannot measure.** Upwork is mainly an online freelance marketplace, and this dataset has no structured remote or on-site field. Because of that, it cannot measure the percentage of jobs that are remote, or a shift from office work to remote work. Instead, I measure three things the data does contain:
+**What the data can and cannot measure.** The dataset has no structured remote or on-site field, so it cannot measure the percentage of jobs that are remote or show a direct shift between office and remote work. Instead, I measure three things the data does contain:
 
 1. **Client geography:** where the clients who post online work are.
 2. **Engagement structure:** hourly against fixed-price work, and mentions of long-term, full-time or part-time work.
@@ -430,8 +444,8 @@ The chosen model is the weekday mean. In the reserved final week, it beats the s
 
 I separate three things that are easy to mix up:
 
-1. **Central outlook:** the selected forecast (weekday mean).
-2. **Empirical uncertainty range:** an 80% range built from the forecast errors from backtesting. It describes how far the central forecast can be off; it is not a separate scenario.
+1. **Central outlook:** the selected weekday-mean forecast.
+2. **Forecast range:** an 80% empirical range from backtest errors for days 1-7, and a wider extended range for days 8-14. It shows the uncertainty around the central forecast; it is not a separate scenario.
 3. **Trend-continuation scenario:** what happens if the recent direction of each category continues. For the trend-continuation scenario only, I compare the two predefined trend models for each category using development backtests and use the better one. This does not change the central forecast, which stays the weekday mean. I report a direction only if that model beats the seasonal baseline in development (Relative MAE below 1); otherwise the result is "no reliable direction". A change smaller than 0.1 percentage points is "stable".
 
 **Central outlook and range.**
@@ -466,7 +480,7 @@ Business & Project Management is only marginal: its trend model is barely better
 
 ## 12. Engineering and reproducibility
 
-I build the project so that anyone can rerun it and check every number.
+I build the project so that anyone can rerun it and check the results.
 
 **One pipeline.** A single command, `python -m job_market rebuild`, runs ten steps in order: ingest, clean, categorize, evaluate, pay, trends, forecast, recommend, monitor and database. Every threshold and path sits in one configuration file, `config/pipeline.toml`, and every analytical decision has a written reason in `docs/decisions.md`.
 
@@ -551,10 +565,8 @@ I report each task's limits in its own section. Here they are in one place.
 
 ## 15. Conclusion
 
-This project turns 244,828 Upwork job titles into answers for all eight tasks, and it states how far each answer goes.
+This project answers all eight tasks from 244,828 Upwork job postings. Time-based analysis uses the reliable 37-day window. It identifies title words linked with offered pay, short-term shifts between job categories, a 14-day demand outlook, differences in offered rates by client country, and the online-hiring signals the data can measure.
 
-The clearest findings are these. Title words show clear links with offered pay: titles containing consulting and specialist-related words tend to have higher offers, while titles containing assistant and volume-work words tend to have lower offers. Within five weeks, Digital Marketing, Video, Design and AI & ML gain share, while Writing, Admin and Translation lose it. Web Development, Design and Marketing remain the highest-demand functions in the short-term outlook. US clients offer the highest typical rate among large markets. In the online-hiring signals, fixed-price work gains slightly while client geography stays stable.
+It also builds two working tools: a job recommender with an API and web page, whose matching method is selected under a fixed evaluation rule using blind relevance labels, and a dashboard that updates when a new monthly extract is added.
 
-The project also delivers working tools: a recommendation engine with an API and web page that wins a blinded relevance test under a fixed rule, and a dashboard that updates when a new monthly extract arrives.
-
-Every result comes from one pipeline that anyone can rerun, with fingerprints, automated tests, notebook claim checks, SQL cross-checks, continuous integration and a Docker deployment. Where the data cannot answer a question, such as the share of remote jobs, the report says so instead of guessing.
+Every result comes from one pipeline that can be rerun from the raw file and is checked by automated tests, notebook claims checks and SQL cross-checks. The main limits are the short time window, titles without job descriptions, a single annotator and the missing remote/on-site field.

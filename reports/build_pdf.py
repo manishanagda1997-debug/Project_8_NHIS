@@ -1,17 +1,14 @@
-"""Turn reports/final_report.md into reports/final_report.pdf.
+"""
+Build reports/final_report.pdf from reports/final_report.md.
 
-Run from the project root, after `python reports/make_figures.py`:
+Run from the project root after:
+    python reports/make_figures.py
 
-    python reports/build_pdf.py
+The Markdown file remains the source of the report. This script converts it to HTML and then creates the PDF using an available Chromium-based browser.
 
-The Markdown file is the only source of the report; this script never edits
-it. It converts the Markdown to a styled HTML page and prints that page to
-PDF with a Chromium-based browser in headless mode (Google Chrome, Microsoft
-Edge or Chromium). Set the BROWSER environment variable to the browser's path
-if it is not found automatically.
+Set the BROWSER environment variable only if a browser is not found automatically.
 
-The Markdown converter is the `markdown` package if installed, otherwise
-`mistune` (installed with JupyterLab).
+Markdown conversion uses the `markdown` package when available and falls back to `mistune`.
 """
 
 from __future__ import annotations
