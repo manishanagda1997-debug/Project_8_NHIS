@@ -6,7 +6,7 @@ Analysis of 244,828 Upwork job postings (mostly February and March 2024) that
 answers all eight tasks of the assignment brief: which title words go with
 higher pay, which job categories are emerging, which roles will be in demand,
 how hourly rates differ by client country, how the online-hiring landscape is
-changing, and what the next weeks are likely to bring. It also delivers a job
+changing, and what the short-term forecast shows. It also delivers a job
 recommendation engine with a JSON API and web page, a market dashboard, an
 SQL cross-check layer and a Docker deployment (Nginx + Gunicorn + Flask).
 
@@ -63,10 +63,11 @@ See [Docker](#docker) for status, logs, stopping and deployment.
 | 5 | Recommendation engine: working prototype, API documentation, user interface | Notebook 07; web app `/` and the [API](#web-app-task-5) | `recommend_relevance_summary.csv`, `recommend_checks.csv` |
 | 6 | Dashboard that updates monthly with new trends | Web app `/dashboard`; [monthly refresh](#market-dashboard-task-6) | `monthly_market_summary.csv`, `monthly_category_share.csv`, `weekly_market_summary.csv` |
 | 7 | Remote-work trends, with data-backed forecasts | Notebook 05 (Task 7), Notebook 06 (signal forecasts); dashboard: online hiring signals | `remote_series_trends.csv`, `remote_signals_weekly.csv`, `forecast_signals_outlook.csv` |
-| 8 | Predict future job-market trends, with possible scenarios | Notebook 06 (category direction and empirical ranges) | `forecast_demand_outlook.csv`, `forecast_backtest_14d.csv` |
+| 8 | Predict future job-market trends, with possible scenarios | Notebook 06 (category direction and forecast ranges) | `forecast_demand_outlook.csv`, `forecast_backtest_14d.csv` |
 
 All evidence files are in `data/processed/`. SQL (Notebook 08) independently
-reproduces selected results of Tasks 4, 5 and 6 and the category evaluation.
+recomputes selected aggregations and evaluation metrics from the row-level
+database and compares them with the Python pipeline.
 
 ## Key results
 
@@ -77,7 +78,7 @@ Each number below is checked against the committed output tables by
 | Area | Result | Evidence |
 |---|---|---|
 | Data | 244,828 postings cleaned; 229,520 jobs in the reliable 37-day window (16 Feb - 23 Mar 2024) | [Notebook 01](notebooks/01_data_audit_and_cleaning.ipynb) |
-| Task 1: pay words | Among similar jobs (same client country and category), titles with "consultant" offer about +77% higher hourly rates and "virtual assistant" about -38% | [Notebook 04](notebooks/04_pay_keywords_and_countries.ipynb) |
+| Task 1: pay words | After adjusting for client country and job category, titles with "consultant" offer about +77% higher hourly rates and "virtual assistant" about -38% | [Notebook 04](notebooks/04_pay_keywords_and_countries.ipynb) |
 | Task 2: emerging categories | 9 job functions change share significantly; Writing & Content falls from 5.8% to 3.7% of postings (-35%) and Digital Marketing gains +1.0 percentage points (+10%) | [Notebook 05](notebooks/05_trends_and_online_hiring.ipynb) |
 | Tasks 3 and 8: forecasts | The weekday-mean model, chosen in advance by backtest, beats the seasonal-naive baseline for 20 of 23 category series in the reserved final week (mean relative MAE 0.84); for total volume the baseline is better | [Notebook 06](notebooks/06_forecasts.ipynb) |
 | Task 4: countries | 91 client countries have at least 30 rated hourly jobs; the United States median offer is $25/h | [Notebook 04](notebooks/04_pay_keywords_and_countries.ipynb) |
@@ -94,13 +95,16 @@ Each number below is checked against the committed output tables by
   categories, pay words and recommendations all work from short titles.
 - **A short window.** 37 reliable days (16 February - 23 March 2024). Trends
   are changes within five weeks, and forecasts are short-range (14 days).
-- **Missing pay is not random.** Many jobs state no rate or budget, and those
-  jobs differ from the rest, so pay results describe jobs that state pay.
+- **Missing hourly rates.** About 27% of hourly jobs state no rate, and some
+  state only one end of a range. Hourly pay results use only jobs with a
+  complete rate range. On the features checked (country, weekday, title
+  words), these jobs look very similar to the rest, with only small
+  differences.
 - **Categories are imperfect.** 68.9% agreement with blind human labels;
   every category-based result inherits that uncertainty.
 - **Associations, not causes.** A title word that goes with higher pay does
   not make a job pay more.
-- **Old postings, no live feed.** The jobs are from 2024 and most links now
+- **Old postings, no live feed.** The jobs are from 2024, so links may now
   point to closed jobs; the dashboard refreshes when a new extract is added,
   not automatically.
 
@@ -298,11 +302,11 @@ data is not in the repository.
 | `00_build_overview` | Shows which build the notebooks use and the raw file before cleaning |
 | `01_data_audit_and_cleaning` | Audits every column, explains each cleaning rule with its evidence, and validates the master table `jobs_clean.parquet` |
 | `02_exploratory_market_analysis` | Explores market size, pay, geography, time patterns, missing-pay bias and title words before modelling |
-| `03_job_categories` | Gives every job one job-function category (rules + a guarded classifier), tunes it on 150 hand labels and reports the honest result on 350 blind labels |
+| `03_job_categories` | Gives every job one job-function category (rules + a guarded classifier), tunes it on 150 hand-labelled titles and reports agreement on 350 blind-labelled titles |
 | `04_pay_keywords_and_countries` | Task 1: which title words go with higher or lower pay (raw, same country, same country + category); Task 4: hourly rates offered by client country, with an interactive map |
 | `05_trends_and_online_hiring` | Task 2: which job functions and title words grow or shrink in the 37-day window (weekday-adjusted, with checks); Task 7: client geography, engagement structure and explicit work-arrangement mentions over time |
-| `06_forecasts` | Tasks 3, 8 and 7: 14-day forecasts of job demand by category, category direction (rising, stable or no reliable direction) and online-hiring signals, with backtests, a reserved final week and empirical ranges |
-| `07_job_recommendations` | Task 5: recommend recent jobs from a freelancer's skills (strict pay filters, similar jobs, related market keywords), with a pooled blind relevance evaluation of three matching methods |
+| `06_forecasts` | Tasks 3, 8 and 7: 14-day forecasts of job demand by category, category direction (rising, stable or no reliable direction) and online-hiring signals, with backtests, a reserved final week and forecast ranges that are empirical for days 1-7 and extended for days 8-14 |
+| `07_job_recommendations` | Task 5: recommend jobs from a freelancer's skills using the latest available postings (strict pay filters, similar jobs, related market keywords), with a pooled blind relevance evaluation of three matching methods |
 | `08_sql_cross_checks` | SQL: eight queries recompute selected aggregations and evaluation metrics from the row-level SQLite database and match the Python pipeline |
 
 ## Opening notebooks interactively
