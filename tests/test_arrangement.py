@@ -87,3 +87,11 @@ def test_sheet_shows_only_the_title_and_refuses_to_overwrite(tmp_path):
     assert [r[1] for r in rows[1:]] == sample.head(5)["title"].tolist()
     with pytest.raises(FileExistsError):
         write_arrangement_sheet(sample.head(5), path)
+
+
+def test_pilot_and_the_rest_split_the_development_sample_exactly():
+    sample, _ = development_sample(title_frame(jobs()), RULES)
+    pilot, rest = sample[sample["pilot"]], sample[~sample["pilot"]]
+    assert len(pilot) + len(rest) == len(sample)
+    assert not set(pilot["sample_id"]) & set(rest["sample_id"])
+    assert list(pilot["sample_id"]) == [f"A{i:03d}" for i in range(1, len(pilot) + 1)]   # pilot = first IDs

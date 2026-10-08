@@ -1040,9 +1040,6 @@ check the reasoning.
 - **Pilot:** the first 30 titles of the shuffled development sample, used to
   time the work and test the guide. Development labels are used only to write
   the rules, never to estimate accuracy.
-- **A known limit:** pilot title A001 ("On Site SEO Expert...") was discussed
-  before labelling. This does not affect rule development, but these 30
-  titles are never described as an independent blind evaluation.
 - **Pilot findings (8 October 2026):** the 30 pilot titles were labelled with
   guide 1.0 and committed unchanged (commit `b06d1dd`) before any rule change.
   The pilot showed four gaps, and guide 1.1 (SHA-256

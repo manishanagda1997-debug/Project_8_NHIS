@@ -1,0 +1,13 @@
+{
+ "decision": "D-041",
+ "stage": "development (after the pilot)",
+ "source_sha256": "6513e9a744f15726bdb40d6435a60834e864ace08a75e1d7feb75e10ddb78b11",
+ "jobs_clean_sha256": "d9e3af84f2a7c4a69c6e0f26d02df3f72c4e087b9e3c1ee636940094c6bf10cb",
+ "guide_sha256": "5b21c8754fd950d0a9903d71d0542462e98deba29da8d3cb0797c36e39e18472",
+ "seed": 20261007,
+ "titles": 212,
+ "first_sample_id": "A031",
+ "last_sample_id": "A242",
+ "sheet": "data/labels/arrangement_dev_main.xlsx",
+ "sheet_sha256_at_creation": "93d1f6f7ae8247a5d9da483aaf537583cf8a5501f0291c6746223f4505e1bfb8"
+}
