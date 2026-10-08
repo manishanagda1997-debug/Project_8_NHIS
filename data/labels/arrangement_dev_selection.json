@@ -1,0 +1,58 @@
+{
+ "decision": "D-041",
+ "stage": "development",
+ "source_sha256": "6513e9a744f15726bdb40d6435a60834e864ace08a75e1d7feb75e10ddb78b11",
+ "jobs_clean_sha256": "d9e3af84f2a7c4a69c6e0f26d02df3f72c4e087b9e3c1ee636940094c6bf10cb",
+ "guide_sha256": "2858af555745206d1dfce14bbb24a6aafd089c0a09efaf50a2a50ed40c3ba77c",
+ "seed": 20261007,
+ "development_share": 0.4,
+ "settings_sha256": "4df6bded8625d20ba8840f75b4c055ea06464c50a1ff931a299969c03ad7384b",
+ "titles": 242,
+ "pilot_titles": 30,
+ "strata": [
+  {
+   "stratum": "D1",
+   "description": "hybrid audit: old hybrid pattern (all development titles)",
+   "development_titles": 22,
+   "sampled": 22,
+   "taken_in_full": true
+  },
+  {
+   "stratum": "D2",
+   "description": "old time-zone match",
+   "development_titles": 68,
+   "sampled": 40,
+   "taken_in_full": false
+  },
+  {
+   "stratum": "D3",
+   "description": "old on-site / in person / local match",
+   "development_titles": 72,
+   "sampled": 40,
+   "taken_in_full": false
+  },
+  {
+   "stratum": "D4",
+   "description": "old remote or work-from-home match",
+   "development_titles": 435,
+   "sampled": 60,
+   "taken_in_full": false
+  },
+  {
+   "stratum": "D5",
+   "description": "alternative-wording candidate, no old match",
+   "development_titles": 112,
+   "sampled": 40,
+   "taken_in_full": false
+  },
+  {
+   "stratum": "D6",
+   "description": "no old match and no candidate",
+   "development_titles": 74979,
+   "sampled": 40,
+   "taken_in_full": false
+  }
+ ],
+ "pilot_sheet": "data/labels/arrangement_dev_pilot.xlsx",
+ "pilot_sheet_sha256_at_creation": "d26ee078aa8573165c45c942702b976e7d836be7dd72beb0d0afac8d52ef0775"
+}

@@ -71,7 +71,7 @@
   </div>
 </header>
 <main class="wrap">
-  <p class="lead">Type your skills, separated by commas. The engine finds the job titles that match them best among recent Upwork posts, using the matching method that won the project's blind relevance test.</p>
+  <p class="lead">Type your skills, separated by commas. The engine finds the job titles that match them best among the latest available Upwork posts in this 2024 dataset, using the matching method chosen by a fixed rule in a relevance test with 12 freelancer profiles.</p>
   <form id="search" autocomplete="off">
     <div class="skills">
       <label for="skills">Your skills</label>
@@ -134,7 +134,7 @@
   <div class="wrap">
     Matches use job titles only (the data has no job descriptions). Jobs were posted in February-March 2024, so links may point to closed jobs.
     Related keywords describe associations in the data, not advice on what to learn.
-    Build <code>{{ meta.build_id }}</code> · recommender {{ meta.recommender_version }} · {{ meta.method }}.
+    Build <code>{{ meta.build_id }}</code> · recommender {{ meta.recommender_version }} · {{ meta.method }}{% if meta.method_status %} · {{ meta.method_status }}{% endif %}.
   </div>
 </footer>
 <script>

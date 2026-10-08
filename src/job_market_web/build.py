@@ -11,8 +11,10 @@ from __future__ import annotations
 import pandas as pd
 
 from job_market.config import Settings, load_settings
+from job_market.environment import current_problems, enforce
 from job_market.fingerprint import project_code_sha256
 from job_market.manifest import IntegrityError, load_manifest, verify_output
+from job_market.provenance import ServingError, serving_decision
 
 from .service import RecommenderService
 
@@ -47,16 +49,23 @@ def checked_manifest(settings: Settings) -> dict:
 def load_service(settings: Settings | None = None, manifest: dict | None = None) -> RecommenderService:
     settings = settings or load_settings()
     manifest = manifest or checked_manifest(settings)
-    steps = {step["name"]: step for step in manifest["steps"]}
-    metrics = steps.get("recommend", {}).get("metrics", {})
-    method = metrics.get("recommend_winner")
-    if not method:
-        raise AppBuildError("The recommender has not been evaluated in this build (no relevance labels scored).")
+    # The same environment rule as the pipeline and the notebooks: a printed
+    # warning by default, an error in strict mode.
+    enforce(current_problems(settings.root), "The app environment")
+    try:
+        decision = serving_decision(settings, manifest)
+    except ServingError as error:
+        raise AppBuildError(f"The app cannot serve this build: {error}") from error
+    method = decision["method"]
     paths = {name: verified_path(settings, manifest, name) for name in USED_OUTPUTS}
     jobs = pd.read_parquet(paths["recommend_jobs.parquet"])
     pay = pd.read_csv(paths["pay_keywords_hourly.csv"])
     trend = pd.read_csv(paths["trend_keywords.csv"])
-    service = RecommenderService.from_tables(jobs, settings.section("recommend"), method, manifest["run_id"], pay, trend)
+    service = RecommenderService.from_tables(jobs, settings.section("recommend"), method, manifest["run_id"], pay, trend,
+                                             method_status=decision["method_status"],
+                                             approval_note=decision["approval_note"],
+                                             approval_ref=decision["approval_ref"],
+                                             build_approval_ref=decision["build_approval_ref"])
     service.market_shares(int(settings.section("recommend")["pool_days"]))      # warm the default pool
     return service
 

@@ -1,0 +1,17 @@
+# Each human label sheet, bound to its exact bytes and to the raw extract it
+# was drawn from (decision D-039). Labels are scored only against that extract.
+
+["blind_labels.xlsx"]
+sheet_sha256 = "b4a52aff32ac384a27ad299dfa238c667c68a65d80777fb272ccca9f68c30370"
+source_sha256 = "6513e9a744f15726bdb40d6435a60834e864ace08a75e1d7feb75e10ddb78b11"
+note = "drawn from this extract; bound 7 Oct 2026 (D-039)"
+
+["dev_labels.xlsx"]
+sheet_sha256 = "0c7924e2d1a8567d8ae1daf752a841129788f90cb4011aebdc46e760184560f1"
+source_sha256 = "6513e9a744f15726bdb40d6435a60834e864ace08a75e1d7feb75e10ddb78b11"
+note = "drawn from this extract; bound 7 Oct 2026 (D-039)"
+
+["relevance_labels.xlsx"]
+sheet_sha256 = "90c9de4a9633ccbfa10002e20c22dd227cb56ee5237c770ebf4004f13e4886a7"
+source_sha256 = "6513e9a744f15726bdb40d6435a60834e864ace08a75e1d7feb75e10ddb78b11"
+note = "drawn from this extract; bound 7 Oct 2026 (D-039)"

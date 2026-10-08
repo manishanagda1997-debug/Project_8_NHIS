@@ -1,0 +1,9 @@
+# Preserved rankings of the historical recommender evaluation (decision D-040).
+# Taken from recommend_relevance_items.csv of the build below (hash checked against its manifest).
+# A rebuild of this exact source extract must reproduce these rankings exactly.
+file = "recommender_rankings_20261005T122621Z.csv"
+sha256 = "49de6b35872b1ca19e144e6fcc4eda023e907439793cbfc1467a10d8b70b16f9"
+source_sha256 = "6513e9a744f15726bdb40d6435a60834e864ace08a75e1d7feb75e10ddb78b11"
+build_id = "20261005T122621Z-90e95d23f3"
+source_output_sha256 = "6df440bf71d89563e23de2729ebf8470f21ccb4186746c9caa1618b27e5fe21c"
+rows = 180

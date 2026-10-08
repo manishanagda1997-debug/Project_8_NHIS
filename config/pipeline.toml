@@ -68,6 +68,11 @@ blind_size = 350
 dev_random = 110
 dev_short_titles = 20
 dev_joined_titles = 20
+# The extract of the historical recommender evaluation (decision D-040). A
+# rebuild of exactly this extract must reproduce the preserved rankings in
+# data/labels/historical_rankings.toml; for any other extract the comparison
+# does not apply. A missing record on this extract is an error, never a skip.
+historical_source_sha256 = "6513e9a744f15726bdb40d6435a60834e864ace08a75e1d7feb75e10ddb78b11"
 
 [categorize]
 # Job-function categories (decision D-028). Values marked "provisional" are
@@ -150,6 +155,28 @@ keyword_overlap = 0.8
 # New or notable terms counted per week only (too rare for trend inference).
 watch_terms = ["sora", "gemini", "claude", "devin", "midjourney", "llm", "ai agent", "gpt", "chatgpt",
                "vision pro", "tiktok shop", "faceless", "ugc"]
+
+[arrangement]
+# Work-arrangement and time-zone wording audit (decision D-041). Fixed before
+# any title is labelled. Distinct title keys in the time-series window are
+# split once, globally, into development and evaluation by a seeded hash.
+seed = 20261007
+development_share = 0.4
+# Development sample per stratum (D1 is always taken in full).
+dev_time_zone = 40
+dev_on_site = 40
+dev_remote_home = 60
+dev_candidates = 40
+dev_unmatched = 40
+pilot_titles = 30
+# Hybrid audit selection criterion: the old "hybrid" signal pattern, frozen.
+hybrid_audit_pattern = "hybrid"
+# Alternative wordings the old rules may miss (candidates for review, not rules).
+candidate_patterns = [
+    "anywhere|work from anywhere", "home based|from home|at home", "in office|office based|in the office",
+    "relocate|relocation", "days a week|days per week", "local to|located in|based in|must live|must reside",
+    "gmt \\d+|utc \\d+", "overlap|night shift|day shift|us time|uk time|eastern time|pacific time|central time|australian time",
+]
 
 [forecast]
 # Short-horizon forecasts (decision D-033). Every value is fixed before any

@@ -10,6 +10,14 @@
 data/raw/** binary
 # Generated data files are hashed in the manifest too.
 data/processed/** binary
+# Human label and provenance files use stable byte handling for their checks.
+# Spreadsheets are binary; CSV keeps its exact bytes (no line-ending
+# conversion) but still diffs as text; the TOML records always use LF.
+data/labels/*.xlsx binary
+data/labels/*.csv -text
+data/labels/*.toml text eol=lf
+# The arrangement labelling guide is hashed in its pilot record (D-041).
+docs/arrangement_labelling_guide.md text eol=lf
 *.pdf binary
 *.png binary
 *.pptx binary

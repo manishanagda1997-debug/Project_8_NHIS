@@ -76,9 +76,10 @@ def backtest(total: np.ndarray, shares: np.ndarray, signals: pd.DataFrame, start
             naive = np.abs(forecasts["seasonal_naive"] - actual)
             for j, name in enumerate(names):
                 for h in range(horizon):
+                    # Residual: forecast + error = actual (the direction the ranges need).
                     demand_rows.append({"model": model, "series": name, "origin": length, "horizon": h + 1,
                                         "abs_error": err[h, j], "naive_abs_error": naive[h, j],
-                                        "error": forecasts[model][h, j] - actual[h, j], "scale": scales[j]})
+                                        "error": actual[h, j] - forecasts[model][h, j], "scale": scales[j]})
         for name, bounds in SIGNALS.items():
             values = signals[name].to_numpy(dtype=float)
             actual_s = values[length:length + horizon]
@@ -87,9 +88,10 @@ def backtest(total: np.ndarray, shares: np.ndarray, signals: pd.DataFrame, start
             for model in MODELS:
                 f = signal_forecast(values[:length], start_weekday, horizon, model, phi, bounds)
                 for h in range(horizon):
+                    # Residual: forecast + error = actual.
                     signal_rows.append({"model": model, "series": name, "origin": length, "horizon": h + 1,
                                         "abs_error": abs(f[h] - actual_s[h]), "naive_abs_error": abs(naive_s[h] - actual_s[h]),
-                                        "error": f[h] - actual_s[h], "scale": scale})
+                                        "error": actual_s[h] - f[h], "scale": scale})
     return pd.DataFrame(demand_rows), pd.DataFrame(signal_rows)
 
 
@@ -121,6 +123,91 @@ def final_evaluation(total, shares, signals, start_weekday, dev_days, final_days
             rows.append({"family": "signals", "model": model, "series": name, "mae": mae,
                          "mase": mae / seasonal_scale(values[:dev_days]), "relative_mae": mae / naive if naive else np.nan})
     return pd.DataFrame(rows)
+
+
+def demand_bounds(points: np.ndarray, std_errors: dict[int, np.ndarray], history: np.ndarray, horizon: int,
+                  rules: dict) -> tuple[np.ndarray, np.ndarray]:
+    """Published demand ranges: one empirical range per series, lower bound floored at 0 jobs."""
+    lows, highs = [], []
+    for j in range(points.shape[1]):
+        low, high = empirical_ranges(points[:, j], std_errors, seasonal_scale(history[:, j]), horizon, False,
+                                     float(rules["range_lower"]), float(rules["range_upper"]))
+        lows.append(np.maximum(low, 0.0))
+        highs.append(high)
+    return np.column_stack(lows), np.column_stack(highs)
+
+
+def signal_bounds(point: np.ndarray, std_errors: dict[int, np.ndarray], history: np.ndarray, horizon: int,
+                  rules: dict, bounds: tuple[float, float]) -> tuple[np.ndarray, np.ndarray]:
+    """Published signal ranges: the empirical range clipped to the signal's valid interval."""
+    low, high = empirical_ranges(point, std_errors, seasonal_scale(history), horizon, False,
+                                 float(rules["range_lower"]), float(rules["range_upper"]))
+    return np.clip(low, *bounds), np.clip(high, *bounds)
+
+
+def final_window_bounds(total, shares, signals, start_weekday, dev_days, final_days, phi, winners,
+                        demand_std, signal_std, rules) -> dict[str, tuple[np.ndarray, np.ndarray, np.ndarray]]:
+    """Point forecasts and published-style ranges for the reserved final window.
+
+    Everything comes from the development period only: the winners, the
+    backtest residuals (``demand_std``/``signal_std``) and the seasonal scales
+    of the first ``dev_days`` days. The same bound functions as the published
+    forecasts are used (demand floored at 0, signals clipped to their range).
+    """
+    counts = total[:, None] * shares
+    history = np.column_stack([total[:dev_days], counts[:dev_days]])
+    t_f, c_f = demand_forecast(total[:dev_days], shares[:dev_days], start_weekday, final_days, winners["demand"], phi)
+    points = np.column_stack([t_f, c_f])
+    lows, highs = demand_bounds(points, demand_std, history, final_days, rules)
+    out = {name: (points[:, j], lows[:, j], highs[:, j]) for j, name in enumerate(["total"] + list(CATEGORY_IDS))}
+    for name, bounds in SIGNALS.items():
+        values = signals[name].to_numpy(dtype=float)[:dev_days]
+        f = signal_forecast(values, start_weekday, final_days, winners["signals"], phi, bounds)
+        out[name] = (f, *signal_bounds(f, signal_std, values, final_days, rules, bounds))
+    return out
+
+
+def coverage_row(family: str, model: str, series: str, actual: np.ndarray, low: np.ndarray, high: np.ndarray,
+                 unit: str, factor: float) -> dict[str, Any]:
+    """How many actual values fall inside [low, high]; undefined bounds are counted, never dropped."""
+    valid = np.isfinite(low) & np.isfinite(high) & np.isfinite(actual)
+    inside = int(((actual >= low) & (actual <= high) & valid).sum())
+    n_valid = int(valid.sum())
+    width = float(np.mean((high - low)[valid])) if n_valid else np.nan
+    mean_actual = float(np.mean(actual[valid])) if n_valid else np.nan
+    return {"family": family, "model": model, "series": series, "expected": len(actual), "valid": n_valid,
+            "undefined": len(actual) - n_valid, "inside": inside,
+            "coverage": inside / n_valid if n_valid else np.nan,
+            "mean_width": width, "width_unit": unit, "mean_width_in_unit": width * factor,
+            "relative_width": width / mean_actual if n_valid and mean_actual else np.nan}
+
+
+def final_coverage(bounds: dict, total, shares, signals, dev_days, final_days, winners) -> pd.DataFrame:
+    """Coverage of the day 1-7 ranges on the reserved final window, per series and pooled per family.
+
+    Coverage = inside / valid; it is undefined (NaN) when no bound is valid,
+    and the undefined count is always reported next to it. Seven days per
+    series, and the series share daily shocks, so this is descriptive only.
+    """
+    window = slice(dev_days, dev_days + final_days)
+    actual = {"total": total[window]}
+    actual.update({cid: (total[:, None] * shares)[window, j] for j, cid in enumerate(CATEGORY_IDS)})
+    actual.update({name: signals[name].to_numpy(dtype=float)[window] for name in SIGNALS})
+    rows = []
+    for name, (_, low, high) in bounds.items():
+        family = "signals" if name in SIGNALS else "demand"
+        unit, factor = (("index units", 1.0) if name == "hhi" else ("percentage points", 100.0)) \
+            if family == "signals" else ("jobs per day", 1.0)
+        rows.append(coverage_row(family, winners[family], name, actual[name], low, high, unit, factor))
+    table = pd.DataFrame(rows)
+    pooled = []
+    for family, part in table.groupby("family", sort=False):
+        valid, inside = int(part["valid"].sum()), int(part["inside"].sum())
+        pooled.append({"family": family, "model": winners[family], "series": "pooled",
+                       "expected": int(part["expected"].sum()), "valid": valid,
+                       "undefined": int(part["undefined"].sum()), "inside": inside,
+                       "coverage": inside / valid if valid else np.nan})
+    return pd.concat([table, pd.DataFrame(pooled)], ignore_index=True)
 
 
 def standardized_errors(errors: pd.DataFrame, model: str) -> dict[int, np.ndarray]:
@@ -169,6 +256,15 @@ def run(settings: Settings, context: dict[str, Any]) -> StepRecord:
     final = final_evaluation(total, shares, signals, start_weekday, dev_days, final_days, phi)
     final["chosen"] = [winners[f] == m for f, m in zip(final["family"], final["model"])]
 
+    # 2b. Coverage of the day 1-7 ranges on the reserved window, built from the
+    # development period only. The coverage is reported as measured; nothing is
+    # tuned to it.
+    dev_demand_std = standardized_errors(demand_err, winners["demand"])
+    dev_signal_std = standardized_errors(signal_err, winners["signals"])
+    final_bounds = final_window_bounds(total, shares, signals, start_weekday, dev_days, final_days, phi, winners,
+                                       dev_demand_std, dev_signal_std, rules)
+    coverage = final_coverage(final_bounds, total, shares, signals, dev_days, final_days, winners)
+
     # 3. Final 14-day forecasts from the winners, refitted on all days.
     future = pd.date_range(days[-1] + pd.Timedelta(days=1), periods=horizon, freq="D")
     t_f, c_f = demand_forecast(total, shares, start_weekday, horizon, winners["demand"], phi)
@@ -178,10 +274,9 @@ def run(settings: Settings, context: dict[str, Any]) -> StepRecord:
     points = np.column_stack([t_f, c_f])
     history = np.column_stack([total, counts])
     daily_rows = []
+    lows, highs = demand_bounds(points, demand_std, history, horizon, rules)
     for j, name in enumerate(names):
-        low, high = empirical_ranges(points[:, j], demand_std, seasonal_scale(history[:, j]), horizon, False,
-                                     float(rules["range_lower"]), float(rules["range_upper"]))
-        low = np.maximum(low, 0.0)
+        low, high = lows[:, j], highs[:, j]
         for h in range(horizon):
             daily_rows.append({"date": future[h].strftime("%Y-%m-%d"), "horizon": h + 1, "series": name,
                                "forecast": points[h, j], "low": low[h], "high": high[h],
@@ -235,9 +330,7 @@ def run(settings: Settings, context: dict[str, Any]) -> StepRecord:
     for name, bounds in SIGNALS.items():
         values = signals[name].to_numpy(dtype=float)
         f = signal_forecast(values, start_weekday, horizon, winners["signals"], phi, bounds)
-        low, high = empirical_ranges(f, signal_std, seasonal_scale(values), horizon, False,
-                                     float(rules["range_lower"]), float(rules["range_upper"]))
-        low, high = np.clip(low, *bounds), np.clip(high, *bounds)
+        low, high = signal_bounds(f, signal_std, values, horizon, rules, bounds)
         for h in range(horizon):
             signal_rows.append({"date": future[h].strftime("%Y-%m-%d"), "horizon": h + 1, "series": name,
                                 "forecast": f[h], "low": low[h], "high": high[h]})
@@ -260,6 +353,7 @@ def run(settings: Settings, context: dict[str, Any]) -> StepRecord:
         ("forecast_backtest_by_series.csv", per_series[["family", "model", "series", "mae", "mase", "relative_mae"]]),
         ("forecast_backtest_14d.csv", long_check),
         ("forecast_final_evaluation.csv", final),
+        ("forecast_final_coverage.csv", coverage),
         ("forecast_demand_daily.csv", demand_daily),
         ("forecast_demand_outlook.csv", demand_outlook),
         ("forecast_signals_daily.csv", pd.DataFrame(signal_rows)),

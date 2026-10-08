@@ -102,6 +102,9 @@ def test_build_scores_complete_label_sheets_and_skips_others(mini_project):
     book["labels"]["D2"] = "design_creative"
     book["labels"]["D3"] = "admin_virtual_assistance"
     book.save(sheet)
+    from job_market.manifest import sha256_file
+    from job_market.provenance import bind_label_sheet
+    bind_label_sheet(folder, "dev_labels.xlsx", sha256_file(mini_project.path("raw_csv")))
 
     manifest = run_pipeline(mini_project, log=lambda _: None)
     metrics = {step["name"]: step["metrics"] for step in manifest["steps"]}["evaluate"]

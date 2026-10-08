@@ -137,10 +137,12 @@ def empirical_ranges(point: np.ndarray, scaled_errors: dict[int, np.ndarray], sc
                      multiplicative: bool, lower: float = 0.1, upper: float = 0.9) -> tuple[np.ndarray, np.ndarray]:
     """80% empirical forecast ranges from backtest errors, wider farther ahead.
 
-    ``scaled_errors[h]`` holds the backtest errors at horizon ``h`` (1..H):
-    relative errors (actual / forecast - 1) when ``multiplicative``, otherwise
-    errors divided by the series' seasonal scale. Beyond the backtested
-    horizon H, the horizon-H quantiles are widened by sqrt(h / H) (a fixed
+    ``scaled_errors[h]`` holds the backtest errors at horizon ``h`` (1..H).
+    For multiplicative errors, ``error = actual / forecast - 1``, so
+    ``forecast * (1 + error)`` recovers the actual value. For additive errors,
+    ``error = (actual - forecast) / scale``, so ``forecast + error * scale``
+    recovers the actual value. The ranges are correct only when the errors
+    follow these directions. Beyond the backtested horizon H, the horizon-H quantiles are widened by sqrt(h / H) (a fixed
     assumption, stated in the notebook).
     """
     tested = max(scaled_errors)

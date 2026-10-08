@@ -9,9 +9,17 @@ The step indexes every job in the 37-day time-series window, then:
    violations. These files hold counts only, never titles, so they reveal
    nothing about which method finds which job;
 3. scores the methods against the blinded relevance sheet
-   (``data/labels/relevance_labels.xlsx``) once it is complete. A missing or
-   incomplete sheet is skipped and recorded, as in the evaluate step. Until
-   then, no file links a method to a job.
+   (``data/labels/relevance_labels.xlsx``) only when the sheet is bound to
+   this raw extract (decision D-039). A missing, malformed or other-extract
+   sheet is not scored, and its status is recorded. On the bound extract, a
+   sheet that no longer covers the retrieved titles stops the build;
+4. on the designated historical extract, requires the rankings to equal the
+   preserved historical rankings (decision D-040);
+5. records the method this build serves. It comes from the approval record
+   (``config/recommender_approval.toml``); without one, the scored winner is
+   recorded as pending approval. A scored winner that differs from the
+   approved method is recorded as a mismatch: the app then refuses to start,
+   and nothing switches automatically. Related keywords use the served method.
 
 The winner rule is frozen in the configuration: highest mean graded nDCG@5;
 differences below the tie threshold go to strict Precision@5 (only label 2
@@ -29,6 +37,7 @@ from ..config import Settings
 from ..io import write_csv
 from ..labels import LabelSheetError, read_relevance_sheet
 from ..manifest import StepRecord, describe_output, sha256_file
+from .. import provenance
 from ..recommend import (
     Index, build_index, choose_winner, describe_keyword, filter_mask, ndcg_at_k, newest_in_repost_chain, pool_mask,
     recommend, related_keywords, scores, strict_precision_at_k,
@@ -174,6 +183,75 @@ def related_table(index: Index, rules: dict, method: str, processed) -> pd.DataF
     return pd.DataFrame(rows, columns=RELATED_COLUMNS)
 
 
+def current_evaluation(labels_dir, source_sha256: str, results, rules: dict):
+    """(status, detail, scored) for the relevance evaluation of this build.
+
+    The source identity is checked first and independently: a sheet bound to
+    another extract is never scored, even if it happens to cover every
+    retrieved title. ``results`` is called only when scoring is allowed. A
+    bound sheet that no longer covers the retrieved titles stops the build;
+    the cause is not assumed.
+    """
+    status, detail = provenance.label_status(labels_dir, RELEVANCE_SHEET, source_sha256)
+    if status != provenance.SCORED:
+        return status, detail, None
+    try:
+        labels = read_relevance_sheet(labels_dir / RELEVANCE_SHEET)
+    except LabelSheetError as error:
+        return provenance.MALFORMED, str(error), None
+    return status, detail, score_relevance(results(), labels, rules)
+
+
+def historical_guard(labels_dir, source_sha256: str, items: pd.DataFrame, historical_source_sha256: str) -> str:
+    """On the designated historical extract, rankings must equal the preserved artifact.
+
+    The historical extract is designated in the settings, independently of the
+    record file, so a deleted or edited record cannot silently skip the check.
+    For any other extract the comparison does not apply.
+    """
+    if source_sha256 != historical_source_sha256:
+        return "not applicable: not the historical extract"
+    historical = provenance.historical_rankings(labels_dir)
+    if historical is None:
+        raise provenance.ProvenanceError("this is the historical evaluation extract, but the historical ranking "
+                                         f"record ({provenance.HISTORICAL_RANKINGS_FILE}) is missing")
+    if historical[0]["source_sha256"] != source_sha256:
+        raise provenance.ProvenanceError("the historical ranking record describes another extract than the one "
+                                         "designated in the settings")
+    differences = provenance.compare_rankings(items, historical[1])
+    if differences:
+        raise provenance.ProvenanceError(f"rankings on the historical extract differ from build "
+                                         f"{historical[0]['build_id']}: {differences[0]}")
+    return f"identical to build {historical[0]['build_id']}"
+
+
+def decide_serving(winner: str | None, label_state: str, approval: dict | None, problem: str | None) -> dict[str, Any]:
+    """The method this build serves and its status (recorded in the manifest).
+
+    * valid approval: serve the approved method; a different current winner
+      is recorded as a mismatch (the app then refuses);
+    * no approval file: serve nothing until approved, but record the current
+      winner as the method the build used (approval pending);
+    * an approval that exists but is invalid is recorded as invalid, never as pending.
+
+    ``label_state`` is recorded with the labels; the status here does not repeat it.
+    """
+    if approval is not None and problem is None:
+        served = approval["approved_method"]
+        evidence = approval["evidence"]
+        status = ("chosen by the relevance test on this data" if winner is not None else
+                  f"chosen by the earlier relevance test (build {evidence['build_id']}); "
+                  "this data has no new relevance test")
+        return {"recommend_served_method": served, "recommend_method_status": status,
+                "recommend_approval_status": "approved", "recommend_approval_ref": approval["ref"],
+                "recommend_winner_mismatch": bool(winner is not None and winner != served)}
+    approval_state = "pending" if problem is None else (problem if problem.startswith("invalid") else f"invalid: {problem}")
+    # The status says only how the method was chosen; the approval state is a separate field.
+    status = "chosen by the relevance test on this data" if winner is not None else "no relevance test on this data"
+    return {"recommend_served_method": winner or "none", "recommend_method_status": status,
+            "recommend_approval_status": approval_state, "recommend_winner_mismatch": False}
+
+
 def run(settings: Settings, context: dict[str, Any]) -> StepRecord:
     record = StepRecord(NAME, DESCRIPTION)
     rules = settings.section("recommend")
@@ -199,26 +277,42 @@ def run(settings: Settings, context: dict[str, Any]) -> StepRecord:
     })
 
     item_columns = ["profile_id", "method", "rank", "row_id", "title_key", "title", "relevance"]
-    empty = (pd.DataFrame(columns=item_columns), pd.DataFrame(columns=["profile_id", "method"]),
-             pd.DataFrame(columns=["method"]))
-    tables = empty
+    tables = (pd.DataFrame(columns=item_columns), pd.DataFrame(columns=["profile_id", "method"]),
+              pd.DataFrame(columns=["method"]))
     related = pd.DataFrame(columns=RELATED_COLUMNS)
-    path = settings.path("labels_dir") / RELEVANCE_SHEET
-    if not path.is_file():
-        record.metrics["relevance_labels"] = "missing"
+    labels_dir = settings.path("labels_dir")
+    source_sha256 = context["source"]["sha256"]
+
+    # 1. Current evaluation: only when the relevance sheet is bound to this extract.
+    status, detail, scored = current_evaluation(labels_dir, source_sha256, lambda: evaluation_results(index, rules), rules)
+    winner = None
+    if scored is not None:
+        items, by_profile, summary, winner, reason = scored
+        tables = (items, by_profile, summary)
+        record.metrics.update({
+            "relevance_labels_sha256": sha256_file(labels_dir / RELEVANCE_SHEET),
+            "recommend_winner": winner, "recommend_winner_reason": reason,
+            "recommend_winner_ndcg_at_5": round(float(summary.loc[summary["winner"], "mean_ndcg"].iloc[0]), 4),
+            "recommend_historical_rankings": historical_guard(
+                labels_dir, source_sha256, items, str(settings.section("labels")["historical_source_sha256"])),
+        })
+    record.metrics["relevance_labels"] = status if status == provenance.SCORED else f"{status}: {detail}"
+
+    # 2. Which method this build serves, and with what standing.
+    try:
+        approval = provenance.load_approval(settings)
+        problem = None if approval is None else "; ".join(provenance.scope_problems(approval, settings)) or None
+    except provenance.ApprovalError as error:
+        approval, problem = None, f"invalid: {error}"
+    record.metrics.update(decide_serving(winner, status, approval, problem))
+    served = None if record.metrics["recommend_served_method"] == "none" else record.metrics["recommend_served_method"]
+
+    # 3. Related keywords use the served method, or are explicitly unavailable.
+    if served:
+        related = related_table(index, rules, served, processed)
+        record.metrics["recommend_related_status"] = f"generated with {served}"
     else:
-        try:
-            labels = read_relevance_sheet(path)
-            items, by_profile, summary, winner, reason = score_relevance(evaluation_results(index, rules), labels, rules)
-            tables = (items, by_profile, summary)
-            related = related_table(index, rules, winner, processed)
-            record.metrics.update({
-                "relevance_labels": "scored", "relevance_labels_sha256": sha256_file(path),
-                "recommend_winner": winner, "recommend_winner_reason": reason,
-                "recommend_winner_ndcg_at_5": round(float(summary.loc[summary["winner"], "mean_ndcg"].iloc[0]), 4),
-            })
-        except LabelSheetError as error:
-            record.metrics["relevance_labels"] = f"not scored: {error}"
+        record.metrics["recommend_related_status"] = "unavailable: no method to serve"
     outputs.update({"recommend_relevance_items.csv": tables[0], "recommend_relevance_by_profile.csv": tables[1],
                     "recommend_relevance_summary.csv": tables[2], "recommend_related_keywords.csv": related})
     for name, table in outputs.items():

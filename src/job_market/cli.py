@@ -7,6 +7,7 @@
     python -m job_market verify           rebuild, run notebooks, then the lineage check
     python -m job_market make-label-sheets  draw the blind and development samples as Excel sheets (once)
     python -m job_market make-relevance-sheet  write the blinded recommendation relevance sheet (once)
+    python -m job_market make-arrangement-pilot  write the 30-title work-arrangement pilot sheet (once)
     python -m job_market serve            start the web app (recommendations and API) on http://127.0.0.1:5000
 
 Every command exits with code 0 on success and 1 on failure, so the same
@@ -44,6 +45,8 @@ def main(argv: list[str] | None = None) -> int:
         cmd.add_argument("-v", "--verbose", action="store_true", help="also list passing checks")
     sub.add_parser("make-label-sheets", help="draw the label samples and write the Excel sheets (refuses to overwrite)")
     sub.add_parser("make-relevance-sheet", help="write the blinded relevance sheet for the recommender (refuses to overwrite)")
+    sub.add_parser("make-arrangement-pilot",
+                   help="write the 30-title work-arrangement pilot sheet and its selection record (refuses to overwrite)")
     serve = sub.add_parser("serve", help="start the web app on http://127.0.0.1:5000")
     serve.add_argument("--host", default="127.0.0.1", help="address to listen on (0.0.0.0 inside Docker)")
     serve.add_argument("--port", type=int, default=5000)
@@ -75,6 +78,34 @@ def main(argv: list[str] | None = None) -> int:
         run_pipeline(settings)
         notebooks = execute_notebooks(settings)
         return _finish([notebooks, run_lineage_check(settings)], args.verbose)
+    if args.command == "make-arrangement-pilot":
+        import json
+
+        import pandas as pd
+
+        from .arrangement import GUIDE, development_sample, selection_record, title_frame, write_arrangement_sheet
+        from .manifest import load_manifest, sha256_file, verify_output
+
+        manifest = load_manifest(settings.path("manifest"))
+        entry = next(o for o in manifest["outputs"] if o["path"].endswith("jobs_clean.parquet"))
+        jobs_path = verify_output(entry, settings.root)        # the bytes recorded by the build, or stop
+        folder = settings.path("labels_dir")
+        sheet, record_path = folder / "arrangement_dev_pilot.xlsx", folder / "arrangement_dev_selection.json"
+        if sheet.exists() or record_path.exists():
+            print("refusing to overwrite an existing pilot sheet or selection record")
+            return 1
+        rules = settings.section("arrangement")
+        jobs = pd.read_parquet(jobs_path, columns=["row_id", "title_key", "title_clean", "eligible_for_timeseries"])
+        sample, summary = development_sample(title_frame(jobs), rules)
+        record = selection_record(sample, summary, rules, manifest["fingerprints"]["source_sha256"], entry["sha256"],
+                                  sha256_file(settings.root / GUIDE))
+        record["pilot_sheet"] = settings.relative(sheet)
+        write_arrangement_sheet(sample[sample["pilot"]], sheet)
+        record["pilot_sheet_sha256_at_creation"] = sha256_file(sheet)
+        record_path.write_text(json.dumps(record, indent=1) + "\n", encoding="utf-8", newline="\n")
+        print(f"wrote {settings.relative(sheet)}: {int(sample['pilot'].sum())} titles")
+        print(f"wrote {settings.relative(record_path)}: design, counts and hashes (no per-title groups)")
+        return 0
     if args.command == "make-label-sheets":
         from .labels import draw_samples, write_label_sheet
         from .notebook import start

@@ -28,6 +28,7 @@ from ..config import Settings, load_settings
 from ..environment import strict_mode
 from ..fingerprint import LABELS, current_fingerprints
 from ..manifest import load_manifest, sha256_file
+from .. import provenance
 from . import project_checks
 from .findings import ERROR, OK, WARNING, Report
 from .notebooks import METADATA_KEY, project_notebooks
@@ -179,6 +180,34 @@ def check_notebooks(settings: Settings, manifest: dict[str, Any], report: Report
             report.add(level, "notebook", message, location)
 
 
+def check_labels_and_serving(settings: Settings, manifest: dict[str, Any], report: Report) -> None:
+    """Label provenance statuses and the recommender serving decision (decisions D-039, D-040)."""
+    steps = {step["name"]: step for step in manifest.get("steps", [])}
+    statuses = {
+        "dev labels": steps.get("evaluate", {}).get("metrics", {}).get("dev_labels"),
+        "blind labels": steps.get("evaluate", {}).get("metrics", {}).get("blind_labels"),
+        "relevance labels": steps.get("recommend", {}).get("metrics", {}).get("relevance_labels"),
+    }
+    for name, status in statuses.items():
+        if status is None or status in (provenance.SCORED, provenance.MISSING):
+            report.add(OK, "labels", f"{name}: {status or 'not used in this build'}")
+        elif status.startswith(provenance.WRONG_SOURCE):
+            report.add(WARNING, "labels", f"{name}: {status}")
+        else:
+            report.add(ERROR, "labels", f"{name}: {status}")
+    recommend = steps.get("recommend", {}).get("metrics", {})
+    if "recommend_served_method" not in recommend:
+        report.add(OK, "serving", "recommender not built in this build")
+        return
+    try:
+        decision = provenance.serving_decision(settings, manifest)
+    except provenance.ServingError as error:
+        level = WARNING if str(error).startswith("approval pending") else ERROR
+        report.add(level, "serving", str(error))
+    else:
+        report.add(OK, "serving", f"serves {decision['method']}: {decision['method_status']}")
+
+
 def run_lineage_check(settings: Settings | None = None) -> Report:
     settings = settings or load_settings()
     report = Report("Lineage check", strict=strict_mode())
@@ -188,7 +217,7 @@ def run_lineage_check(settings: Settings | None = None) -> Report:
         report.add(ERROR, "manifest", str(exc))
         return report
     report.add(OK, "manifest", f"run_id {manifest['run_id']}")
-    core = (check_fingerprints, check_outputs, check_no_untracked_outputs, check_notebooks)
+    core = (check_fingerprints, check_outputs, check_no_untracked_outputs, check_notebooks, check_labels_and_serving)
     for check in (*core, *project_checks.CHECKS):
         try:
             check(settings, manifest, report)

@@ -899,3 +899,163 @@ check the reasoning.
   environment fingerprint and the local install for a cosmetic CI message, so it stays.
 - **Evidence:** `docker/`, `docker-compose.yml`, `.dockerignore`,
   `src/job_market_web/wsgi.py`, `tests/test_docker.py`, `.github/workflows/ci.yml`.
+
+### D-039 Human labels tied to their source data
+
+- **What:** `data/labels/label_sources.toml` binds each human label sheet to
+  the SHA-256 of the sheet and to the SHA-256 of the raw file the sheet was
+  drawn from. The three existing sheets (`dev_labels.xlsx`,
+  `blind_labels.xlsx`, `relevance_labels.xlsx`) were bound on 7 October 2026
+  to source `6513e9a744f1...db78b11`, after each sheet's hash was checked
+  against its committed version.
+- **Why:** `row_id` is the row's position in the raw file. Before this, a new
+  extract in a different row order could join an old label to a different job
+  without any error.
+- **Checks, in this order, before any join or score:** (1) the sheet exists,
+  otherwise "missing"; (2) its binding is present and every hash is valid,
+  otherwise "source identity unavailable"; (3) the sheet's bytes match the
+  binding, otherwise "malformed" (a sheet that fails content validation is
+  also "malformed"); (4) the current raw file is the bound source, otherwise
+  "labels belong to another extract". Only a sheet that passes all four is
+  scored.
+- **Category sheets:** after the source matches, every labelled `row_id` must
+  still point to the labelled title. Any mismatch stops the build; the check
+  does not assume the cause. On 7 October all 500 labelled rows (150
+  development, 350 blind) matched.
+- **Relevance sheet:** a bound sheet that no longer covers the retrieved
+  titles stops the build.
+- **Lineage check:** a missing sheet is OK (a fresh clone or the test project
+  builds without labels); labels from another extract give a warning; missing
+  source identity or a malformed sheet gives an error.
+- **Results on new data:** label-based evaluation results remain historical
+  results for the original labelled extract. They are not treated as
+  evaluation results for a new extract.
+- **Git handling:** label spreadsheets are binary, the CSV keeps its exact
+  bytes and still diffs as text, and the TOML records always use LF, so the
+  hashes match on Windows and Linux.
+- **Limits:** the hashes stop accidental mismatches. They do not prove
+  provenance against a coordinated edit of both data and records. The Git
+  history supports review but does not guarantee that such an edit is
+  detected.
+- **Evidence:** `src/job_market/provenance.py`, `steps/evaluate.py`,
+  `steps/recommend.py`, `qa/lineage.py`, `data/labels/label_sources.toml`,
+  `.gitattributes`, `tests/test_provenance.py`, `tests/test_evaluate.py`.
+
+### D-040 Recommender serving approval and historical rankings
+
+- **Problem (found 7 October 2026):** the app needed a winner scored in the
+  same build. A new monthly extract cannot be scored with the frozen relevance
+  labels, so after a refresh the app could not start.
+- **Approval record:** `config/recommender_approval.toml`, written by a person
+  after reviewing the evidence from the rebuild. It has two parts:
+  - **Scope**, which records the implementation and environment of the
+    approved recommender: the hash of `recommend.py`, `text.py`,
+    `steps/clean.py` and `steps/recommend.py` (must match); the hash of the
+    `[recommend]` and `[cleaning]` settings (must match); and the numpy,
+    pandas, scipy and scikit-learn versions, which are compared with the
+    running environment. A version difference gives a warning normally and
+    stops serving only in strict mode (`JOB_MARKET_STRICT=1`).
+  - **Evidence**, never compared with a new extract: `build_id`,
+    `source_sha256`, `labels_sha256`, `rankings_file`, `rankings_sha256` and
+    `selection_rule`. All are required and checked for presence and format.
+    Format checks do not prove the historical claims; the approval review
+    verifies the referenced artifact and its hash.
+- **What each build records:** `served_method`; `method_status` (how the
+  method was chosen); `approval_status` (approved, pending or invalid);
+  `approval_ref` (absent for a pending build); and `winner_mismatch`.
+- **Serving rules (app loader and lineage check):**
+
+  | Situation | Result |
+  |---|---|
+  | Changed recommender code or settings | Stop |
+  | Different library versions | Warning; stop only in strict mode |
+  | No approval file | Pending; not served |
+  | Approval file exists but is unusable | Stop with "approval invalid"; never treated as pending |
+  | A scored winner differs from the approved method | Stop; a person decides; nothing switches automatically |
+  | The approval names a different method than the build used | Stop; rebuild |
+  | A valid approval of the same method, written after the build | Served; a note says the approval was recorded after the build; both references stay visible |
+
+- **Environment check:** the app runs the same environment check as the
+  pipeline and the notebooks, for both `python -m job_market serve` and
+  Gunicorn.
+- **Refresh:** refreshed data is served with the status "chosen by the
+  earlier relevance test (build ...); this data has no new relevance test".
+- **Historical rankings:** `data/labels/historical_rankings.toml` and
+  `recommender_rankings_20261005T122621Z.csv`: 180 rows of `profile_id,
+  method, rank, row_id, title_key`, taken from `recommend_relevance_items.csv`
+  of build `20261005T122621Z-90e95d23f3` (hash checked against that build's
+  manifest). The historical extract is named in the settings
+  (`[labels] historical_source_sha256`), separately from the record file. On
+  that extract, a missing record, a record for another extract or any ranking
+  difference is a build error; on other extracts the comparison does not
+  apply.
+- **Timeline:** rules frozen with tag `recommender-1.0` (4 October 2026,
+  18:39); labels finished with tag `relevance-labels-final` (4 October,
+  23:18); scored in build `20261005T122621Z` (5 October).
+- **Limits:** identical rankings show agreement on those 12 profiles and that
+  extract only. The method was selected on 12 profiles; that does not show it
+  is better in general.
+- **Evidence:** `src/job_market/provenance.py`, `steps/recommend.py`,
+  `src/job_market_web/build.py`, `service.py`, `qa/lineage.py`,
+  `config/pipeline.toml`, `data/labels/historical_rankings.toml`,
+  `tests/test_provenance.py`.
+
+### D-041 Work-arrangement and time-zone wording audit
+
+- **Purpose:** measure how reliably rules find explicit wording in job titles
+  about work arrangement and time-zone requirements. Titles alone cannot show
+  how many jobs are actually remote; the audit does not estimate that.
+- **Why:** the old rules matched technical meanings. Most "hybrid" titles were
+  about apps, cloud, power systems or directory services; "remote" included
+  "remote sensing"; "PST" included an Outlook file migration.
+- **Guide:** `docs/arrangement_labelling_guide.md`, version 1.0, 7 October
+  2026, SHA-256 `2858af555745206d1dfce14bbb24a6aafd089c0a09efaf50a2a50ed40c3ba77c`
+  (the file as stored in Git, LF line endings). It was fixed before any title
+  was labelled.
+- **Labels:** three, each judged independently as yes, no or unclear:
+  `remote_or_home`; `on_site_required` (physical attendance must be stated; a
+  location or residency restriction alone is not on-site); and
+  `time_zone_required` (working hours or availability; a deadline, a
+  conversion tool or a file type is not).
+- **Hybrid rule:** when "hybrid" clearly describes the working arrangement,
+  remote/home = yes and on-site = yes. Hybrid app, cloud, vehicle or solar =
+  no on both. A genuinely unclear meaning = unclear. "Hybrid" is no longer
+  reported as a series, only as an audit.
+- **Split:** the 187,961 distinct title keys in the time-series window are
+  split once, globally, by a seeded SHA-256 of each key (seed 20261007): 40%
+  development (75,688) and 60% evaluation (112,273). A key can never be on
+  both sides.
+- **Development strata** (mutually exclusive, by priority):
+
+  | Stratum | Contents | Development titles | Sampled |
+  |---|---|---|---|
+  | D1 | old hybrid pattern | 22 | all 22 |
+  | D2 | old time-zone match | 68 | 40 |
+  | D3 | old on-site match | 72 | 40 |
+  | D4 | old remote or work-from-home match | 435 | 60 |
+  | D5 | alternative-wording candidates | 112 | 40 |
+  | D6 | no match | 74,979 | 40 |
+  | Total | | | 242 |
+
+- **Pilot:** the first 30 titles of the shuffled development sample, used to
+  time the work and test the guide. Development labels are used only to write
+  the rules, never to estimate accuracy.
+- **A known limit:** pilot title A001 ("On Site SEO Expert...") was discussed
+  before labelling. This does not affect rule development, but these 30
+  titles are never described as an independent blind evaluation.
+- **Order after the pilot:** label the rest of the development sample; freeze
+  the rules (tag `arrangement-rules-1.0`); design and draw the evaluation
+  sample from the unseen evaluation side using old and new rule matches;
+  label it blind and freeze it (tag `arrangement-labels-final`); score once.
+  The evaluation design, its inclusion probabilities and weights, and its
+  uncertainty method are added to this record before the evaluation sample is
+  drawn.
+- **Provenance:** `data/labels/arrangement_dev_selection.json` records the
+  source and `jobs_clean` hashes (`jobs_clean` was checked against the build
+  manifest before reading), the guide hash, seed, settings hash, stratum sizes
+  and the pilot sheet's hash at creation. It contains no per-title groups, so
+  the labeller stays blind to them.
+- **Evidence:** `docs/arrangement_labelling_guide.md`,
+  `src/job_market/arrangement.py`, `config/pipeline.toml` (`[arrangement]`),
+  `data/labels/arrangement_dev_pilot.xlsx`,
+  `data/labels/arrangement_dev_selection.json`, `tests/test_arrangement.py`.

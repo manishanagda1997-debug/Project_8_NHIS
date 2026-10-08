@@ -94,3 +94,124 @@ def test_empirical_ranges_widen_beyond_the_tested_horizon():
     assert (np.diff(width[:7]) > 0).all()                          # wider farther ahead
     assert width[13] == pytest.approx(width[6] * np.sqrt(14 / 7))
     assert (low < 100).all() and (high > 100).all()
+
+
+# --- Forecast ranges must follow the residual direction (actual - forecast). ---
+# These tests run the published chain: backtest -> standardized_errors -> bounds.
+# A trending series makes the weekday-mean model miss in one direction only, so
+# the residuals are one-signed and a mirrored range would sit on the wrong side.
+
+from job_market.steps.forecast import (  # noqa: E402
+    SIGNALS, backtest, demand_bounds, signal_bounds, standardized_errors,
+)
+from job_market.taxonomy import CATEGORY_IDS  # noqa: E402
+
+RULES = {"range_lower": 0.1, "range_upper": 0.9}
+DAYS, FIRST_TRAIN, H = 35, 14, 7
+
+
+def trending_inputs(direction: int):
+    t = np.arange(DAYS, dtype=float)
+    pattern = np.tile([1.0, 1.05, 1.02, 1.04, 0.97, 0.7, 0.68], DAYS // 7)
+    total = (3000 + direction * 25 * t) * pattern
+    # Constant shares: every demand series moves with the total, so the pooled
+    # demand residuals (one pool per family) all have the same sign.
+    weights = np.linspace(1.0, 2.0, len(CATEGORY_IDS))
+    shares = np.tile(weights / weights.sum(), (DAYS, 1))
+    signal = 0.5 + direction * 0.005 * t
+    signals = pd.DataFrame({name: signal for name in SIGNALS})
+    return total, shares, signals
+
+
+def published_ranges(direction: int):
+    total, shares, signals = trending_inputs(direction)
+    demand_err, signal_err = backtest(total, shares, signals, 0, DAYS, FIRST_TRAIN, H, 0.9)
+    t_f, c_f = demand_forecast(total, shares, 0, H, "weekday_mean", 0.9)
+    points = np.column_stack([t_f, c_f])
+    history = np.column_stack([total, total[:, None] * shares])
+    low, high = demand_bounds(points, standardized_errors(demand_err, "weekday_mean"), history, H, RULES)
+    values = signals["hourly_share"].to_numpy()
+    s_point = signal_forecast(values, 0, H, "weekday_mean", 0.9, SIGNALS["hourly_share"])
+    s_low, s_high = signal_bounds(s_point, standardized_errors(signal_err, "weekday_mean"), values, H, RULES,
+                                  SIGNALS["hourly_share"])
+    return points, low, high, s_point, s_low, s_high
+
+
+def test_rising_series_get_ranges_above_the_forecast():
+    points, low, high, s_point, s_low, s_high = published_ranges(+1)
+    assert (low[:, 0] > points[:, 0]).all()                   # total demand is under-forecast
+    assert (low[:, 1] > points[:, 1]).all()                   # and a category that rises with it
+    assert (s_low > s_point).all()                            # and the rising signal
+
+
+def test_falling_series_get_ranges_below_the_forecast():
+    points, low, high, s_point, s_low, s_high = published_ranges(-1)
+    assert (high[:, 0] < points[:, 0]).all()
+    assert (high[:, 1] < points[:, 1]).all()
+    assert (s_high < s_point).all()
+
+
+def test_backtest_stores_actual_minus_forecast():
+    total, shares, signals = trending_inputs(+1)
+    demand_err, signal_err = backtest(total, shares, signals, 0, DAYS, FIRST_TRAIN, H, 0.9)
+    row = demand_err[(demand_err["model"] == "seasonal_naive") & (demand_err["series"] == "total")
+                     & (demand_err["origin"] == FIRST_TRAIN) & (demand_err["horizon"] == 1)].iloc[0]
+    assert row["error"] == pytest.approx(total[FIRST_TRAIN] - total[FIRST_TRAIN - 7])
+    srow = signal_err[(signal_err["model"] == "seasonal_naive") & (signal_err["series"] == "hourly_share")
+                      & (signal_err["origin"] == FIRST_TRAIN) & (signal_err["horizon"] == 1)].iloc[0]
+    values = signals["hourly_share"].to_numpy()
+    assert srow["error"] == pytest.approx(values[FIRST_TRAIN] - values[FIRST_TRAIN - 7])
+
+
+# --- Reserved-window coverage (built from the development period only). ---
+
+from job_market.steps.forecast import coverage_row, final_coverage, final_window_bounds  # noqa: E402
+
+DEV, FINAL = 28, 7
+
+
+def window_bounds(total, shares, signals):
+    demand_err, signal_err = backtest(total[:DEV], shares[:DEV], signals.iloc[:DEV], 0, DEV, FIRST_TRAIN, H, 0.9)
+    winners = {"demand": "weekday_mean", "signals": "weekday_mean"}
+    bounds = final_window_bounds(total, shares, signals, 0, DEV, FINAL, 0.9, winners,
+                                 standardized_errors(demand_err, "weekday_mean"),
+                                 standardized_errors(signal_err, "weekday_mean"), RULES)
+    return bounds, winners
+
+
+def test_final_window_ranges_ignore_the_final_window():
+    total, shares, signals = trending_inputs(+1)
+    changed_total, changed_signals = total.copy(), signals.copy()
+    changed_total[DEV:] *= 3                                   # the reserved week changes a lot ...
+    changed_signals.iloc[DEV:] = 0.05
+    before, _ = window_bounds(total, shares, signals)
+    after, _ = window_bounds(changed_total, shares, changed_signals)
+    for name in before:                                        # ... but no range may move
+        for a, b in zip(before[name], after[name]):
+            assert np.array_equal(a, b), name
+
+
+def test_coverage_counts_undefined_bounds_separately():
+    actual = np.array([1.0, 2, 3, 4, 5, 6, 7])
+    low = np.array([0.0, 0, 0, np.nan, 10, 0, np.nan])
+    high = np.array([9.0, 9, 9, 9, 20, 9, 9])
+    row = coverage_row("demand", "m", "s", actual, low, high, "jobs per day", 1.0)
+    assert (row["expected"], row["valid"], row["undefined"], row["inside"]) == (7, 5, 2, 4)
+    assert row["coverage"] == pytest.approx(4 / 5)
+    none = coverage_row("demand", "m", "s", actual, np.full(7, np.nan), high, "jobs per day", 1.0)
+    assert none["valid"] == 0 and np.isnan(none["coverage"]) and np.isnan(none["relative_width"])
+    zero = coverage_row("demand", "m", "s", np.zeros(7), np.zeros(7), np.ones(7), "jobs per day", 1.0)
+    assert np.isnan(zero["relative_width"]) and zero["coverage"] == 1.0
+
+
+def test_coverage_table_has_every_series_and_pooled_rows():
+    total, shares, signals = trending_inputs(+1)
+    bounds, winners = window_bounds(total, shares, signals)
+    table = final_coverage(bounds, total, shares, signals, DEV, FINAL, winners)
+    demand = table[(table["family"] == "demand") & (table["series"] != "pooled")]
+    assert len(demand) == 1 + len(CATEGORY_IDS) and demand["expected"].eq(FINAL).all()
+    pooled = table[table["series"] == "pooled"].set_index("family")
+    assert pooled.loc["demand", "expected"] == FINAL * (1 + len(CATEGORY_IDS))
+    assert pooled.loc["signals", "expected"] == FINAL * len(SIGNALS)
+    signal_units = table[table["family"] == "signals"].set_index("series")["width_unit"]
+    assert signal_units["hhi"] == "index units" and signal_units["hourly_share"] == "percentage points"

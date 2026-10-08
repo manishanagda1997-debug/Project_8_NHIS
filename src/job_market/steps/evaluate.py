@@ -1,13 +1,17 @@
 """Step 4 - evaluate: score the frozen categories against the human labels.
 
 The label sheets in ``data/labels`` are inputs written by a person; this step
-only reads them. A sheet that is missing or not completely filled in is
-skipped (so a fresh clone without labels, or the test project, still builds),
-and the step records which sets it scored.
+only reads them. Before any join, each sheet must be bound to this raw
+extract in ``data/labels/label_sources.toml`` (decision D-039). A sheet that
+is missing, malformed, bound to another extract or without valid source
+metadata is skipped with that status (so a fresh clone without labels, or
+the test project, still builds). When the source matches, every labelled
+row must still carry the labelled title; otherwise the build stops.
 
-The development set tuned the categorizer, so its score is optimistic. The
-blind set is the honest result (decisions D-027 and D-029). Each sheet's
-SHA-256 is recorded, so the manifest proves which labels produced the scores.
+The development set tuned the categorizer, so its score is optimistic; the
+blind set gives the reported agreement (decisions D-027 and D-029). Each
+sheet's SHA-256 is recorded, so the manifest shows which labels produced the
+scores. These results describe the extract the labels were drawn from.
 """
 
 from __future__ import annotations
@@ -21,6 +25,7 @@ from ..evaluate import confusion, per_category, score_items, summary_rows
 from ..io import write_csv
 from ..labels import LabelSheetError, read_label_sheet
 from ..manifest import StepRecord, describe_output, sha256_file
+from .. import provenance
 
 NAME = "evaluate"
 DESCRIPTION = "Score the job categories against the development and blind human labels."
@@ -40,14 +45,16 @@ def run(settings: Settings, context: dict[str, Any]) -> StepRecord:
     items, summaries, categories, confusions = [], [], [], []
     for label_set, file_name in LABEL_SETS:
         path = folder / file_name
-        if not path.is_file():
-            record.metrics[f"{label_set}_labels"] = "missing"
+        status, detail = provenance.label_status(folder, file_name, context["source"]["sha256"])
+        if status != provenance.SCORED:
+            record.metrics[f"{label_set}_labels"] = status if status == provenance.MISSING else f"{status}: {detail}"
             continue
         try:
             labels = read_label_sheet(path)
         except LabelSheetError as error:
-            record.metrics[f"{label_set}_labels"] = f"not scored: {error}"
+            record.metrics[f"{label_set}_labels"] = f"{provenance.MALFORMED}: {error}"
             continue
+        provenance.verify_label_titles(labels, context["clean"], file_name)
         scored = score_items(labels, predictions)
         scored.insert(0, "label_set", label_set)
         items.append(scored)

@@ -1,7 +1,8 @@
 """Request validation and responses for the recommendation API (decision D-035).
 
-The public API always uses the evaluated winner (the hybrid word + character
-TF-IDF). Every request parameter is checked; a filter that does not fit the
+The public API uses the method this build serves under its approval record
+(decision D-040), and every response states that method and its status.
+Every request parameter is checked; a filter that does not fit the
 chosen job type is an error, never silently ignored.
 """
 
@@ -116,13 +117,20 @@ class RecommenderService:
     build_id: str
     pay: pd.DataFrame = field(default_factory=pd.DataFrame)
     trend: pd.DataFrame = field(default_factory=pd.DataFrame)
+    method_status: str = ""
+    approval_note: str = ""
+    approval_ref: str | None = None
+    build_approval_ref: str | None = None
     _shares: dict[int, dict[str, float]] = field(default_factory=dict, repr=False)
 
     @classmethod
     def from_tables(cls, jobs: pd.DataFrame, rules: dict, method: str, build_id: str,
-                    pay: pd.DataFrame | None = None, trend: pd.DataFrame | None = None) -> "RecommenderService":
+                    pay: pd.DataFrame | None = None, trend: pd.DataFrame | None = None, method_status: str = "",
+                    approval_note: str = "", approval_ref: str | None = None, build_approval_ref: str | None = None) -> "RecommenderService":
         return cls(index=build_index(jobs, rules), rules=rules, method=method, build_id=build_id,
-                   pay=pay if pay is not None else pd.DataFrame(), trend=trend if trend is not None else pd.DataFrame())
+                   pay=pay if pay is not None else pd.DataFrame(), trend=trend if trend is not None else pd.DataFrame(),
+                   method_status=method_status, approval_note=approval_note, approval_ref=approval_ref,
+                   build_approval_ref=build_approval_ref)
 
     # ------------------------------------------------------------ helpers
     @property
@@ -131,7 +139,8 @@ class RecommenderService:
 
     def meta(self) -> dict[str, Any]:
         return {"build_id": self.build_id, "recommender_version": str(self.rules.get("recommender_version", "")),
-                "method": self.public_method}
+                "method": self.public_method, "method_status": self.method_status,
+                "approval_note": self.approval_note, "approval_ref": self.approval_ref, "build_approval_ref": self.build_approval_ref}
 
     def pool(self, days: int) -> np.ndarray:
         jobs = self.index.jobs
