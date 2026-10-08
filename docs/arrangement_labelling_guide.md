@@ -1,7 +1,9 @@
 # Labelling guide: work-arrangement and time-zone wording in job titles
 
-**Version:** 1.0 · 7 October 2026
-**Decision:** D-041. This guide is fixed before any title is labelled.
+**Version:** 1.1 · 8 October 2026 (1.0 of 7 October plus the pilot findings: on-site SEO, topic
+versus arrangement, residency, and "remote" describing technology or a team)
+**Decision:** D-041. Version 1.0 was fixed before any title was labelled; version
+1.1 adds the pilot findings before the rest of the development sample is labelled.
 
 ## What is being measured
 
@@ -13,6 +15,10 @@ cannot tell how many jobs are actually remote, on-site or bound to a time zone.
 Judge each title **on its own**: no rule output, group, count or date is shown,
 and none should be looked up. Answer three questions independently. One title
 can be "yes" on more than one question.
+
+**Topic, not arrangement.** Words that describe the subject of the work are not
+this job's arrangement: an article about remote work, or ads for an in-person
+event, is `no`.
 
 **Hybrid.** When "hybrid" clearly describes the working arrangement, label
 remote/home = yes and on-site = yes. For example, "Business Analyst (Hybrid)"
@@ -40,18 +46,26 @@ from anywhere, including a service delivered remotely.
 | Remote control car repair | no | a device |
 | Virtual assistant | no | "virtual" alone is a job title, not an arrangement statement |
 | Remote? | unclear | cannot tell what is meant |
+| IT & Remote Networking Expert | depends | "remote networking" may be a technical skill: clearly the technology, `no`; could also mean the job is remote, `unclear` |
+| Remote Team Manager | depends | may mean managing a remote team: clearly the team, `no`; both readings possible, `unclear` |
+
+When "remote" describes the technology or someone else's team rather than how
+this job is done, the answer is `no` if that is clearly the meaning and
+`unclear` if both readings are possible.
 
 ## Question 2: on-site requirement wording
 
 **Yes** when the title explicitly requires **physical attendance** at a place:
 on site, onsite, in person, in office, attend the office, come to a location.
 
-**A location or residency restriction is not on-site work by itself.** "Must
-reside in", "based in", "local to", "locals only" or "relocate" can describe a
-fully remote job open only to people in one place. Label it on-site only when
-the title also states physical attendance. With an explicit remote statement,
-it is `no`; with location wording alone and nothing about attendance, it is
-`unclear`.
+**A location or residency restriction is not on-site work by itself.** It is
+labelled on-site only when the title also states physical attendance.
+
+* **Country or region residency** ("must be based in Spain", "UK based", "US
+  residents only", "must reside in Texas") says where the person lives, not
+  that they attend a workplace: `no`.
+* **City-level "local" wording** ("must be local to Austin", "locals only") is
+  often used to signal in-person availability without stating it: `unclear`.
 
 | Title | Answer | Why |
 |---|---|---|
@@ -60,8 +74,10 @@ it is `no`; with location wording alone and nothing about attendance, it is
 | Must attend the Austin office three days weekly | yes | physical attendance stated |
 | Hybrid (3 days/wk onsite) Business Analyst | yes | on-site days |
 | Remote analyst - must reside in Texas | no | remote job with a residency restriction |
-| Must be local to Austin | unclear | location stated, attendance not stated |
-| UK based accountant | unclear | location stated, attendance not stated |
+| Must be based in Spain | no | country residency, not attendance |
+| Must be local to Austin | unclear | city-level "local" hints at attendance but does not state it |
+| UK based accountant | no | country residency, not attendance |
+| On Site SEO Expert / Onsite WordPress SEO Specialist | unclear | "on-site SEO" is also an SEO term (optimising the website); both readings are plausible |
 | Local SEO for a dental clinic | no | "local SEO" is a marketing service |
 | Photographer for a wedding in Rome | no | presence is implied, not stated as a requirement |
 

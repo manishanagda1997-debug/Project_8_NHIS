@@ -1043,6 +1043,18 @@ check the reasoning.
 - **A known limit:** pilot title A001 ("On Site SEO Expert...") was discussed
   before labelling. This does not affect rule development, but these 30
   titles are never described as an independent blind evaluation.
+- **Pilot findings (8 October 2026):** the 30 pilot titles were labelled with
+  guide 1.0 and committed unchanged (commit `b06d1dd`) before any rule change.
+  The pilot showed four gaps, and guide 1.1 (SHA-256
+  `5b21c8754fd950d0a9903d71d0542462e98deba29da8d3cb0797c36e39e18472`) adds four rules: "on-site SEO" next to
+  SEO is `unclear` (an SEO term as well as a place); words describing the topic
+  of the work (an article about remote work, an in-person event being
+  promoted) are not this job's arrangement; country or region residency is not
+  attendance (`no`), while city-level "local" wording is `unclear`; and
+  "remote" describing the technology or someone else's team is `no` when that
+  is clearly the meaning, `unclear` when both readings are possible. Four
+  pilot labels changed under 1.1 (A001, A019, A024, A028); they are identified
+  by comparison with commit `b06d1dd`, and each note gives the reason.
 - **Order after the pilot:** label the rest of the development sample; freeze
   the rules (tag `arrangement-rules-1.0`); design and draw the evaluation
   sample from the unseen evaluation side using old and new rule matches;
