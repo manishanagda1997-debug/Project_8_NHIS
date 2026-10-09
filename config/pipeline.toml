@@ -177,6 +177,11 @@ candidate_patterns = [
     "relocate|relocation", "days a week|days per week", "local to|located in|based in|must live|must reside",
     "gmt \\d+|utc \\d+", "overlap|night shift|day shift|us time|uk time|eastern time|pacific time|central time|australian time",
 ]
+# Evaluation-side titles identified as seen during rule development (groups
+# G1-G4, decision D-041). The evaluation sampler refuses to run unless this file
+# matches the frozen hash, and never draws these keys into the blind sample.
+quarantine_file = "data/labels/arrangement_eval_quarantine.csv"
+quarantine_sha256 = "e2f6c5c5504286a98e2eb7553b8dc24df719be4f8d1506d1ff4f3d8b88ae6df8"
 
 [forecast]
 # Short-horizon forecasts (decision D-033). Every value is fixed before any

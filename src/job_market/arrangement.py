@@ -22,12 +22,35 @@ from __future__ import annotations
 
 import hashlib
 import re
+from pathlib import Path
 from typing import Any
 
 import numpy as np
 import pandas as pd
 
-from .trends import signal_flags
+# The rules in force when the development sample was drawn (D-032 patterns),
+# frozen here so the strata D1-D6 can be rebuilt exactly. Used only to draw
+# audit samples; reported results use the rules in ``trends.py`` (rules 1.0).
+LEGACY_ARRANGEMENT_RULES = {
+    "remote": r"remote|remotely",
+    "on-site / in person / local": r"on site|onsite|in person|in office|must be local|local candidates?|locals? only|locally based",
+    "hybrid": r"hybrid",
+    "work from home": r"work from home|wfh",
+    "time-zone requirement": (
+        r"time zone|timezone|time zones|us hours|uk hours|eu hours|business hours|"
+        r"est|edt|pst|pdt|cst|cdt|mst|mdt|gmt|bst|cet|cest|aest|aedt|utc"
+    ),
+}
+
+
+def legacy_arrangement_flags(title_keys: pd.Series) -> pd.DataFrame:
+    """Old-rule matches, for sampling only (never for reported results)."""
+    text = " " + title_keys.fillna("").astype(str) + " "
+    return pd.DataFrame(
+        {name: text.str.contains(rf"\s(?:{pattern})\s", regex=True) for name, pattern in LEGACY_ARRANGEMENT_RULES.items()},
+        index=title_keys.index,
+    )
+
 
 STRATA = (
     ("D1", "hybrid audit: old hybrid pattern (all development titles)"),
@@ -72,7 +95,7 @@ def candidate_mask(title_keys: pd.Series, patterns: list[str]) -> pd.Series:
 
 def strata(frame: pd.DataFrame, rules: dict[str, Any]) -> pd.Series:
     """One stratum per title key, by fixed priority (mutually exclusive)."""
-    flags = signal_flags(frame["title_key"])
+    flags = legacy_arrangement_flags(frame["title_key"])
     text = " " + frame["title_key"].astype(str) + " "
     hybrid = text.str.contains(rf"\s(?:{rules['hybrid_audit_pattern']})\s", regex=True)
     remote_home = flags["remote"] | flags["work from home"]
@@ -158,3 +181,41 @@ def selection_record(sample: pd.DataFrame, summary: pd.DataFrame, rules: dict[st
             "settings_sha256": hashlib.sha256(repr(frozen).encode("utf-8")).hexdigest(),
             "titles": int(len(sample)), "pilot_titles": int(sample["pilot"].sum()),
             "strata": summary.to_dict("records")}
+
+
+# ------------------------------------------------------------------ quarantine
+
+QUARANTINE_GROUPS = ("g1_hybrid_word", "g2_local_phrase", "g3_time_zone_rule", "g4_working_record")
+
+
+class QuarantineError(ValueError):
+    """The quarantine file is missing, altered or malformed, or a quarantined key was drawn."""
+
+
+def load_quarantine(root: Path, rules: dict[str, Any]) -> set[str]:
+    """Quarantined evaluation-side title keys, after checking the file against its frozen hash."""
+    path = Path(root) / str(rules["quarantine_file"])
+    if not path.is_file():
+        raise QuarantineError(f"quarantine file missing: {rules['quarantine_file']}")
+    digest = hashlib.sha256(path.read_bytes()).hexdigest()
+    if digest != str(rules["quarantine_sha256"]):
+        raise QuarantineError(f"quarantine file changed: SHA-256 {digest}, expected {rules['quarantine_sha256']}")
+    table = pd.read_csv(path, dtype=str, keep_default_na=False)
+    if list(table.columns) != ["title_key", *QUARANTINE_GROUPS]:
+        raise QuarantineError(f"unexpected quarantine columns: {list(table.columns)}")
+    if table["title_key"].eq("").any() or table["title_key"].duplicated().any():
+        raise QuarantineError("quarantine file has empty or duplicate title keys")
+    groups = table[list(QUARANTINE_GROUPS)]
+    if not groups.isin(["0", "1"]).all().all():
+        raise QuarantineError("quarantine group values must be 0 or 1")
+    if not groups.eq("1").any(axis=1).all():
+        raise QuarantineError("every quarantined key must belong to at least one group")
+    return set(table["title_key"])
+
+
+def assert_not_quarantined(title_keys: pd.Series, quarantine: set[str]) -> None:
+    """Stop if any drawn key is quarantined (the blind sample must exclude them)."""
+    drawn = sorted(set(title_keys) & quarantine)
+    if drawn:
+        raise QuarantineError(f"{len(drawn)} quarantined title keys in the blind sample")
+

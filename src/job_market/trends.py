@@ -74,24 +74,93 @@ REGIONS = {
 COUNTRY_REGION = {country: region for region, countries in REGIONS.items() for country in countries}
 UNMAPPED_REGION = "(unmapped)"
 
-# Explicit work-arrangement and engagement signals in title words (decision D-032).
-# Matched as whole tokens or phrases on ``title_key``; these are explicit title
-# mentions, never the share of jobs that are remote or on-site.
-SIGNALS = {
-    "remote": r"remote|remotely",
-    # "local" alone is not used: "local seo" and "local business" are not on-site work.
-    "on-site / in person / local": r"on site|onsite|in person|in office|must be local|local candidates?|locals? only|locally based",
-    "hybrid": r"hybrid",
-    "work from home": r"work from home|wfh",
-    "time-zone requirement": (
-        r"time zone|timezone|time zones|us hours|uk hours|eu hours|business hours|"
-        r"est|edt|pst|pdt|cst|cdt|mst|mdt|gmt|bst|cet|cest|aest|aedt|utc"
-    ),
+# Explicit wording signals in job titles (decisions D-032 and D-041). These
+# detect explicit title wording only, never the share of jobs that are actually
+# remote or on-site. Matching is on whole words or phrases of ``title_key``;
+# the hybrid forms also use the cleaned title, which keeps brackets and dashes.
+#
+# Work-arrangement rules, version 1.0 (D-041): written from the development
+# labels only and frozen with the tag ``arrangement-rules-1.0``. The rules used
+# to draw the audit samples are kept, frozen, in ``arrangement.py`` and are
+# never used for reported results.
+ARRANGEMENT_RULES_VERSION = "1.0"
+
+_REMOTE_TECH = (r"access|desktop|servers?|controls?|sensing|networking|network|monitoring|asics|database|backup|"
+                r"repository|machines?|devices?|teams?")
+_HOME = r"work from home|wfh|home based|from home|work from anywhere|from anywhere|anywhere in the world"
+_HYBRID_TECH = (r"app|apps|cloud|mobile|solar|power|ad|email|server|migration|configuration|casual|blockchain|"
+                r"ecommerce|ionic|website|aws")
+_ATTEND = r"in person|in office|at our office|office visit|must attend|attend the office"
+# "for an in-person event" describes what the work is for, not where it is done.
+_IN_PERSON_EVENT = r"for (?:(?:a|an|the|our|my|local)\s)*in person (?:events?|hackathon|conference|meetings?)"
+_ZONE_CODES = r"est|edt|pst|pdt|cst|cdt|mst|mdt|bst|cet|cest|aest|aedt"
+_TZ_WORDS = r"time zone|timezone|time zones|us hours|uk hours|eu hours|business hours"
+_TZ_PHRASES = (r"night shift|day shift|(?:pacific|eastern|central|mountain) time|us time|uk time|australian time|"
+               r"est time|pst time")
+_DEADLINE = r"by|before|until|due|deadline|delivery"
+_TIME_MARK = (r"\S*\d\S*|am|pm|noon|midnight|tomorrow|tonight|today|eod|"
+              r"monday|tuesday|wednesday|thursday|friday|saturday|sunday")
+_AVAILABILITY = r"available|availability|shift|hours|meeting|call|chat|time zone|timezone|work|working"
+_TECHNICAL = (r"outlook|imap|ost|migration|migrate|convert|converter|conversion|import|export|file|files|mailbox|"
+              r"exchange|duplicate|duplicates|certified|certification|exam|scrum|technologist")
+_WORK_TIME = r"time|timezone|zone|zones|hours|hrs|shift|available|availability|work|working|during|between|am|pm|\S*\d\S*"
+
+# Reported series: (output name, column). User-facing names say "wording".
+ARRANGEMENT_SIGNALS = {
+    "remote / home wording": "remote_or_home",
+    "on-site / in-person wording": "on_site_required",
+    "time-zone requirement wording": "time_zone_required",
+}
+ENGAGEMENT_PATTERNS = {
     "full time": r"full time|fulltime",
     "part time": r"part time|parttime",
     "long term / ongoing": r"long term|longterm|ongoing",
 }
-ENGAGEMENT_SIGNALS = ("full time", "part time", "long term / ongoing")
+SIGNALS = (*ARRANGEMENT_SIGNALS, *ENGAGEMENT_PATTERNS)
+ENGAGEMENT_SIGNALS = tuple(ENGAGEMENT_PATTERNS)
+
+
+def _words(title_keys: pd.Series) -> pd.Series:
+    return " " + title_keys.fillna("").astype(str) + " "
+
+
+def _has(text: pd.Series, pattern: str) -> pd.Series:
+    return text.str.contains(pattern, regex=True)
+
+
+def hybrid_arrangement(title_keys: pd.Series, titles: pd.Series) -> pd.Series:
+    """"Hybrid" written as a working arrangement (rules 1.0)."""
+    k = _words(title_keys)
+    t = titles.fillna("").astype(str)
+    return (_has(k, r"\shybrid (?:role|position|work|job|schedule|model)\s") | _has(k, r"\shybrid\s$")
+            | _has(t, r"(?i)\bhybrid[\s-]+(?:role|position|work|job|schedule|model|opportunity)\b")
+            | _has(t, r"(?i)\(\s*hybrid\s*\)")
+            | (_has(t, r"(?i)\(\s*hybrid\s*[-–:]\s*[a-z]") & ~_has(t, rf"(?i)\(\s*hybrid\s*[-–:]\s*(?:{_HYBRID_TECH})\b"))
+            | _has(t, r"(?i)\bhybrid\s*\(\s*\d")
+            | _has(t, r"(?i)\bhybrid\s+[-–]\s"))
+
+
+def arrangement_flags(title_keys: pd.Series, titles: pd.Series) -> pd.DataFrame:
+    """The three work-arrangement wording labels under rules 1.0 (D-041)."""
+    k = _words(title_keys)
+    hybrid = hybrid_arrangement(title_keys, titles)
+    # "remote" counts unless every occurrence describes technology or a team.
+    remote_word = _has(k.str.replace(rf"\sremote (?:{_REMOTE_TECH})(?=\s)", " ", regex=True), r"\s(?:remote|remotely)\s")
+    remote = remote_word | _has(k, rf"\s(?:{_HOME})\s") | hybrid
+    attend = _has(k, rf"\s(?:{_ATTEND})\s") & ~_has(k, rf"\s{_IN_PERSON_EVENT}\s")
+    onsite_word = _has(k, r"\s(?:on site|onsite)\s") & ~_has(k, r"\sseo\s")
+    onsite = attend | onsite_word | hybrid
+    zone_word = _has(k, rf"\s(?:{_TZ_WORDS}|{_ZONE_CODES}|{_TZ_PHRASES})\s")
+    gmt_utc = _has(k, r"\s(?:gmt|utc)\s") & (_has(k, r"\s(?:gmt|utc) \d") | _has(k, r"\s(?:time|timezone|zone|hours)\s"))
+    any_zone = rf"(?:{_TZ_WORDS}|{_TZ_PHRASES}|{_ZONE_CODES}|gmt|utc)"
+    deadline = _has(k, rf"\s(?:{_DEADLINE})\s(?:\S+\s){{0,4}}(?:{_TIME_MARK})\s(?:\S+\s){{0,2}}{any_zone}\s")
+    availability = _has(k, rf"\s(?:{_AVAILABILITY})\s")
+    code = _has(k, rf"\s(?:{_ZONE_CODES}|gmt|utc)\s")
+    technical = (code & _has(k, rf"\s(?:{_TECHNICAL})\s") & ~_has(k, rf"\s(?:{_WORK_TIME})\s")
+                 & ~_has(k, rf"\s(?:{_TZ_WORDS}|{_TZ_PHRASES})\s"))
+    time_zone = (zone_word | gmt_utc) & ~(deadline & ~availability) & ~technical
+    return pd.DataFrame({"remote_or_home": remote, "on_site_required": onsite, "time_zone_required": time_zone,
+                         "hybrid_arrangement": hybrid}, index=title_keys.index)
 
 
 def region_of(country: pd.Series) -> pd.Series:
@@ -101,13 +170,14 @@ def region_of(country: pd.Series) -> pd.Series:
     return region.where(text.notna(), None)
 
 
-def signal_flags(title_keys: pd.Series) -> pd.DataFrame:
-    """One boolean column per signal (whole words or phrases only)."""
-    text = " " + title_keys.fillna("").astype(str) + " "
-    return pd.DataFrame(
-        {name: text.str.contains(rf"\s(?:{pattern})\s", regex=True) for name, pattern in SIGNALS.items()},
-        index=title_keys.index,
-    )
+def signal_flags(title_keys: pd.Series, titles: pd.Series) -> pd.DataFrame:
+    """One boolean column per reported signal: arrangement rules 1.0 plus engagement words."""
+    arrangement = arrangement_flags(title_keys, titles)
+    text = _words(title_keys)
+    columns = {name: arrangement[column] for name, column in ARRANGEMENT_SIGNALS.items()}
+    columns.update({name: text.str.contains(rf"\s(?:{pattern})\s", regex=True)
+                    for name, pattern in ENGAGEMENT_PATTERNS.items()})
+    return pd.DataFrame(columns, index=title_keys.index)
 
 
 # ------------------------------------------------------------------ trend model

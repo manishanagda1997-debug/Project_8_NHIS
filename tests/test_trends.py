@@ -6,9 +6,12 @@ import numpy as np
 import pandas as pd
 import pytest
 
+from pathlib import Path
+
+from job_market.steps.clean import clean_title, title_key
 from job_market.trends import (
-    COUNTRY_REGION, UNMAPPED_REGION, complete_weeks, concentration, daily_shares, newey_west_cov, region_of,
-    signal_flags, trend_fit, trend_table, week_comparison, wilson,
+    ARRANGEMENT_RULES_VERSION, COUNTRY_REGION, SIGNALS, UNMAPPED_REGION, arrangement_flags, complete_weeks,
+    concentration, daily_shares, newey_west_cov, region_of, trend_fit, trend_table, week_comparison, wilson,
 )
 
 DATES = pd.Series(pd.date_range("2024-02-16", "2024-03-23", freq="D"))
@@ -81,13 +84,80 @@ def test_regions_keep_missing_missing():
     assert COUNTRY_REGION["United States"] == "North America"
 
 
-def test_signals_match_whole_words_only():
-    flags = signal_flags(pd.Series(["local seo expert", "must be local in person", "best logo",
-                                    "remote assistant est time zone", "hybrid role"]))
-    assert flags["on-site / in person / local"].tolist() == [False, True, False, False, False]
-    assert flags["time-zone requirement"].tolist() == [False, False, False, True, False]   # "best" is not "est"
-    assert flags["remote"].tolist() == [False, False, False, True, False]
-    assert flags["hybrid"].tolist() == [False, False, False, False, True]
+def flags_for(titles: list[str]) -> pd.DataFrame:
+    """Rules 1.0 on raw titles, keyed the same way as the cleaning step."""
+    cleaned = [clean_title(t)[0] for t in titles]
+    keys = pd.Series([title_key(c) for c in cleaned], index=titles)
+    return arrangement_flags(keys, pd.Series(cleaned, index=titles))
+
+
+# The labelling guide's own clear examples (guide 1.1): yes = True, no = False.
+GUIDE_REMOTE = {"Remote Project Manager": True, "Executive Assistant (Remote)": True,
+                "Work from home data entry": True, "Remote IT help with a PC": True,
+                "Hybrid (3 days/wk onsite) Business Analyst": True, "Remote analyst - must reside in Texas": True,
+                "Remote sensing analysis with Python": False, "Remote control car repair": False,
+                "Virtual assistant": False}
+GUIDE_ON_SITE = {"Onsite technician needed in Dallas": True, "In-person event staff": True,
+                 "Must attend the Austin office three days weekly": True,
+                 "Hybrid (3 days/wk onsite) Business Analyst": True, "Remote analyst - must reside in Texas": False,
+                 "Must be based in Spain": False, "UK based accountant": False,
+                 "Local SEO for a dental clinic": False, "Photographer for a wedding in Rome": False}
+GUIDE_TIME_ZONE = {"Executive Assistant - EST Timezone": True, "(PST ONLY) Airbnb response manager": True,
+                   "Trainer for a class in GMT+8 timezone": True, "Night shift chat support (US hours)": True,
+                   "PST to IMAP migration": False, "Deadline Sunday AEDT": False, "Need it done before 7am EST": False,
+                   "Build a UTC-to-EST conversion tool": False}
+
+
+@pytest.mark.parametrize("column, examples", [("remote_or_home", GUIDE_REMOTE), ("on_site_required", GUIDE_ON_SITE),
+                                              ("time_zone_required", GUIDE_TIME_ZONE)])
+def test_rules_agree_with_the_guide_examples(column, examples):
+    flags = flags_for(list(examples))[column]
+    assert flags.to_dict() == examples
+
+
+def test_technical_zone_codes_and_deadlines_are_not_working_hours():
+    flags = flags_for(["Outlook PST migration", "PST hours required", "Work 9 AM-5 PM PST",
+                       "Pitch deck edits - need done by 8 AM Mountain Time", "Certified Scrum Master (CST)",
+                       "Virtual meeting today only at 8pm EST", "best logo"])["time_zone_required"]
+    assert flags.tolist() == [False, True, True, False, False, True, False]     # "best" is not "est"
+
+
+def test_hybrid_counts_as_both_only_when_it_is_the_arrangement():
+    titles = ["Engineer (Hybrid-Bangalore)", "Social engagement and Marketing- Hybrid Role",
+              "Data Analyst / Engineer Hybrid - Startup Opportunity", "Business Analyst Hybrid",
+              "Hybrid mobile app developer", "Azure Hybrid Cloud setup", "Engineer (Hybrid-Cloud)"]
+    flags = flags_for(titles)
+    expected = [True, True, True, True, False, False, False]
+    assert flags["hybrid_arrangement"].tolist() == expected
+    assert flags["remote_or_home"].tolist() == expected and flags["on_site_required"].tolist() == expected
+
+
+def test_remote_technology_team_seo_and_location_wording():
+    flags = flags_for(["Remote desktop support", "Remote team manager", "Remote team manager, fully remote role",
+                       "Onsite SEO expert", "Onsite SEO expert, must attend our office", "Must be local to Austin",
+                       "Need Election Phone Banker for Local Candidate", "Social media for our in-person event"])
+    assert flags["remote_or_home"].tolist()[:3] == [False, False, True]
+    assert flags["on_site_required"].tolist()[3:] == [False, True, False, False, False]
+
+
+def test_reported_series_use_only_rules_1_0(monkeypatch):
+    import job_market.arrangement as arrangement
+    import job_market.steps.trends as step
+
+    def forbidden(*_args, **_kwargs):
+        raise AssertionError("legacy sampling rules used for a reported series")
+
+    monkeypatch.setattr(arrangement, "legacy_arrangement_flags", forbidden)
+    titles = ["Remote analyst", "Onsite technician", "VA - EST timezone", "Hybrid app", "Full time editor"]
+    cleaned = [clean_title(t)[0] for t in titles]
+    frame = pd.DataFrame({"title_key": [title_key(c) for c in cleaned], "title_clean": cleaned,
+                          "iso_week": "2024-W10"})
+    out = step.signals(frame).set_index("signal")
+    assert list(out.index) == list(SIGNALS)
+    assert ARRANGEMENT_RULES_VERSION == "1.0"
+    assert out.loc[["remote / home wording", "on-site / in-person wording", "time-zone requirement wording",
+                    "full time"], "title_mentions"].tolist() == [1, 1, 1, 1]
+    assert "legacy" not in Path(step.__file__).read_text(encoding="utf-8")
 
 
 def test_wilson_bounds():

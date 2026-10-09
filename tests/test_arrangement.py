@@ -2,10 +2,16 @@
 
 from __future__ import annotations
 
+import hashlib
+
 import numpy as np
 import pandas as pd
+import pytest
 
-from job_market.arrangement import assign_side, development_sample, selection_record, strata, title_frame
+from job_market.arrangement import (
+    QuarantineError, assert_not_quarantined, assign_side, development_sample, load_quarantine, selection_record,
+    strata, title_frame,
+)
 from job_market.config import load_settings
 
 RULES = dict(load_settings().section("arrangement"))
@@ -95,3 +101,50 @@ def test_pilot_and_the_rest_split_the_development_sample_exactly():
     assert len(pilot) + len(rest) == len(sample)
     assert not set(pilot["sample_id"]) & set(rest["sample_id"])
     assert list(pilot["sample_id"]) == [f"A{i:03d}" for i in range(1, len(pilot) + 1)]   # pilot = first IDs
+
+
+# ------------------------------------------------------------------ quarantine
+
+def write_quarantine(root, text: str) -> dict:
+    path = root / "q.csv"
+    path.write_bytes(text.encode("utf-8"))
+    return {"quarantine_file": "q.csv", "quarantine_sha256": hashlib.sha256(path.read_bytes()).hexdigest()}
+
+
+GOOD = "title_key,g1_hybrid_word,g2_local_phrase,g3_time_zone_rule,g4_working_record\nhybrid role,1,0,0,1\npst hours,0,0,1,0\n"
+
+
+def test_project_quarantine_matches_its_frozen_hash():
+    settings = load_settings()
+    keys = load_quarantine(settings.root, RULES)
+    assert len(keys) == 172
+
+
+def test_quarantine_loads_and_blocks_quarantined_keys(tmp_path):
+    rules = write_quarantine(tmp_path, GOOD)
+    keys = load_quarantine(tmp_path, rules)
+    assert keys == {"hybrid role", "pst hours"}
+    assert_not_quarantined(pd.Series(["logo design"]), keys)
+    with pytest.raises(QuarantineError, match="quarantined title keys"):
+        assert_not_quarantined(pd.Series(["logo design", "pst hours"]), keys)
+
+
+@pytest.mark.parametrize("text, message", [
+    (GOOD + "pst hours,0,0,1,0\n", "duplicate"),
+    (GOOD.replace("1,0,0,1", "2,0,0,1"), "0 or 1"),
+    (GOOD + "logo design,0,0,0,0\n", "at least one group"),
+    (GOOD.replace("g4_working_record", "g4"), "columns"),
+])
+def test_malformed_quarantine_is_refused(tmp_path, text, message):
+    with pytest.raises(QuarantineError, match=message):
+        load_quarantine(tmp_path, write_quarantine(tmp_path, text))
+
+
+def test_missing_or_changed_quarantine_is_refused(tmp_path):
+    rules = write_quarantine(tmp_path, GOOD)
+    (tmp_path / "q.csv").write_bytes((GOOD + "new key,1,0,0,0\n").encode("utf-8"))
+    with pytest.raises(QuarantineError, match="changed"):
+        load_quarantine(tmp_path, rules)
+    (tmp_path / "q.csv").unlink()
+    with pytest.raises(QuarantineError, match="missing"):
+        load_quarantine(tmp_path, rules)

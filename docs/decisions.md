@@ -1052,6 +1052,105 @@ check the reasoning.
   is clearly the meaning, `unclear` when both readings are possible. Four
   pilot labels changed under 1.1 (A001, A019, A024, A028); they are identified
   by comparison with commit `b06d1dd`, and each note gives the reason.
+- **Development labels (9 October 2026):** guide 1.1 covers the remaining 212
+  development titles, A031 to A242. Commit `c27cb31` holds the first labels;
+  its rows A122 to A154 contain values copied down by mistake, and commit
+  `85dc75c` holds the relabelled rows. In the current sheet, A045, A067 and A119
+  use `no` for time zone, because the zone only gives a delivery deadline, and
+  A192 uses `no` for on site, because "in person store" describes the store, not
+  where the work happens. Comparison with commit `85dc75c` shows these four
+  changes.
+- **Rules 1.0:** `src/job_market/trends.py` sets `ARRANGEMENT_RULES_VERSION = "1.0"`
+  and the tag is `arrangement-rules-1.0`. The rules use the development labels,
+  the guide examples and the title patterns seen during rule development. Any
+  evaluation side title seen during this work goes into the quarantine file and
+  does not enter the main evaluation. Matching uses whole words of the title
+  key. Hybrid matching also reads the cleaned title, because it keeps brackets
+  and dashes.
+  - *Remote or home:* "remote" or "remotely", unless every use is followed by
+    access, desktop, server, servers, control, controls, sensing, networking,
+    network, monitoring, asics, database, backup, repository, machine, machines,
+    device, devices, team or teams; work from home, WFH, home based, from home,
+    work from anywhere, from anywhere, anywhere in the world; or a hybrid
+    arrangement.
+  - *Hybrid arrangement:* "hybrid" in brackets ("(Hybrid)"), in brackets with a
+    dash or colon and a following word ("(Hybrid-Bangalore)") unless that word
+    is app, apps, cloud, mobile, solar, power, ad, email, server, migration,
+    configuration, casual, blockchain, ecommerce, ionic, website or aws; before a
+    bracketed number ("Hybrid (3 days/wk onsite)"); before a dash; before role,
+    position, work, job, schedule, model or opportunity; or at the end of the
+    title. A hybrid arrangement counts as both remote or home and on site.
+  - *On site:* in person, in office, at our office, office visit, must attend,
+    attend the office, except "for (a, an, the, our, my, local) in person event,
+    hackathon, conference or meeting", which describes what the work is for;
+    `on site` or `onsite`, except when the title also contains `SEO` (the
+    attendance phrases still count in an SEO title); or a hybrid arrangement.
+    Location or residency wording alone never counts.
+  - *Time zone:* time zone wording; US, UK or EU hours; business hours; the zone
+    codes EST, EDT, PST, PDT, CST, CDT, MST, MDT, BST, CET, CEST, AEST, AEDT; GMT
+    or UTC only with an offset or with time, zone or hours wording; night shift,
+    day shift; Pacific, Eastern, Central or Mountain time; US, UK or Australian
+    time.
+  - *Time zone exclusions:* a time zone mention does not count when a deadline
+    word (by, before, until, due, deadline, delivery) comes first, then 0 to 4
+    other words, then a clock time (any word with a digit) or a time marker (am,
+    pm, noon, midnight, today, tonight, tomorrow, eod or a weekday name), then 0
+    to 2 other words, then the zone. It still counts if the title also mentions
+    work, hours, a shift, a meeting, a call, a chat or availability. A zone code,
+    GMT or UTC does not count when the title also has a technical word (Outlook,
+    IMAP, OST, migration, migrate, convert, converter, conversion, import,
+    export, file, files, mailbox, exchange, duplicate, duplicates, certified,
+    certification, exam, scrum, technologist), no working time wording (time,
+    timezone, zone, zones, hours, hrs, shift, available, availability, work,
+    working, during, between, am, pm or a clock time) and no other time zone
+    wording.
+  - *Reported series:* `remote / home wording`, `on-site / in-person wording` and
+    `time-zone requirement wording`. "Hybrid" and "work from home" are no longer
+    separate series. `src/job_market/arrangement.py` keeps the rules that drew
+    the audit samples (`LEGACY_ARRANGEMENT_RULES`) for sampling only.
+- **Development fit:** these numbers show how the rules fit the development
+  labels. They do not measure final accuracy, because the same titles guide the
+  rules.
+
+  | Label | Rule matches | Correct yes matches | Matches labelled no / unclear | Missed yes |
+  |---|---|---|---|---|
+  | remote_or_home | 64 | 59 | 3 / 2 | 1 |
+  | on_site_required | 33 | 31 | 2 / 0 | 0 |
+  | time_zone_required | 39 | 38 | 1 / 0 | 1 |
+
+- **Known development errors that remain:** the general rules still miss or
+  misread some titles: remote work as the topic of the title (A003, A133, A222),
+  remote wording with an unclear admin or office meaning (A047, A127), "on site"
+  meaning a website (A049), "in person store" describing a store (A192),
+  "timezone" as a software feature (A125), "at home" without clear work wording
+  (A126), and a clock time without a zone (A112). These cases stay unchanged.
+  The evaluation measures how often similar problems appear.
+- **Effect on the time series window (229,520 postings):** remote or home
+  wording 1,275 to 1,260 (old rule: remote or work from home); on site 193 to
+  171; time zone 181 to 199.
+- **Evaluation isolation:** `data/labels/arrangement_eval_quarantine.csv`
+  (SHA-256 `e2f6c5c5504286a98e2eb7553b8dc24df719be4f8d1506d1ff4f3d8b88ae6df8`)
+  contains all evaluation side titles that can be identified from the available
+  development searches and outputs. G1 holds titles with "hybrid" (32). G2 holds
+  the old "local" phrases (5). G3 holds titles with time zone wording, both those
+  the final rule accepts and those it removes through an exclusion (115). G4
+  holds titles from an automatic search of the available development outputs
+  (171). The file has 172 title keys and 301 postings in total. Earlier working
+  records are incomplete, so complete historical non exposure cannot be proved.
+  The search is broad and may include extra titles. `config/pipeline.toml`
+  stores the expected hash under `[arrangement] quarantine_sha256`. The
+  evaluation sampler stops if the file is missing, changed or invalid, and stops
+  if a quarantined title key enters the main sample.
+  - The main evaluation uses only evaluation side titles that are not identified
+    as seen in the available development records. Quarantined titles form a
+    separate diagnostic set and never enter the main result.
+  - Development inspection covers all evaluation side titles with "hybrid", the
+    old "local" phrases and every evaluation side time zone match. Results for
+    these parts of the rules are diagnostic only, not blind validation. This
+    dataset gives no blind precision estimate for the time zone rule. The main
+    evaluation can still find time zone titles that the rule misses.
+  - Results stay separate for each label. The project reports no single overall
+    accuracy.
 - **Order after the pilot:** label the rest of the development sample; freeze
   the rules (tag `arrangement-rules-1.0`); design and draw the evaluation
   sample from the unseen evaluation side using old and new rule matches;
@@ -1065,6 +1164,11 @@ check the reasoning.
   and the pilot sheet's hash at creation. It contains no per-title groups, so
   the labeller stays blind to them.
 - **Evidence:** `docs/arrangement_labelling_guide.md`,
-  `src/job_market/arrangement.py`, `config/pipeline.toml` (`[arrangement]`),
+  `src/job_market/arrangement.py`, `src/job_market/trends.py`,
+  `config/pipeline.toml` (`[arrangement]`),
   `data/labels/arrangement_dev_pilot.xlsx`,
-  `data/labels/arrangement_dev_selection.json`, `tests/test_arrangement.py`.
+  `data/labels/arrangement_dev_selection.json`,
+  `data/labels/arrangement_dev_main.xlsx`,
+  `data/labels/arrangement_dev_main_selection.json`,
+  `data/labels/arrangement_eval_quarantine.csv`, `tests/test_arrangement.py`,
+  `tests/test_trends.py`.

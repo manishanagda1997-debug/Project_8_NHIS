@@ -46,7 +46,7 @@ CATEGORY_VARIANTS = (
 
 
 def window_jobs(context: dict[str, Any]) -> pd.DataFrame:
-    columns = ["row_id", "title_key", "country", "posted_date", "iso_week", "contract_type", "day_status",
+    columns = ["row_id", "title_key", "title_clean", "country", "posted_date", "iso_week", "contract_type", "day_status",
                "possible_repost_3d", "eligible_for_timeseries"]
     frame = context["clean"][columns]
     frame = frame[frame["eligible_for_timeseries"]].merge(
@@ -156,7 +156,7 @@ def geography(frame: pd.DataFrame, lag: int) -> tuple[pd.DataFrame, pd.DataFrame
 
 
 def signals(frame: pd.DataFrame) -> pd.DataFrame:
-    flags = signal_flags(frame["title_key"])
+    flags = signal_flags(frame["title_key"], frame["title_clean"])
     rows = []
     for week, index in frame.groupby("iso_week").groups.items():
         part = flags.loc[index]
