@@ -9,6 +9,7 @@
     python -m job_market make-relevance-sheet  write the blinded recommendation relevance sheet (once)
     python -m job_market make-arrangement-pilot  write the 30-title work-arrangement pilot sheet (once)
     python -m job_market make-arrangement-dev  write the remaining development titles after the pilot (once)
+    python -m job_market make-arrangement-eval  write the evaluation and diagnostic sheets (once, after rules 1.0)
     python -m job_market serve            start the web app (recommendations and API) on http://127.0.0.1:5000
 
 Every command exits with code 0 on success and 1 on failure, so the same
@@ -50,6 +51,8 @@ def main(argv: list[str] | None = None) -> int:
                    help="write the 30-title work-arrangement pilot sheet and its selection record (refuses to overwrite)")
     sub.add_parser("make-arrangement-dev",
                    help="write the remaining development titles (after the pilot) and their record (refuses to overwrite)")
+    sub.add_parser("make-arrangement-eval",
+                   help="write the evaluation and diagnostic sheets and their record (refuses to overwrite)")
     serve = sub.add_parser("serve", help="start the web app on http://127.0.0.1:5000")
     serve.add_argument("--host", default="127.0.0.1", help="address to listen on (0.0.0.0 inside Docker)")
     serve.add_argument("--port", type=int, default=5000)
@@ -147,6 +150,50 @@ def main(argv: list[str] | None = None) -> int:
         record_path.write_text(json.dumps(record, indent=1) + "\n", encoding="utf-8", newline="\n")
         print(f"wrote {settings.relative(sheet)}: {len(rest)} titles ({record['first_sample_id']} to {record['last_sample_id']})")
         print(f"wrote {settings.relative(record_path)}")
+        return 0
+    if args.command == "make-arrangement-eval":
+        import json
+
+        import pandas as pd
+
+        from .arrangement import GUIDE, load_quarantine, title_frame, write_arrangement_sheet
+        from .arrangement_eval import design_sha256, diagnostic_sample, evaluation_sample, rules_fingerprint
+        from .manifest import load_manifest, sha256_file, verify_output
+
+        manifest = load_manifest(settings.path("manifest"))
+        entry = next(o for o in manifest["outputs"] if o["path"].endswith("jobs_clean.parquet"))
+        jobs_path = verify_output(entry, settings.root)
+        folder = settings.path("labels_dir")
+        sheet, diagnostic = folder / "arrangement_eval.xlsx", folder / "arrangement_diagnostic.xlsx"
+        record_path = folder / "arrangement_eval_selection.json"
+        if sheet.exists() or diagnostic.exists() or record_path.exists():
+            print("refusing to overwrite an existing evaluation sheet, diagnostic sheet or record")
+            return 1
+        rules = settings.section("arrangement")
+        quarantine = load_quarantine(settings.root, rules)
+        jobs = pd.read_parquet(jobs_path, columns=["row_id", "title_key", "title_clean", "eligible_for_timeseries"])
+        frame = title_frame(jobs)
+        sample, summary = evaluation_sample(frame, rules, quarantine)
+        quarantine_table = pd.read_csv(settings.root / str(rules["quarantine_file"]), dtype=str, keep_default_na=False)
+        diag = diagnostic_sample(frame, quarantine_table, rules)
+        write_arrangement_sheet(sample, sheet)
+        write_arrangement_sheet(diag, diagnostic)
+        record = {"decision": "D-041", "stage": "evaluation",
+                  "source_sha256": manifest["fingerprints"]["source_sha256"], "jobs_clean_sha256": entry["sha256"],
+                  "guide_sha256": sha256_file(settings.root / GUIDE), "rules_tag": "arrangement-rules-1.0",
+                  "rules_version": str(rules["rules_version"]), "rules_fingerprint": rules_fingerprint(),
+                  "quarantine_sha256": str(rules["quarantine_sha256"]), "eval_seed": int(rules["eval_seed"]),
+                  "simulation_seed": int(rules["simulation_seed"]), "simulation_draws": int(rules["simulation_draws"]),
+                  "groups": summary.to_dict("records"), "evaluation_titles": int(len(sample)),
+                  "diagnostic_titles": int(len(diag)), "design_sha256": design_sha256(sample),
+                  "evaluation_sheet": settings.relative(sheet),
+                  "evaluation_sheet_sha256_unlabelled_at_creation": sha256_file(sheet),
+                  "diagnostic_sheet": settings.relative(diagnostic),
+                  "diagnostic_sheet_sha256_unlabelled_at_creation": sha256_file(diagnostic)}
+        record_path.write_text(json.dumps(record, indent=1) + "\n", encoding="utf-8", newline="\n")
+        print(f"wrote {settings.relative(sheet)}: {len(sample)} titles (E001 to E{len(sample):03d})")
+        print(f"wrote {settings.relative(diagnostic)}: {len(diag)} titles (Q001 to Q{len(diag):03d})")
+        print(f"wrote {settings.relative(record_path)}: design, group sizes and hashes (no per-title groups)")
         return 0
     if args.command == "make-label-sheets":
         from .labels import draw_samples, write_label_sheet

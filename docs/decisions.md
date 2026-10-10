@@ -1151,6 +1151,79 @@ check the reasoning.
     evaluation can still find time zone titles that the rule misses.
   - Results stay separate for each label. The project reports no single overall
     accuracy.
+- **Evaluation design:** fixed before any evaluation title is drawn.
+  - *Pool:* evaluation side title keys in the time series window, minus the
+    quarantine: 112,101 title keys and 138,209 postings.
+  - *Groups:* each key belongs to one group, in this priority order, using rules
+    1.0 and the legacy rules:
+
+    | Group | Definition | Title keys | Postings | Labelled |
+    |---|---|---|---|---|
+    | S1 | rules 1.0 on site match | 98 | 101 | all 98 |
+    | S2 | rules 1.0 remote or home match, not S1 | 573 | 694 | 100 |
+    | S3 | legacy match, no rules 1.0 match | 37 | 39 | all 37 |
+    | S4 | candidate wording (`candidate_patterns`), no match | 147 | 156 | 40 |
+    | S5 | all other keys | 111,246 | 137,219 | 60 |
+    | Total | | 112,101 | 138,209 | 335 |
+
+    The sample sizes are a fixed practical labelling budget, not a power
+    calculation.
+  - *Sampling:* simple random sampling without replacement inside S2, S4 and S5,
+    seed `20261009`; S1 and S3 in full. Each key stores π = sampled ÷ group size
+    and weight = 1 ÷ π. Inside each sampled group, the rules 1.0 result is the
+    same for every key and label (S2: remote or home yes, on site no, time zone
+    no; S4 and S5: no for all three). The sampler
+    (`src/job_market/arrangement_eval.py`, command `make-arrangement-eval`)
+    stops if this is not true, if the quarantine hash differs, if a quarantined
+    or development key appears, or if the rules version or the rules
+    fingerprint (SHA-256
+    `0e9a15c656088e92d88d659f7cc5b2a4a7bb4c10a49ca042b62a4dbc08f79d14`, the rule
+    functions and word lists at tag `arrangement-rules-1.0`) does not match.
+  - *Sheets:* `data/labels/arrangement_eval.xlsx` holds E001 to E335 in shuffled
+    order. `data/labels/arrangement_diagnostic.xlsx` holds Q001 to Q152, the
+    quarantined titles in G1 to G3, in shuffled order. Both show only the sample
+    ID, title, three label columns and a note. Group, rule result and quarantine
+    reason stay hidden. `data/labels/arrangement_eval_selection.json` records
+    group sizes, sample sizes, both seeds, the number of draws, the source,
+    `jobs_clean`, guide and quarantine hashes, the rules tag and fingerprint, a
+    hash of the per title design, and each sheet's unlabelled hash at creation.
+    Guide 1.1 applies to both sheets.
+  - *Label values:* `yes` counts as yes. `no` and `unclear` do not count as yes
+    in the main result. Unclear counts are reported, and a second result treats
+    unclear as yes.
+  - *Title key calculation, primary:* for each label, the calculation compares
+    the rules 1.0 result with the human label. S1 and S3 use exact counts,
+    because every title in those groups receives a label. For S2, S4 and S5, the
+    yes rate has a Jeffreys posterior, Beta(y + 0.5, n − y + 0.5). In each
+    simulation draw, the yes count among the unlabelled keys follows
+    Binomial(N − n, p), and the group total is the observed yes count plus this
+    value. This is a Bayesian predictive model, not an exact confidence
+    interval. The simulation uses 100,000 draws and seed `20261010`.
+  - *Main results:* precision for remote or home, as the median and 95 percent
+    Bayesian predictive interval; precision for on site, as an exact value,
+    because S1 gives exact on site precision for the eligible non quarantined
+    evaluation pool; missed yes per 1,000 unmatched title keys for each label;
+    and unclear counts. Missed yes has no single middle value. The result shows
+    the observed yes count and a 95 percent Bayesian predictive interval. When a
+    sampled group has few or no yes labels, this interval depends strongly on
+    the Jeffreys prior.
+  - *Secondary results:* estimated recall for remote or home and on site is
+    secondary and is reported as a 95 percent Bayesian predictive interval only.
+    The observed miss counts are shown with it. If the interval is wide, the
+    report states that the large S5 group does not allow a precise recall
+    estimate. Time zone has no blind precision or blind recall estimate.
+  - *Posting level check, secondary:* for each sampled group, the share of
+    sampled postings attached to `yes` labels is applied to the known posting
+    total for that group. Census groups use exact posting counts. These are
+    point estimates only. No posting level interval is reported because posting
+    counts vary strongly between title keys and the sample is drawn by title
+    key.
+  - *Diagnostic set:* exact counts for each label on Q001 to Q152, marked "seen
+    during rule development, not blind", and never combined with the main
+    result.
+  - *Order:* commit this design and the sampler, draw both sheets, commit them
+    unlabelled, label them, freeze the labels with the tag
+    `arrangement-labels-final`, then score once.
 - **Order after the pilot:** label the rest of the development sample; freeze
   the rules (tag `arrangement-rules-1.0`); design and draw the evaluation
   sample from the unseen evaluation side using old and new rule matches;
@@ -1164,11 +1237,12 @@ check the reasoning.
   and the pilot sheet's hash at creation. It contains no per-title groups, so
   the labeller stays blind to them.
 - **Evidence:** `docs/arrangement_labelling_guide.md`,
-  `src/job_market/arrangement.py`, `src/job_market/trends.py`,
+  `src/job_market/arrangement.py`, `src/job_market/arrangement_eval.py`,
+  `src/job_market/trends.py`,
   `config/pipeline.toml` (`[arrangement]`),
   `data/labels/arrangement_dev_pilot.xlsx`,
   `data/labels/arrangement_dev_selection.json`,
   `data/labels/arrangement_dev_main.xlsx`,
   `data/labels/arrangement_dev_main_selection.json`,
   `data/labels/arrangement_eval_quarantine.csv`, `tests/test_arrangement.py`,
-  `tests/test_trends.py`.
+  `tests/test_arrangement_eval.py`, `tests/test_trends.py`.

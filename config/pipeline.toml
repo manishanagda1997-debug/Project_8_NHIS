@@ -182,6 +182,19 @@ candidate_patterns = [
 # matches the frozen hash, and never draws these keys into the blind sample.
 quarantine_file = "data/labels/arrangement_eval_quarantine.csv"
 quarantine_sha256 = "e2f6c5c5504286a98e2eb7553b8dc24df719be4f8d1506d1ff4f3d8b88ae6df8"
+# Evaluation design (D-041), fixed before any evaluation title is drawn. The
+# sampler and the scorer stop unless the rules match rules 1.0 (tag
+# arrangement-rules-1.0) by version and by source fingerprint.
+rules_version = "1.0"
+rules_fingerprint = "0e9a15c656088e92d88d659f7cc5b2a4a7bb4c10a49ca042b62a4dbc08f79d14"
+# Sample sizes are a fixed practical labelling budget, not a power calculation.
+# S1 and S3 are labelled in full.
+eval_s2 = 100
+eval_s4 = 40
+eval_s5 = 60
+eval_seed = 20261009
+simulation_seed = 20261010
+simulation_draws = 100000
 
 [forecast]
 # Short-horizon forecasts (decision D-033). Every value is fixed before any
