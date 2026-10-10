@@ -166,3 +166,37 @@ def test_missed_yes_and_recall_have_no_middle_value():
         for metric in ("missed_yes_per_1000_unmatched", "recall"):
             row = out.loc[(label, metric, "title key")]
             assert np.isnan(row["estimate"]) and row["high"] >= row["low"]
+
+
+def test_diagnostic_counts_are_exact():
+    from job_market.arrangement_eval import diagnostic_counts
+    labelled = pd.DataFrame({"rule_remote_or_home": [True, True, False, False],
+                             "rule_on_site_required": [False] * 4, "rule_time_zone_required": [True, True, True, False],
+                             "remote_or_home": ["yes", "no", "yes", "no"], "on_site_required": ["no"] * 4,
+                             "time_zone_required": ["yes", "unclear", "no", "yes"]})
+    out = diagnostic_counts(labelled).set_index("label")
+    assert out.loc["remote_or_home", "precision"] == 0.5 and out.loc["remote_or_home", "non_matches_labelled_yes"] == 1
+    assert out.loc["time_zone_required", "matches_labelled_unclear"] == 1
+    assert out.loc["time_zone_required", "share_of_yes_matched"] == 0.5
+    assert np.isnan(out.loc["on_site_required", "precision"])
+
+
+def test_read_labels_refuses_changed_titles_or_invalid_values(tmp_path):
+    from job_market.arrangement import write_arrangement_sheet
+    from job_market.arrangement_eval import read_labels
+    from openpyxl import load_workbook
+    sample = pd.DataFrame({"sample_id": ["E001", "E002"], "title": ["A title", "B title"]})
+    path = write_arrangement_sheet(sample, tmp_path / "s.xlsx")
+    book = load_workbook(path)
+    rows = book["labels"]
+    for r in (2, 3):
+        for c in (3, 4, 5):
+            rows.cell(r, c).value = "no"
+    book.save(path)
+    assert len(read_labels(path, sample)) == 2
+    rows.cell(3, 4).value = "maybe"
+    book.save(path)
+    with pytest.raises(DesignError, match="invalid"):
+        read_labels(path, sample)
+    with pytest.raises(DesignError, match="titles"):
+        read_labels(path, sample.assign(title=["A title", "Other"]))

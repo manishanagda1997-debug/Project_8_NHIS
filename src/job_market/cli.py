@@ -10,6 +10,7 @@
     python -m job_market make-arrangement-pilot  write the 30-title work-arrangement pilot sheet (once)
     python -m job_market make-arrangement-dev  write the remaining development titles after the pilot (once)
     python -m job_market make-arrangement-eval  write the evaluation and diagnostic sheets (once, after rules 1.0)
+    python -m job_market score-arrangement-eval  score the frozen arrangement labels (once, after the labels tag)
     python -m job_market serve            start the web app (recommendations and API) on http://127.0.0.1:5000
 
 Every command exits with code 0 on success and 1 on failure, so the same
@@ -53,6 +54,8 @@ def main(argv: list[str] | None = None) -> int:
                    help="write the remaining development titles (after the pilot) and their record (refuses to overwrite)")
     sub.add_parser("make-arrangement-eval",
                    help="write the evaluation and diagnostic sheets and their record (refuses to overwrite)")
+    sub.add_parser("score-arrangement-eval",
+                   help="score the frozen arrangement evaluation and diagnostic labels (refuses to overwrite results)")
     serve = sub.add_parser("serve", help="start the web app on http://127.0.0.1:5000")
     serve.add_argument("--host", default="127.0.0.1", help="address to listen on (0.0.0.0 inside Docker)")
     serve.add_argument("--port", type=int, default=5000)
@@ -194,6 +197,65 @@ def main(argv: list[str] | None = None) -> int:
         print(f"wrote {settings.relative(sheet)}: {len(sample)} titles (E001 to E{len(sample):03d})")
         print(f"wrote {settings.relative(diagnostic)}: {len(diag)} titles (Q001 to Q{len(diag):03d})")
         print(f"wrote {settings.relative(record_path)}: design, group sizes and hashes (no per-title groups)")
+        return 0
+    if args.command == "score-arrangement-eval":
+        import hashlib
+        import json
+        import subprocess
+
+        import pandas as pd
+
+        from .arrangement import load_quarantine, title_frame
+        from .arrangement_eval import (
+            design_sha256, diagnostic_counts, diagnostic_sample, evaluation_sample, observed_counts, read_labels, score,
+        )
+        from .manifest import load_manifest, sha256_file, verify_output
+
+        folder = settings.path("labels_dir")
+        sheet, diagnostic = folder / "arrangement_eval.xlsx", folder / "arrangement_diagnostic.xlsx"
+        record = json.loads((folder / "arrangement_eval_selection.json").read_text(encoding="utf-8"))
+        out_dir = settings.root / "reports" / "arrangement_audit"
+        if out_dir.exists():
+            print("refusing to score again: reports/arrangement_audit already exists")
+            return 1
+        # The labels must be exactly the files frozen by the tag.
+        for path in (sheet, diagnostic):
+            blob = subprocess.run(["git", "show", f"arrangement-labels-final:{settings.relative(path)}"],
+                                  cwd=settings.root, capture_output=True)
+            if blob.returncode != 0 or hashlib.sha256(blob.stdout).hexdigest() != sha256_file(path):
+                print(f"{settings.relative(path)} is not the file frozen by tag arrangement-labels-final; stopping")
+                return 1
+        manifest = load_manifest(settings.path("manifest"))
+        entry = next(o for o in manifest["outputs"] if o["path"].endswith("jobs_clean.parquet"))
+        if entry["sha256"] != record["jobs_clean_sha256"]:
+            print("jobs_clean differs from the one the sample was drawn from; stopping")
+            return 1
+        jobs_path = verify_output(entry, settings.root)
+        rules = settings.section("arrangement")
+        quarantine = load_quarantine(settings.root, rules)
+        jobs = pd.read_parquet(jobs_path, columns=["row_id", "title_key", "title_clean", "eligible_for_timeseries"])
+        frame = title_frame(jobs)
+        sample, summary = evaluation_sample(frame, rules, quarantine)       # checks rules version and fingerprint
+        if design_sha256(sample) != record["design_sha256"]:
+            print("the redrawn design differs from the recorded design; stopping")
+            return 1
+        quarantine_table = pd.read_csv(settings.root / str(rules["quarantine_file"]), dtype=str, keep_default_na=False)
+        labelled = read_labels(sheet, sample)
+        diag = read_labels(diagnostic, diagnostic_sample(frame, quarantine_table, rules))
+        draws, seed = int(rules["simulation_draws"]), int(rules["simulation_seed"])
+        main = score(labelled, summary, draws, seed).assign(unclear="not yes")
+        check = score(labelled, summary, draws, seed, unclear_as_yes=True).assign(unclear="counted as yes")
+        out_dir.mkdir(parents=True)
+        pd.concat([main, check], ignore_index=True).to_csv(out_dir / "results.csv", index=False, lineterminator="\n")
+        observed_counts(labelled).to_csv(out_dir / "observed_counts.csv", index=False, lineterminator="\n")
+        summary.to_csv(out_dir / "groups.csv", index=False, lineterminator="\n")
+        diagnostic_counts(diag).to_csv(out_dir / "diagnostic_counts.csv", index=False, lineterminator="\n")
+        meta = {"decision": "D-041", "labels_tag": "arrangement-labels-final", "rules_tag": "arrangement-rules-1.0",
+                "design_sha256": record["design_sha256"], "evaluation_labels_sha256": sha256_file(sheet),
+                "diagnostic_labels_sha256": sha256_file(diagnostic), "simulation_seed": seed, "simulation_draws": draws,
+                "note": "missed yes and recall: interval only; posting level: point estimates only"}
+        (out_dir / "scoring_record.json").write_text(json.dumps(meta, indent=1) + "\n", encoding="utf-8", newline="\n")
+        print(f"wrote {settings.relative(out_dir)}: results, observed counts, groups, diagnostic counts, record")
         return 0
     if args.command == "make-label-sheets":
         from .labels import draw_samples, write_label_sheet

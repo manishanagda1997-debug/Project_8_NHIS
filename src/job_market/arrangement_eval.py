@@ -243,3 +243,32 @@ def observed_counts(labelled: pd.DataFrame, unclear_as_yes: bool = False) -> pd.
                      "unclear": int((part[label] == "unclear").sum())})
     return pd.DataFrame(rows)
 
+
+
+def diagnostic_counts(labelled: pd.DataFrame) -> pd.DataFrame:
+    """Exact counts on the diagnostic set (seen during rule development, not blind)."""
+    rows = []
+    for label in LABELS:
+        predicted = labelled[f"rule_{label}"].astype(bool)
+        value = labelled[label]
+        rows.append({"label": label, "titles": len(labelled), "rule_matches": int(predicted.sum()),
+                     "matches_labelled_yes": int((predicted & (value == "yes")).sum()),
+                     "matches_labelled_no": int((predicted & (value == "no")).sum()),
+                     "matches_labelled_unclear": int((predicted & (value == "unclear")).sum()),
+                     "non_matches_labelled_yes": int((~predicted & (value == "yes")).sum()),
+                     "labelled_yes": int((value == "yes").sum())})
+    out = pd.DataFrame(rows)
+    out["precision"] = (out["matches_labelled_yes"] / out["rule_matches"]).where(out["rule_matches"] > 0)
+    out["share_of_yes_matched"] = (out["matches_labelled_yes"] / out["labelled_yes"]).where(out["labelled_yes"] > 0)
+    return out
+
+
+def read_labels(path, sample: pd.DataFrame) -> pd.DataFrame:
+    """Join a labelled sheet to its design rows; stop on any mismatch or invalid value."""
+    sheet = pd.read_excel(path, dtype=str)
+    if list(sheet["sample_id"]) != list(sample["sample_id"]) or list(sheet["title"]) != list(sample["title"]):
+        raise DesignError(f"{path}: sample IDs or titles differ from the drawn sample")
+    for label in LABELS:
+        if not sheet[label].isin(["yes", "no", "unclear"]).all():
+            raise DesignError(f"{path}: {label} has empty or invalid values")
+    return sample.merge(sheet[["sample_id", *LABELS, "note"]], on="sample_id", validate="one_to_one")
