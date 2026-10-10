@@ -275,6 +275,20 @@ def bootstrap_median(
     return float(low), float(high)
 
 
+def bootstrap_mean(
+    values: np.ndarray, clusters: np.ndarray, reps: int, rng: np.random.Generator
+) -> tuple[float, float]:
+    """95% percentile interval for a mean, resampling whole title clusters (as ``bootstrap_median``)."""
+    codes = pd.factorize(clusters)[0]
+    n_clusters = codes.max() + 1
+    means = np.empty(reps)
+    for r in range(reps):
+        weights = np.bincount(rng.integers(0, n_clusters, n_clusters), minlength=n_clusters)[codes].astype(float)
+        means[r] = float(weights @ values / weights.sum())
+    low, high = np.percentile(means, [2.5, 97.5])
+    return float(low), float(high)
+
+
 def country_effects(
     y: np.ndarray, country: np.ndarray, category: np.ndarray, weights: np.ndarray | None = None
 ) -> np.ndarray:

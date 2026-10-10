@@ -36,7 +36,7 @@ from ..config import Settings
 from ..io import write_csv
 from ..manifest import StepRecord, describe_output
 from ..pay import (
-    ISO3, adjusted_country_index, bootstrap_median, country_groups, keyword_associations, select_keywords,
+    ISO3, adjusted_country_index, bootstrap_mean, bootstrap_median, country_groups, keyword_associations, select_keywords,
 )
 
 NAME = "pay"
@@ -52,7 +52,8 @@ VARIANTS = (
 )
 SENSITIVITY_LAYERS = ("raw", "country_category")
 COUNTRY_COLUMNS = ["country", "iso3", "jobs", "title_keys", "median_rate", "median_low", "median_high", "p25_rate",
-                   "p75_rate", "adjusted_index_pct", "adjusted_low_pct", "adjusted_high_pct"]
+                   "p75_rate", "mean_rate", "mean_ci_low", "mean_ci_high",
+                   "adjusted_index_pct", "adjusted_low_pct", "adjusted_high_pct"]
 PREDICTION_COLUMNS = ["model", "test_jobs", "test_title_keys", "mae_usd", "median_abs_error_usd", "r2_log",
                       "title_keys_shared_with_training"]
 MIN_PREDICTION_JOBS = 200   # below this (only in tiny test projects) the check is skipped
@@ -82,6 +83,10 @@ def keyword_table(population: pd.DataFrame, value: str, rules: dict[str, Any], k
 
 def country_table(population: pd.DataFrame, rules: dict[str, Any], seed: int) -> pd.DataFrame:
     rng = np.random.default_rng(seed)
+    # The brief asks for average rates, so the mean is reported next to the
+    # median (the primary measure: the rates have a long high tail). Its own
+    # generator keeps the median and index draws exactly as before.
+    mean_rng = np.random.default_rng([seed, 1])
     counts = population["country"].value_counts()
     keep = sorted(counts[counts >= int(rules["min_country_jobs"])].index)
     rows = []
@@ -89,11 +94,14 @@ def country_table(population: pd.DataFrame, rules: dict[str, Any], seed: int) ->
         part = population[population["country"] == country]
         values = part["hourly_mid"].to_numpy(dtype=float)
         low, high = bootstrap_median(values, part["title_key"].to_numpy(), int(rules["median_bootstrap_reps"]), rng)
+        mean_low, mean_high = bootstrap_mean(values, part["title_key"].to_numpy(), int(rules["median_bootstrap_reps"]),
+                                             mean_rng)
         rows.append({
             "country": country, "iso3": ISO3.get(country, ""), "jobs": len(part),
             "title_keys": int(part["title_key"].nunique()),
             "median_rate": float(np.median(values)), "median_low": low, "median_high": high,
             "p25_rate": float(np.percentile(values, 25)), "p75_rate": float(np.percentile(values, 75)),
+            "mean_rate": float(np.mean(values)), "mean_ci_low": mean_low, "mean_ci_high": mean_high,
         })
     table = pd.DataFrame(rows, columns=COUNTRY_COLUMNS[:-3])
     if table.empty:
@@ -185,8 +193,9 @@ def run(settings: Settings, context: dict[str, Any]) -> StepRecord:
         table, _ = keyword_table(part, value, rules, keywords)
         for layer in SENSITIVITY_LAYERS:
             sensitivity.append(table[["keyword", "jobs"]].assign(variant=name, layer=layer, pct=table[f"{layer}_pct"]))
-        medians = part.groupby("country", observed=True)[value].agg(["median", "size"]).reset_index()
-        country_variants.append(medians.rename(columns={"median": "median_rate", "size": "jobs"}).assign(variant=name))
+        medians = part.groupby("country", observed=True)[value].agg(["median", "mean", "size"]).reset_index()
+        country_variants.append(medians.rename(columns={"median": "median_rate", "mean": "mean_rate", "size": "jobs"})
+                                .assign(variant=name))
 
     countries = country_table(hourly, rules, seed)
     country_variants = pd.concat(country_variants, ignore_index=True)

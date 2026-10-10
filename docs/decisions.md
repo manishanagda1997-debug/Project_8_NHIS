@@ -566,6 +566,12 @@ check the reasoning.
   (median baseline, country + category, plus title words). Sensitivity:
   without extreme rates, without possible reposts, low end and high end of
   the range.
+- **Average and median:** the brief asks for average hourly rates by
+  country, so the arithmetic mean is reported alongside the median
+  (`mean_rate`, with a title clustered bootstrap interval `mean_ci_low` to
+  `mean_ci_high`). The median stays the primary measure because the hourly
+  rate distribution has a long high value tail. A sensitivity check also
+  reports the mean after flagged extreme rates are excluded.
 - **Why:** Raw keyword differences mix the keyword with who posts it and what
   kind of job it is. The category is derived from the title, so the
   country + category layer partly removes the title signal itself; it is

@@ -132,3 +132,35 @@ def test_keyword_associations_layers_differ_when_country_confounds():
 
 def test_iso3_codes_cover_the_large_markets():
     assert {ISO3[c] for c in ["United States", "United Kingdom", "India", "Philippines"]} == {"USA", "GBR", "IND", "PHL"}
+
+
+def test_bootstrap_mean_interval_contains_the_mean():
+    from job_market.pay import bootstrap_mean
+    rng = np.random.default_rng(6)
+    values = rng.normal(30, 3, 400)
+    low, high = bootstrap_mean(values, np.arange(400) // 2, 300, rng)
+    assert low < values.mean() < high
+
+
+def test_country_mean_uses_the_hourly_midpoint_and_keeps_median_results():
+    from job_market.steps.pay import country_table
+    rules = {"min_country_jobs": 3, "median_bootstrap_reps": 50, "index_bootstrap_reps": 5}
+    population = pd.DataFrame({
+        "country": ["A"] * 4 + ["B"] * 3,
+        "title_key": [f"t{i}" for i in range(7)],
+        "primary_category": ["x", "y", "x", "y", "x", "y", "x"],
+        # hourly_low and hourly_high deliberately do not average to hourly_mid in
+        # the fourth row, so any other rate definition gives a different mean.
+        "hourly_low": [5.0, 10.0, 15.0, 10.0, 10.0, 20.0, 30.0],
+        "hourly_high": [15.0, 30.0, 25.0, 30.0, 30.0, 40.0, 50.0],
+        "hourly_mid": [10.0, 20.0, 20.0, 100.0, 20.0, 30.0, 40.0],
+    })
+    table = country_table(population, rules, seed=1).set_index("country")
+    assert table.loc["A", "mean_rate"] == pytest.approx(37.5)       # (10 + 20 + 20 + 100) / 4, from hourly_mid
+    # Lower bound (10.0), upper bound (25.0) or a rebuilt midpoint (17.5) would all differ.
+    assert table.loc["A", "median_rate"] == 20.0
+    assert table.loc["B", "mean_rate"] == pytest.approx(30.0)
+    assert table.loc["A", "mean_ci_low"] <= 37.5 <= table.loc["A", "mean_ci_high"]
+    # Adding the mean leaves the median interval and the index unchanged.
+    rerun = country_table(population, rules, seed=1).set_index("country")
+    assert table.equals(rerun)
