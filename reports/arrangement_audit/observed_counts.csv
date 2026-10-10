@@ -1,0 +1,16 @@
+group,label,labelled,yes,unclear
+S1,remote_or_home,98,2,0
+S1,on_site_required,98,87,3
+S1,time_zone_required,98,0,0
+S2,remote_or_home,100,91,1
+S2,on_site_required,100,0,0
+S2,time_zone_required,100,0,0
+S3,remote_or_home,37,5,0
+S3,on_site_required,37,1,4
+S3,time_zone_required,37,0,0
+S4,remote_or_home,40,1,0
+S4,on_site_required,40,0,0
+S4,time_zone_required,40,0,0
+S5,remote_or_home,60,0,0
+S5,on_site_required,60,0,0
+S5,time_zone_required,60,0,0

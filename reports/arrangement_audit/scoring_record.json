@@ -1,0 +1,11 @@
+{
+ "decision": "D-041",
+ "labels_tag": "arrangement-labels-final",
+ "rules_tag": "arrangement-rules-1.0",
+ "design_sha256": "69909c992e71cf9135828517096b9d15eb52489e6915201550d21f415162d206",
+ "evaluation_labels_sha256": "45bd34db3f7a4a6c6fcd043fe1c9db364127a707af47c6e882651d47520b925f",
+ "diagnostic_labels_sha256": "858a8522cd06d71ec2ce538b25d735355d4339229b4e44bd6b64105953467bcf",
+ "simulation_seed": 20261010,
+ "simulation_draws": 100000,
+ "note": "missed yes and recall: interval only; posting level: point estimates only"
+}

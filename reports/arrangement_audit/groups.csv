@@ -1,0 +1,6 @@
+group,description,title_keys,postings,sampled,census
+S1,rules 1.0 on site match,98,101,98,True
+S2,"rules 1.0 remote or home match, not S1",573,694,100,False
+S3,"legacy match, no rules 1.0 match",37,39,37,True
+S4,"candidate wording, no match",147,156,40,False
+S5,all other keys,111246,137219,60,False
