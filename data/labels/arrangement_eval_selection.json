@@ -1,0 +1,63 @@
+{
+ "decision": "D-041",
+ "stage": "evaluation",
+ "source_sha256": "6513e9a744f15726bdb40d6435a60834e864ace08a75e1d7feb75e10ddb78b11",
+ "jobs_clean_sha256": "d9e3af84f2a7c4a69c6e0f26d02df3f72c4e087b9e3c1ee636940094c6bf10cb",
+ "guide_sha256": "5b21c8754fd950d0a9903d71d0542462e98deba29da8d3cb0797c36e39e18472",
+ "rules_tag": "arrangement-rules-1.0",
+ "rules_version": "1.0",
+ "rules_fingerprint": "0e9a15c656088e92d88d659f7cc5b2a4a7bb4c10a49ca042b62a4dbc08f79d14",
+ "quarantine_sha256": "e2f6c5c5504286a98e2eb7553b8dc24df719be4f8d1506d1ff4f3d8b88ae6df8",
+ "eval_seed": 20261009,
+ "simulation_seed": 20261010,
+ "simulation_draws": 100000,
+ "groups": [
+  {
+   "group": "S1",
+   "description": "rules 1.0 on site match",
+   "title_keys": 98,
+   "postings": 101,
+   "sampled": 98,
+   "census": true
+  },
+  {
+   "group": "S2",
+   "description": "rules 1.0 remote or home match, not S1",
+   "title_keys": 573,
+   "postings": 694,
+   "sampled": 100,
+   "census": false
+  },
+  {
+   "group": "S3",
+   "description": "legacy match, no rules 1.0 match",
+   "title_keys": 37,
+   "postings": 39,
+   "sampled": 37,
+   "census": true
+  },
+  {
+   "group": "S4",
+   "description": "candidate wording, no match",
+   "title_keys": 147,
+   "postings": 156,
+   "sampled": 40,
+   "census": false
+  },
+  {
+   "group": "S5",
+   "description": "all other keys",
+   "title_keys": 111246,
+   "postings": 137219,
+   "sampled": 60,
+   "census": false
+  }
+ ],
+ "evaluation_titles": 335,
+ "diagnostic_titles": 152,
+ "design_sha256": "69909c992e71cf9135828517096b9d15eb52489e6915201550d21f415162d206",
+ "evaluation_sheet": "data/labels/arrangement_eval.xlsx",
+ "evaluation_sheet_sha256_unlabelled_at_creation": "61fe6b7cd29b21e9828ede91f9538c2ca716654b3603d9cafbadf2d6e31df6a5",
+ "diagnostic_sheet": "data/labels/arrangement_diagnostic.xlsx",
+ "diagnostic_sheet_sha256_unlabelled_at_creation": "8c82708c1f71bb2c0b65c23b96839ba6b23dbdaaa40aa66bca468e914bd4f2eb"
+}
