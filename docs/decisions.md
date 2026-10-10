@@ -1224,6 +1224,55 @@ check the reasoning.
   - *Order:* commit this design and the sampler, draw both sheets, commit them
     unlabelled, label them, freeze the labels with the tag
     `arrangement-labels-final`, then score once.
+- **Evaluation result:** the frozen labels under tag `arrangement-labels-final`
+  receive one scoring run on 10 October 2026 with `score-arrangement-eval`. The
+  outputs are stored in `reports/arrangement_audit/`.
+  - *Main evaluation:* this set contains evaluation titles not identified as
+    seen in the available development records and outputs. Quarantined titles
+    are excluded because the available development records identify them as
+    seen or potentially exposed during rule development.
+  - *Precision:* remote or home wording has a median precision of 0.91, with a
+    95 percent Bayesian predictive interval from 0.85 to 0.95. Among the 100
+    sampled S2 rule matches, 91 are labelled yes and 1 is labelled unclear. Both
+    S1 titles that also match the remote or home rule are labelled yes. On site
+    wording has precision 87 of 98, or 0.89, for the complete eligible non
+    quarantined S1 census. The remaining S1 labels are 8 no and 3 unclear. When
+    unclear is counted as yes, remote or home precision has a median of 0.92,
+    with a 95 percent Bayesian predictive interval from 0.86 to 0.96, and on
+    site precision is 0.92.
+  - *Missed yes:* among all 37 S3 titles matched by the old rules but not the
+    new rules, 5 remote or home titles and 1 on site title are labelled yes.
+    Another 4 on site titles are labelled unclear. Among the 40 sampled S4
+    titles, 1 remote or home title is labelled yes. Among the 60 sampled S5
+    titles, no title receives a yes label for any of the three labels. The 95
+    percent Bayesian predictive intervals for missed yes per 1,000 unmatched
+    title keys are 0.09 to 40.7 for remote or home, 0.04 to 40.6 for on site,
+    and 0.03 to 40.6 for time zone. These intervals are very wide because S5
+    contains 111,246 title keys but only 60 are sampled, with zero observed yes
+    labels. The upper uncertainty therefore depends strongly on the
+    prespecified Jeffreys prior.
+  - *Recall, secondary:* the 95 percent Bayesian predictive interval is 0.10 to
+    0.98 for remote or home and 0.02 to 0.96 for on site. No recall median is
+    reported. The very large S5 group and the small S5 sample do not allow a
+    precise recall estimate.
+  - *Posting level check:* the point estimate is 0.92 for remote or home
+    precision and 0.89 for on site precision. These estimates are similar to
+    the title key results. They use the same human labels and therefore do not
+    provide independent confirmation. No posting level interval is reported
+    because the sample is drawn by title key and posting counts vary strongly
+    between title keys.
+  - *Time zone:* the main evaluation gives no precision or recall for the time
+    zone rule, because all evaluation side titles matched by that rule are
+    quarantined, so the main pool contains no time zone rule matches. None of
+    the 335 main evaluation titles is labelled yes for time zone. The missed yes
+    interval above remains a separate uncertainty result for unmatched titles.
+  - *Diagnostic set:* Q001 to Q152 contains titles seen during rule development
+    and is not part of the main evaluation. For time zone, 107 of 110 rule
+    matches are labelled yes, giving diagnostic precision 0.97. No title
+    labelled yes for time zone in this diagnostic set is missed by the rule. For
+    remote or home, 9 of 12 rule matches are labelled yes, giving 0.75. For on
+    site, 3 of 5 rule matches are labelled yes, giving 0.60. Diagnostic results
+    remain separate from the main evaluation and are not combined with it.
 - **Order after the pilot:** label the rest of the development sample; freeze
   the rules (tag `arrangement-rules-1.0`); design and draw the evaluation
   sample from the unseen evaluation side using old and new rule matches;
@@ -1244,5 +1293,8 @@ check the reasoning.
   `data/labels/arrangement_dev_selection.json`,
   `data/labels/arrangement_dev_main.xlsx`,
   `data/labels/arrangement_dev_main_selection.json`,
-  `data/labels/arrangement_eval_quarantine.csv`, `tests/test_arrangement.py`,
-  `tests/test_arrangement_eval.py`, `tests/test_trends.py`.
+  `data/labels/arrangement_eval_quarantine.csv`,
+  `data/labels/arrangement_eval.xlsx`, `data/labels/arrangement_diagnostic.xlsx`,
+  `data/labels/arrangement_eval_selection.json`, `reports/arrangement_audit/`,
+  `tests/test_arrangement.py`, `tests/test_arrangement_eval.py`,
+  `tests/test_trends.py`.
