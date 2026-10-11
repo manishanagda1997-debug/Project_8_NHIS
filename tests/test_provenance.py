@@ -132,6 +132,66 @@ def test_rebinding_to_a_reordered_extract_is_caught_by_the_title_check(mini_proj
         build(mini_project)
 
 
+
+# ------------------------------------------------------------ labels in the SQLite database
+
+def sqlite_rows(settings, table):
+    import sqlite3
+
+    from job_market.database import DATABASE_FILE
+    connection = sqlite3.connect(settings.path("processed_dir") / DATABASE_FILE)
+    try:
+        return connection.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
+    finally:
+        connection.close()
+
+
+def test_database_loads_only_category_labels_bound_to_this_extract(mini_project):
+    folder = dev_sheet(mini_project)
+    build(mini_project)                                                # sheet present, no binding
+    assert sqlite_rows(mini_project, "category_labels") == 0
+    pv.bind_label_sheet(folder, "dev_labels.xlsx", sha256_file(mini_project.path("raw_csv")))
+    build(mini_project)
+    assert sqlite_rows(mini_project, "category_labels") == 2
+    reorder_raw(mini_project)                                          # bound to the previous extract
+    build(mini_project)
+    assert sqlite_rows(mini_project, "category_labels") == 0
+
+
+def test_database_loads_relevance_labels_and_rankings_only_when_bound(mini_project):
+    # The fixture is too small for the recommender, so the database step runs
+    # on its own with a stand-in ranking file and a complete relevance sheet.
+    from openpyxl import load_workbook
+
+    from job_market.labels import write_relevance_sheet
+    from job_market.steps import database
+
+    build(mini_project)
+    processed, folder = mini_project.path("processed_dir"), mini_project.path("labels_dir")
+    source = sha256_file(mini_project.path("raw_csv"))
+    context = {"clean": pd.read_parquet(processed / "jobs_clean.parquet"),
+               "categories": pd.read_parquet(processed / "job_categories.parquet"), "source": {"sha256": source}}
+    pd.DataFrame({"profile_id": ["P01", "P01"], "method": ["tfidf_hybrid", "tfidf_hybrid"], "rank": [1, 2],
+                  "row_id": [1, 3], "title_key": ["logo designer", "virtual assistant"]}
+                 ).to_csv(processed / "recommend_relevance_items.csv", index=False)
+    items = pd.DataFrame({"item_id": ["R001", "R002"], "profile_id": ["P01", "P01"],
+                          "title": ["Logo designer", "Virtual assistant"],
+                          "title_key": ["logo designer", "virtual assistant"]})
+    path = write_relevance_sheet(items, mini_project.section("recommend")["profiles"], folder / RELEVANCE_SHEET)
+    book = load_workbook(path)
+    book["relevance"]["D2"], book["relevance"]["D3"] = 2, 0
+    book.save(path)
+
+    def loaded():
+        database.run(mini_project, context)
+        return sqlite_rows(mini_project, "relevance_labels"), sqlite_rows(mini_project, "recommendation_results")
+
+    assert loaded() == (0, 0)                                          # no binding
+    pv.bind_label_sheet(folder, RELEVANCE_SHEET, source)
+    assert loaded() == (2, 2)
+    pv.bind_label_sheet(folder, RELEVANCE_SHEET, OTHER_SOURCE)         # bound to another extract
+    assert loaded() == (0, 0)
+
 # ------------------------------------------------------------ historical rankings
 
 def write_historical(folder, items, source):

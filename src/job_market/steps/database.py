@@ -12,6 +12,7 @@ from typing import Any
 
 import pandas as pd
 
+from .. import provenance
 from ..config import Settings
 from ..database import DATABASE_FILE, SCHEMA_FILE, SCHEMA_VERSION, jobs_table, sql_dir, sql_sha256, write_database
 from ..labels import LabelSheetError, read_label_sheet, read_relevance_sheet
@@ -23,11 +24,15 @@ NAME = "database"
 DESCRIPTION = "SQLite database of row-level tables for the SQL cross-checks."
 
 
-def category_labels(settings: Settings) -> pd.DataFrame:
+def category_labels(settings: Settings, source_sha256: str) -> pd.DataFrame:
     frames = []
+    folder = settings.path("labels_dir")
     for label_set, file_name in LABEL_SETS:
+        # The same check as the evaluate step (D-039): only sheets bound to this extract are loaded.
+        if provenance.label_status(folder, file_name, source_sha256)[0] != provenance.SCORED:
+            continue
         try:
-            labels = read_label_sheet(settings.path("labels_dir") / file_name)
+            labels = read_label_sheet(folder / file_name)
         except LabelSheetError:
             continue
         frames.append(pd.DataFrame({"label_set": label_set, "sample_id": labels["sample_id"].astype(str),
@@ -36,9 +41,13 @@ def category_labels(settings: Settings) -> pd.DataFrame:
     return pd.concat(frames, ignore_index=True) if frames else pd.DataFrame()
 
 
-def relevance_tables(settings: Settings) -> tuple[pd.DataFrame, pd.DataFrame]:
+def relevance_tables(settings: Settings, source_sha256: str) -> tuple[pd.DataFrame, pd.DataFrame]:
+    folder = settings.path("labels_dir")
+    # The same check as the recommend step (D-039); without it, neither labels nor rankings are loaded.
+    if provenance.label_status(folder, RELEVANCE_SHEET, source_sha256)[0] != provenance.SCORED:
+        return pd.DataFrame(), pd.DataFrame()
     try:
-        labels = read_relevance_sheet(settings.path("labels_dir") / RELEVANCE_SHEET)
+        labels = read_relevance_sheet(folder / RELEVANCE_SHEET)
     except LabelSheetError:
         return pd.DataFrame(), pd.DataFrame()
     results_path = settings.path("processed_dir") / "recommend_relevance_items.csv"
@@ -60,8 +69,9 @@ def run(settings: Settings, context: dict[str, Any]) -> StepRecord:
         return record
     jobs = jobs_table(context["clean"])
     categories = context["categories"][["row_id", "primary_category"]].astype({"primary_category": str})
-    labels = category_labels(settings)
-    judged, ranked = relevance_tables(settings)
+    source_sha256 = context["source"]["sha256"]
+    labels = category_labels(settings, source_sha256)
+    judged, ranked = relevance_tables(settings, source_sha256)
     tables = {"jobs": jobs, "job_categories": categories, "category_labels": labels,
               "relevance_labels": judged, "recommendation_results": ranked}
     # Identity by content, not by time: the build fingerprints (raw data, settings, code, environment,
