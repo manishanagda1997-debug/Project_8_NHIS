@@ -10,7 +10,7 @@ pytest.importorskip("flask")
 
 from job_market.recommend import filter_mask, pay_text, pool_mask, recommend  # noqa: E402
 from job_market_web import create_app  # noqa: E402
-from job_market_web.service import NOTES, RecommenderService  # noqa: E402
+from job_market_web.service import ASSOCIATION_NOTE, TITLE_NOTE, RecommenderService  # noqa: E402
 
 RULES = {
     "recommender_version": "1.0", "results": 10, "word_min_df": 1, "char_ngram_min": 3, "char_ngram_max": 5,
@@ -78,12 +78,19 @@ def test_page_renders(client):
     assert page.status_code == 200 and b"Job" in page.data and b"test-build" in page.data
 
 
-def test_recommend_returns_results_and_metadata(client):
+EXISTING_RECOMMEND_FIELDS = {
+    "build_id", "recommender_version", "method", "method_status", "approval_note", "approval_ref", "build_approval_ref",
+    "query", "filters_applied", "candidate_pool_size", "returned_count", "results", "related_keywords", "notes"}
+
+
+def test_recommend_returns_results_and_metadata(client, service):
     data = client.get("/api/recommend?skills=python, pandas, power bi&days=all").get_json()
+    assert EXISTING_RECOMMEND_FIELDS <= set(data)                         # earlier fields stay; meta only adds
     assert data["method"] == "hybrid_word_character_tfidf" and data["recommender_version"] == "1.0"
     assert data["returned_count"] == len(data["results"]) > 0
     assert data["candidate_pool_size"] >= data["returned_count"]
-    assert data["notes"] == NOTES and data["filters_applied"]
+    assert data["notes"] == service.notes() and data["notes"][0] == TITLE_NOTE and data["notes"][2] == ASSOCIATION_NOTE
+    assert data["filters_applied"]
     first = data["results"][0]
     assert {"rank", "row_id", "title", "link", "pay", "country", "posted_date", "score"} <= set(first)
     assert "data/processed" not in str(data) and "\\" not in str(data)    # no file system paths
@@ -175,3 +182,25 @@ def test_pay_text():
     assert pay_text("hourly", np.nan, np.nan, np.nan) == "Rate not stated"
     assert pay_text("fixed", np.nan, np.nan, 1500.0) == "Fixed: $1,500"
     assert pay_text("fixed", np.nan, np.nan, np.nan) == "Budget not stated"
+
+
+def test_dates_days_years_and_profiles_follow_the_data_and_settings():
+    # Another extract: 6 observed days across a year boundary, and 3 profiles in the settings.
+    jobs = jobs_table()
+    jobs["posted_date"] = pd.Timestamp("2023-12-29") + pd.to_timedelta(np.arange(len(jobs)) % 6, unit="D")
+    rules = {**RULES, "profiles": [{"id": "P01"}, {"id": "P02"}, {"id": "P03"}]}
+    other = RecommenderService.from_tables(jobs, rules, "tfidf_hybrid", "other-build")
+    client = create_app(service=other).test_client()
+    data = client.get("/api/recommend?skills=logo design&days=all").get_json()
+    assert data["first_day"] == "2023-12-29" and data["last_day"] == "2024-01-03" and data["observed_days"] == 6
+    assert data["notes"][1] == "Jobs were posted from 2023-12-29 to 2024-01-03; links may point to closed jobs."
+    assert data["filters_applied"][0] == "Jobs posted in all available days (6)."
+    page = client.get("/").data.decode("utf-8")
+    assert "Upwork market 2023 to 2024" in page and "All 6 days" in page
+    assert "relevance test with 3 freelancer profiles" in page
+    assert "from 2023-12-29 to 2024-01-03, so links may point to closed jobs" in page
+    assert "37" not in page and "February" not in page
+
+
+def test_single_year_is_shown_once(service):
+    assert service.meta()["data_years"] == "2024"

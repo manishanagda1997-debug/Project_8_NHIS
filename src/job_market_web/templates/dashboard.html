@@ -56,7 +56,7 @@
 <body>
 <header>
   <div class="wrap">
-    <h1>Job <span>Finder</span> · Upwork market 2024</h1>
+    <h1>Job <span>Finder</span> · Upwork market {{ page.years }}</h1>
     <nav><a href="/">Recommendations</a><a class="active" href="/dashboard">Market Dashboard</a></nav>
   </div>
 </header>
@@ -167,7 +167,8 @@
 <footer>
   <div class="wrap">
     How to refresh: place a newer extract in <code>data/raw</code>, run <code>python -m job_market rebuild</code>, restart the app. Every number on this page comes from a verified pipeline table of build <code>{{ page.build_id }}</code>; the page computes nothing itself.
-    Categories carry Notebook 03's error (68.9% blind agreement). Data: Upwork job posts, February-March 2024.
+    {% if page.blind_agreement %}Primary categories match blind human labels on {{ page.blind_agreement.pct }}% of {{ page.blind_agreement.titles }} sampled titles from this extract.{% else %}No blind-label accuracy is available for this extract.{% endif %}
+    {% if page.period %}Data: Upwork job posts, {{ page.period.first_day }} to {{ page.period.data_through }}.{% endif %}
   </div>
 </footer>
 <script id="figures" type="application/json">{{ page.figures | tojson }}</script>

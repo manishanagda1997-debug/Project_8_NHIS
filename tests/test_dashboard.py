@@ -72,6 +72,10 @@ def test_new_month_appears_after_rebuild_without_code_changes(mini_project):
     assert months["label"].tolist()[-1] == "Apr 2024 (14 days)"
     assert page.status_code == 200 and b"Apr 2024 (14 days)" in page.data
     assert b"2024-04-14" in page.data                                          # data-through date updates
+    assert b"Upwork market 2024" in page.data and b"Data: Upwork job posts, 2024-02-16 to 2024-04-14." in page.data
+    # A new extract has no scored blind labels, so no accuracy is carried over.
+    assert data.blind_labels != "scored" and b"No blind-label accuracy is available for this extract." in page.data
+    assert b"sampled titles" not in page.data
 
 
 def test_dashboard_figures_are_valid_json_and_need_no_internet(mini_project):
@@ -117,3 +121,32 @@ def test_clean_json_replaces_nan():
 
 def test_dashboard_not_loaded_returns_503():
     assert create_app(service=tiny_service(), dashboard=None).test_client().get("/dashboard").status_code == 503
+
+
+def blind_page(blind_labels, rows):
+    months = pd.DataFrame({"month": ["2024-03"], "label": ["Mar 2024 (23 days)"], "first_day": ["2024-03-01"],
+                           "last_day": ["2024-03-23"], "days_observed": [23], "partial": [True], "jobs": [100],
+                           "jobs_per_day": [4.3], "jobs_per_day_weekday_std": [4.2], "hourly_share_pct": [55.0],
+                           "median_hourly_rate": [22.5], "effective_countries": [5.1]})
+    summary = pd.DataFrame(rows, columns=["label_set", "subset", "system", "titles", "correct", "accuracy"])
+    data = DashboardData(build_id="x", tables={"monthly_market_summary.csv": months,
+                                               "label_evaluation_summary.csv": summary}, blind_labels=blind_labels)
+    return create_app(service=tiny_service(), dashboard=data).test_client().get("/dashboard").data.decode("utf-8")
+
+
+ROWS = [["blind", "all", "full", 350, 241, 0.6886], ["blind", "all", "rules_only", 350, 240, 0.6857],
+        ["dev", "all", "full", 150, 120, 0.8]]
+UNAVAILABLE = "No blind-label accuracy is available for this extract."
+
+
+def test_blind_agreement_comes_from_the_exact_saved_row_when_scored():
+    page = blind_page("scored", ROWS)
+    assert "Primary categories match blind human labels on 68.9% of 350 sampled titles from this extract." in page
+    assert UNAVAILABLE not in page
+    assert "Data: Upwork job posts, 2024-03-01 to 2024-03-23." in page
+
+
+def test_blind_agreement_is_hidden_when_not_scored_or_the_row_is_missing():
+    for status, rows in (("labels belong to another extract: x", ROWS), (None, ROWS), ("scored", ROWS[1:])):
+        page = blind_page(status, rows)
+        assert UNAVAILABLE in page and "sampled titles" not in page and "68.9" not in page

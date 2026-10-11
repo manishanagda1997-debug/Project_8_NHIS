@@ -18,11 +18,13 @@ from job_market.config import Settings
 from job_market.manifest import verify_output
 from job_market.taxonomy import CATEGORIES
 
+from .service import year_text
+
 REQUIRED = ("monthly_market_summary.csv", "monthly_category_share.csv", "monthly_country_share.csv",
             "weekly_market_summary.csv", "weekly_category_share.csv")
 OPTIONAL = ("trend_categories.csv", "pay_keywords_hourly.csv", "pay_countries.csv", "forecast_demand_daily.csv",
             "forecast_demand_outlook.csv", "forecast_signals_daily.csv", "forecast_signals_outlook.csv",
-            "remote_daily.csv")
+            "remote_daily.csv", "label_evaluation_summary.csv")
 
 BLUE, ORANGE, AQUA, RED, GREY = "#2a78d6", "#eb6834", "#1baf7a", "#e34948", "#b8b6b0"
 LIGHT_BLUE, LIGHT_ORANGE = "#b7d3f6", "rgba(235,104,52,0.16)"
@@ -40,6 +42,7 @@ class DashboardError(RuntimeError):
 class DashboardData:
     build_id: str
     tables: dict[str, pd.DataFrame | None] = field(default_factory=dict)
+    blind_labels: str | None = None          # the evaluate step's status for the blind labels in this build
 
     def get(self, name: str) -> pd.DataFrame | None:
         table = self.tables.get(name)
@@ -63,7 +66,8 @@ def load_dashboard(settings: Settings, manifest: dict) -> DashboardData:
             tables[name] = pd.read_csv(path)
         except pd.errors.EmptyDataError:
             tables[name] = None
-    return DashboardData(build_id=manifest["run_id"], tables=tables)
+    evaluate = {step["name"]: step.get("metrics", {}) for step in manifest.get("steps", [])}.get("evaluate", {})
+    return DashboardData(build_id=manifest["run_id"], tables=tables, blind_labels=evaluate.get("blind_labels"))
 
 
 # ----------------------------------------------------------------- helpers
@@ -152,6 +156,17 @@ def period_text(data: DashboardData) -> dict:
     return {"first_day": months["first_day"].min(), "data_through": months["last_day"].max(),
             "days": int(months["days_observed"].sum()), "months": [r.label for r in months.itertuples()],
             "partial": bool(months["partial"].any())}
+
+
+def blind_agreement(data: DashboardData) -> dict | None:
+    """Blind-label agreement of the full categorizer, only when the blind labels are scored on this build."""
+    summary = data.get("label_evaluation_summary.csv")
+    if data.blind_labels != "scored" or summary is None:
+        return None
+    row = summary[(summary["label_set"] == "blind") & (summary["subset"] == "all") & (summary["system"] == "full")]
+    if len(row) != 1:
+        return None
+    return {"pct": f"{100 * float(row['accuracy'].iloc[0]):.1f}", "titles": int(row["titles"].iloc[0])}
 
 
 # ------------------------------------------------------------------ figures
@@ -446,6 +461,7 @@ def clean_json(value: Any) -> Any:
 
 def context(data: DashboardData) -> dict:
     """Everything the dashboard template needs."""
+    period = period_text(data)
     weekly_category, category_options = fig_weekly_category(data)
     country_map, hidden_countries = fig_country_map(data)
     figures = {
@@ -456,7 +472,9 @@ def context(data: DashboardData) -> dict:
     }
     forecast = data.get("forecast_demand_daily.csv")
     return {
-        "build_id": data.build_id, "period": period_text(data), "tiles": headline_tiles(data),
+        "build_id": data.build_id, "period": period, "tiles": headline_tiles(data),
+        "years": year_text(period["first_day"], period["data_through"]) if period else "",
+        "blind_agreement": blind_agreement(data),
         "figures": clean_json({k: v for k, v in figures.items() if v is not None}),
         "category_options": category_options, "outlook": outlook_rows(data), "signals": signal_rows(data),
         "countries": top_countries(data), "hidden_countries": hidden_countries,

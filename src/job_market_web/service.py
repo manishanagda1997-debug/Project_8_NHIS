@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import math
 from dataclasses import dataclass, field
+from functools import cached_property
 from typing import Any
 
 import numpy as np
@@ -29,11 +30,14 @@ MAX_HOURLY = 1000.0
 MAX_BUDGET = 1_000_000.0
 RECOMMEND_PARAMS = {"skills", "days", "contract", "min_hourly", "min_budget"}
 SIMILAR_PARAMS = {"days"}
-NOTES = [
-    "Matches are based on job titles only; the data has no job descriptions.",
-    "Jobs were posted in February and March 2024; links may point to closed jobs.",
-    "Related market keywords describe associations in the data, not advice on what to learn.",
-]
+TITLE_NOTE = "Matches are based on job titles only; the data has no job descriptions."
+ASSOCIATION_NOTE = "Related market keywords describe associations in the data, not advice on what to learn."
+
+
+def year_text(first_day: str, last_day: str) -> str:
+    """'2024', or '2023 to 2024' when the data spans two or more years (dates as YYYY-MM-DD)."""
+    first, last = str(first_day)[:4], str(last_day)[:4]
+    return first if first == last else f"{first} to {last}"
 
 
 class ApiError(Exception):
@@ -90,9 +94,10 @@ def parse_recommend(args: dict[str, str]) -> dict[str, Any]:
             "min_budget": min_budget}
 
 
-def describe_filters(query: dict[str, Any]) -> list[str]:
+def describe_filters(query: dict[str, Any], observed_days: int) -> list[str]:
     days = query["days"]
-    lines = ["Jobs posted in " + ("all available days (37)." if days == 0 else f"the final {days} days of the data.")]
+    lines = ["Jobs posted in " + (f"all available days ({observed_days})." if days == 0
+                                  else f"the final {days} days of the data.")]
     lines.append("Only the newest posting of each possible-repost chain; at most one result per title unless "
                  "too few different titles match.")
     if query["contract"] == "hourly":
@@ -137,10 +142,25 @@ class RecommenderService:
     def public_method(self) -> str:
         return PUBLIC_METHOD_NAMES.get(self.method, self.method)
 
+    @cached_property
+    def period(self) -> dict[str, Any]:
+        """First and last posting day and the number of observed days in the served index."""
+        dates = pd.to_datetime(self.index.jobs["posted_date"])
+        first, last = dates.min().strftime("%Y-%m-%d"), dates.max().strftime("%Y-%m-%d")
+        return {"first_day": first, "last_day": last, "observed_days": int(dates.nunique()),
+                "data_years": year_text(first, last)}
+
+    def notes(self) -> list[str]:
+        period = self.period
+        return [TITLE_NOTE,
+                f"Jobs were posted from {period['first_day']} to {period['last_day']}; links may point to closed jobs.",
+                ASSOCIATION_NOTE]
+
     def meta(self) -> dict[str, Any]:
         return {"build_id": self.build_id, "recommender_version": str(self.rules.get("recommender_version", "")),
                 "method": self.public_method, "method_status": self.method_status,
-                "approval_note": self.approval_note, "approval_ref": self.approval_ref, "build_approval_ref": self.build_approval_ref}
+                "approval_note": self.approval_note, "approval_ref": self.approval_ref, "build_approval_ref": self.build_approval_ref,
+                **self.period, "profiles": len(self.rules.get("profiles", []))}
 
     def pool(self, days: int) -> np.ndarray:
         jobs = self.index.jobs
@@ -182,10 +202,10 @@ class RecommenderService:
             min_hourly=query["min_hourly"], min_budget=query["min_budget"]).to_numpy()
         top = recommend(self.index, query["skills"], self.method, allowed, int(self.rules["results"]))
         related = self.related(query["skills"], query["days"])
-        return {**self.meta(), "query": query, "filters_applied": describe_filters(query),
+        return {**self.meta(), "query": query, "filters_applied": describe_filters(query, self.period["observed_days"]),
                 "candidate_pool_size": int(allowed.sum()), "returned_count": int(len(top)),
                 "results": [self.job_record(row, row["rank"]) for _, row in top.iterrows()],
-                "related_keywords": related, "notes": NOTES}
+                "related_keywords": related, "notes": self.notes()}
 
     def related(self, skills: str, days: int) -> dict[str, Any]:
         rules = self.rules
