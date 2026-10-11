@@ -29,14 +29,13 @@ from __future__ import annotations
 import hashlib
 import json
 import re
-import tomllib
 from importlib import metadata
 from pathlib import Path
 from typing import Any
 
 import pandas as pd
 
-from .config import Settings
+from .config import Settings, tomllib      # tomllib on Python 3.11+, tomli before (see config.py)
 from .environment import strict_mode
 from .manifest import sha256_file
 

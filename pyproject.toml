@@ -9,7 +9,7 @@ description = "Upwork job-market analysis, forecasting and job recommendation sy
 readme = "README.md"
 requires-python = ">=3.10"
 dependencies = [
-    "pandas>=2.1",
+    "pandas>=2.2",
     "numpy>=1.24",
     "scipy>=1.10",
     "scikit-learn>=1.3",
