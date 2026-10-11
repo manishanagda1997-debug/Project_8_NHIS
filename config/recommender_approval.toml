@@ -1,0 +1,22 @@
+# Recommender serving approval (decision D-040). Written after review of the evidence.
+# [scope] must match the running implementation; [evidence] records why the
+# method was approved and is never compared with a new extract.
+approved_method = "tfidf_hybrid"
+
+[scope]
+code_sha256 = "d744714807da73f642c6fe1b89bf17cb1a289492c9976bec4f6057ec101b7aca"
+settings_sha256 = "ba1835c06d483b016c5cdb4c03e012729d4e158a5392ebb01f5ccadd3eba7331"
+
+[scope.libraries]
+"numpy" = "1.26.4"
+"pandas" = "2.2.3"
+"scipy" = "1.14.1"
+"scikit-learn" = "1.5.2"
+
+[evidence]
+build_id = "20261005T122621Z-90e95d23f3"
+source_sha256 = "6513e9a744f15726bdb40d6435a60834e864ace08a75e1d7feb75e10ddb78b11"
+labels_sha256 = "90c9de4a9633ccbfa10002e20c22dd227cb56ee5237c770ebf4004f13e4886a7"
+rankings_file = "recommender_rankings_20261005T122621Z.csv"
+rankings_sha256 = "49de6b35872b1ca19e144e6fcc4eda023e907439793cbfc1467a10d8b70b16f9"
+selection_rule = "highest mean nDCG@5; differences below 0.02 by strict Precision@5; then the simpler method (frozen at tag recommender-1.0); this build: nDCG@5 effectively tied; highest strict Precision@5"
