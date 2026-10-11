@@ -86,6 +86,48 @@ def test_code_fingerprint_follows_this_project_source(mini_project):
     assert current_fingerprints(mini_project)["code_sha256"] != before
 
 
+def test_label_fingerprint_covers_exactly_the_pipeline_label_inputs(mini_project):
+    from job_market import provenance
+    from job_market.fingerprint import LABEL_INPUT_FILES, labels_sha256
+    from job_market.steps.evaluate import LABEL_SETS
+    from job_market.steps.recommend import RELEVANCE_SHEET
+
+    assert set(LABEL_INPUT_FILES) == {name for _, name in LABEL_SETS} | {
+        RELEVANCE_SHEET, provenance.LABEL_SOURCES_FILE, provenance.HISTORICAL_RANKINGS_FILE}
+    folder = mini_project.path("labels_dir")
+    folder.mkdir(parents=True, exist_ok=True)
+    empty = labels_sha256(mini_project)
+    assert labels_sha256(mini_project) == empty                       # missing files give a stable value
+    seen = {empty}
+    for name in LABEL_INPUT_FILES:                                      # adding each file changes it ...
+        (folder / name).write_text(f'file = "hist.csv"\n# {name}\n' if name == provenance.HISTORICAL_RANKINGS_FILE
+                                   else name, encoding="utf-8")
+        seen.add(labels_sha256(mini_project))
+    (folder / "hist.csv").write_text("rankings", encoding="utf-8")     # ... and so does the file the record names
+    seen.add(labels_sha256(mini_project))
+    (folder / "dev_labels.xlsx").write_text("edited", encoding="utf-8")  # ... and so does an edit
+    seen.add(labels_sha256(mini_project))
+    assert len(seen) == len(LABEL_INPUT_FILES) + 3
+    before = labels_sha256(mini_project)
+    (folder / "arrangement_eval.xlsx").write_text("not a pipeline input", encoding="utf-8")
+    approval = mini_project.root / provenance.APPROVAL_FILE
+    approval.write_text("approved_method = 'x'\n", encoding="utf-8")
+    assert labels_sha256(mini_project) == before                       # arrangement sheets and approval excluded
+
+
+def test_editing_a_label_file_after_the_build_makes_it_stale(mini_project):
+    from job_market.qa.findings import ERROR
+
+    manifest = run_pipeline(mini_project, log=quiet)
+    folder = mini_project.path("labels_dir")
+    folder.mkdir(parents=True, exist_ok=True)
+    (folder / "blind_labels.xlsx").write_text("labels added after the build", encoding="utf-8")
+    report = run_lineage_check(mini_project)
+    assert manifest["fingerprints"]["labels_sha256"]
+    assert any(f.level == ERROR and "label files (data/labels) differs from the build" in f.message
+               for f in report.findings)
+
+
 def test_copied_project_with_changed_code_needs_reinstall(mini_project):
     verify_installed_package(mini_project)  # identical copy: accepted
     cli = mini_project.root / "src" / "job_market" / "cli.py"

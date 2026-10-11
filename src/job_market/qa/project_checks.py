@@ -73,4 +73,41 @@ def check_database(settings: Settings, manifest: dict[str, Any], report: Report)
         report.add(ERROR, "database", "database build_info fingerprints differ from the current build; rebuild")
 
 
-CHECKS = (check_build_environment, check_current_environment, check_installed_package, check_database)
+ARRANGEMENT_AUDIT = "reports/arrangement_audit"
+
+
+def check_arrangement_audit(settings: Settings, manifest: dict[str, Any], report: Report) -> None:
+    """The scored D-041 results must still describe the label sheets they were scored on."""
+    import json
+
+    from ..manifest import sha256_file
+
+    folder = settings.root / ARRANGEMENT_AUDIT
+    record_path = folder / "scoring_record.json"
+    if not record_path.is_file():
+        if folder.is_dir() and any(p.is_file() for p in folder.iterdir()):
+            report.add(ERROR, "arrangement", "saved arrangement results have no scoring_record.json: "
+                       "incomplete audit evidence", ARRANGEMENT_AUDIT)
+        else:
+            report.add(OK, "arrangement", "arrangement evaluation not scored in this project")
+        return
+    record = json.loads(record_path.read_text(encoding="utf-8"))
+    labels = settings.path("labels_dir")
+    problems = []
+    for name, key in (("arrangement_eval.xlsx", "evaluation_labels_sha256"),
+                      ("arrangement_diagnostic.xlsx", "diagnostic_labels_sha256")):
+        path = labels / name
+        if not path.is_file():
+            problems.append(f"{settings.relative(path)} is missing")
+        elif sha256_file(path) != record.get(key):
+            problems.append(f"{settings.relative(path)} differs from the labels the D-041 results were scored on")
+    if not (folder / "results.csv").is_file():
+        problems.append(f"{ARRANGEMENT_AUDIT}/results.csv is missing")
+    for problem in problems:
+        report.add(ERROR, "arrangement", problem)
+    if not problems:
+        report.add(OK, "arrangement", "arrangement label sheets match the scoring record; results.csv present")
+
+
+CHECKS = (check_build_environment, check_current_environment, check_installed_package, check_database,
+          check_arrangement_audit)

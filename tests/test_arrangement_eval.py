@@ -200,3 +200,57 @@ def test_read_labels_refuses_changed_titles_or_invalid_values(tmp_path):
         read_labels(path, sample)
     with pytest.raises(DesignError, match="titles"):
         read_labels(path, sample.assign(title=["A title", "Other"]))
+
+
+# ------------------------------------------------------------ binding after scoring (check)
+
+def audit_report(settings):
+    from job_market.qa.findings import Report
+    from job_market.qa.project_checks import check_arrangement_audit
+
+    report = Report("t")
+    check_arrangement_audit(settings, {"outputs": []}, report)
+    return [(f.level, f.message) for f in report.findings]
+
+
+def scored_project(settings, results=True):
+    import json
+
+    from job_market.manifest import sha256_file
+
+    labels = settings.path("labels_dir")
+    labels.mkdir(parents=True, exist_ok=True)
+    for name in ("arrangement_eval.xlsx", "arrangement_diagnostic.xlsx"):
+        (labels / name).write_bytes(name.encode())
+    audit = settings.root / "reports" / "arrangement_audit"
+    audit.mkdir(parents=True)
+    (audit / "scoring_record.json").write_text(json.dumps({
+        "evaluation_labels_sha256": sha256_file(labels / "arrangement_eval.xlsx"),
+        "diagnostic_labels_sha256": sha256_file(labels / "arrangement_diagnostic.xlsx")}), encoding="utf-8")
+    if results:
+        (audit / "results.csv").write_text("group,estimate\n", encoding="utf-8")
+    return labels, audit
+
+
+def test_arrangement_check_accepts_matching_sheets(mini_project):
+    scored_project(mini_project)
+    assert audit_report(mini_project) == [
+        ("OK", "arrangement label sheets match the scoring record; results.csv present")]
+
+
+def test_arrangement_check_rejects_an_edited_sheet_or_missing_results(mini_project):
+    labels, audit = scored_project(mini_project)
+    (labels / "arrangement_diagnostic.xlsx").write_bytes(b"edited")
+    (audit / "results.csv").unlink()
+    messages = [m for level, m in audit_report(mini_project) if level == "ERROR"]
+    assert any("arrangement_diagnostic.xlsx differs from the labels" in m for m in messages)
+    assert any("results.csv is missing" in m for m in messages)
+
+
+def test_arrangement_check_not_scored_versus_incomplete(mini_project):
+    assert audit_report(mini_project) == [("OK", "arrangement evaluation not scored in this project")]
+    audit = mini_project.root / "reports" / "arrangement_audit"
+    audit.mkdir(parents=True)
+    (audit / "results.csv").write_text("x\n", encoding="utf-8")       # results without a scoring record
+    assert audit_report(mini_project)[0][0] == "ERROR"
+    assert "incomplete audit evidence" in audit_report(mini_project)[0][1]
