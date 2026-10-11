@@ -17,12 +17,13 @@ check the reasoning.
 
 ### D-002 A run manifest records each build
 
-- **What:** Each build writes `run_manifest.json` with four fingerprints
+- **What:** Each build writes `run_manifest.json` with six fingerprints
   (raw data, configuration, this project's own `src/job_market` source code,
-  and the pinned environment file `environment.yml`), the installed package versions, row counts, and the size
-  and SHA-256 hash of every output file. Each build has a `run_id`: a UTC
-  timestamp plus a short hash of the four fingerprints. A change in any of the
-  four marks the build stale. The build, every notebook and the lineage
+  the pinned environment file `environment.yml`, the SQL schema and queries in
+  `sql/`, and the label files in `data/labels`), the installed package
+  versions, row counts, and the size and SHA-256 hash of every output file.
+  Each build has a `run_id`: a UTC timestamp plus a short hash of the six
+  fingerprints. A change in any of the six marks the build stale. The build, every notebook and the lineage
   check also confirm that the `job_market` package Python imports is this
   project's `src/job_market`; if a copied or moved project runs another
   installed copy, they stop with the instruction `pip install -e . --no-deps`.
@@ -81,6 +82,9 @@ check the reasoning.
 - **Why:** The same inputs must give the same hashes on Windows and Linux,
   and a Git checkout must never rewrite the bytes of a hashed file. Two full
   builds of the 244,828-row source produce identical analytical file hashes.
+  On 11 October 2026 the official build `20261011T132714Z-e537465460` was
+  rebuilt a second time from the same inputs, and all 54 output files are
+  byte-identical.
 - **Evidence:** `src/job_market/io.py`, `.gitattributes`, tests
   `test_rebuild_is_byte_identical` and
   `test_git_keeps_hashed_files_byte_identical` (runs `git check-attr`).
@@ -90,7 +94,7 @@ check the reasoning.
 - **What:** `python -m job_market run-notebooks` executes each notebook in a
   new kernel and saves the executed copy, with the build `run_id` in the
   notebook metadata. The first code cell calls `start()`, which checks the
-  four build fingerprints and the hash of every output file, then prints
+  six build fingerprints and the hash of every output file, then prints
   `RUN_ID: ...`. `project.read_csv()` checks a file's hash again at read
   time. The notebook check fails if any code cell is not executed, if
   execution counts are not 1, 2, 3 ... in order, if any cell shows an error,
@@ -203,7 +207,7 @@ check the reasoning.
   hours). The window and the flagged days are identical under both rules; the
   new rule gives the stronger reason.
 - **Limit:** About six days per weekday form each median, so the medians are
-  robust to one damaged day per weekday, not to many. Jobs posted outside the
+  not affected by one damaged day per weekday, but they are by many. Jobs posted outside the
   window are still real jobs; they stay in every analysis that does not count
   jobs per day.
 - **Evidence:** `day_quality` in `steps/clean.py`; `day_quality.csv` (with
@@ -268,7 +272,7 @@ check the reasoning.
 - **What:** Budget is empty for every hourly job and hourly rates are empty
   for every fixed-price job: the field does not apply (structural
   missingness). Hourly jobs with one or no rate and jobs without a country are
-  genuinely missing values. None of them is imputed; `hourly_mid` exists only
+  truly missing values. None of them is imputed; `hourly_mid` exists only
   when both ends of the range exist.
 - **Why:** An invented salary is not data. Pay analyses use the rows that
   have the value and state their size.
@@ -606,7 +610,8 @@ check the reasoning.
   share; full-time, part-time, long-term mentions) and explicit
   work-arrangement mentions in titles (whole words only; "local" alone is
   excluded because of "local seo"). Forecasts for the signals with enough data
-  are made in Notebook 06; rare signals get none.
+  are made in Notebook 06; rare signals get none. The wording rules and their
+  audit are in D-041.
 - **Why:** Shares cancel the weekly rhythm and collection gaps. The window is
   short and serially correlated, so effect sizes with intervals matter more
   than p-values.
@@ -615,7 +620,10 @@ check the reasoning.
   the daily charts) shows that part of the full-window change is an early
   step; gradual change continues for Writing (down) and AI & ML, Sales and
   E-commerce (up). The collection method is undocumented, so a collection
-  change cannot be ruled out.
+  change cannot be ruled out. The p-values rely on a large-sample
+  approximation over 37 days. With a t-distribution with 29 degrees of freedom
+  instead, the same 9 of 22 job functions stay significant at FDR 5%, and the
+  significant title keywords fall from 138 to 116 of 726.
 - **Evidence:** `src/job_market/trends.py`, `steps/trends.py`,
   `tests/test_trends.py`, `trend_*.csv`, `remote_*.csv`, Notebook 05.
 
@@ -645,9 +653,13 @@ check the reasoning.
   to [0, 1] and rescaled to sum to 1, so the 22 categories plus Other add up
   to the total every day; counts cannot be negative. Signals are clipped to
   their valid range.
-- **Ranges:** 80% empirical forecast ranges from backtest errors at each
-  horizon; beyond the tested 7 days they widen by sqrt(h / 7), a stated
-  assumption. Task 3 ranks categories by expected jobs per day and flags
+- **Ranges:** 80% empirical forecast ranges from the selected model's
+  backtest errors at each horizon, scaled by each series' seasonal scale and
+  pooled across the series of a family, so they reflect past forecast errors
+  only; beyond the tested 7 days they widen by sqrt(h / 7), a stated
+  assumption. In the reserved final week, ranges rebuilt from the development
+  period contain 126 of 168 demand values (75.0%) and 16 of 21 signal values
+  (76.2%), below the intended 80%. Task 3 ranks categories by expected jobs per day and flags
   neighbours whose ranges overlap as similarly high-demand.
 - **Task 8:** The recent observed share (average of the final 7 days) is
   compared with the forecast next-7-day and 14-day averages from the better
@@ -656,7 +668,9 @@ check the reasoning.
   direction". Changes below 0.1 pp (0.001 for HHI) are "stable".
 - **Limit:** Seven final days are one small check, days 8-14 are less directly
   validated, and five weeks cannot capture seasonality beyond the week. For
-  total jobs the seasonal baseline beat the other models in the final window.
+  total jobs the seasonal baseline is better in development (Relative MAE
+  1.52) and in the final week (1.55). In the final week the damped trend has
+  slightly lower average error than the selected model.
 - **Evidence:** `src/job_market/forecast.py`, `steps/forecast.py`,
   `tests/test_forecast.py`, `forecast_*.csv`, Notebook 06.
 
@@ -718,8 +732,10 @@ check the reasoning.
 - **Result:** the hybrid is selected by the frozen rule: mean nDCG@5 0.985,
   strict Precision@5 0.967; its nDCG lead over word TF-IDF (0.971) is inside
   the 0.02 tie margin, so Precision@5 decides; the keyword count (0.953) is
-  outside it. 115 of the 122 judged titles were labelled relevant, so the
-  scores are near the ceiling and no statistical superiority is claimed.
+  outside it. The hybrid has 58 results labelled relevant in 60 evaluated
+  slots, word TF-IDF 57 and keyword count 56. 115 of the 122 judged titles
+  were labelled relevant, so the scores are near the ceiling and no
+  statistical superiority is claimed.
 - **Record:** the tag `recommender-1.0` marks the frozen design and blank
   sheet; its CI run fails only because the notebooks had not been re-run
   after the rebuild (fixed in the next commit, outputs only). The tag is left
@@ -799,7 +815,7 @@ check the reasoning.
   five small countries such as Singapore are too small to draw and are
   listed under the map). An empty base layer stops plotly.js from fetching
   its own outline, so no internet connection is needed.
-- **Robustness fix found by the April test:** the forecast step divided by a
+- **Fix found by the April test:** the forecast step divided by a
   zero MASE scale when a series never changes week on week (possible in tiny
   or synthetic data). The scale is now NaN in that case; outputs of the real
   build are byte-identical.
@@ -833,16 +849,20 @@ check the reasoning.
   joined to predictions, no stored accuracy read) and the recommender's
   nDCG@5 and strict Precision@5 (frozen D-034 definition: gains 0/1/3, the
   pooled ideal per profile, full-precision discount constants because
-  SQLite builds may lack log2()).
+  SQLite builds may lack log2()). Notebook 08 also runs one inline query for
+  the mean hourly offer by country (SQL AVG) and one for the recommender means
+  per method.
 - **Claim:** SQL independently reproduces selected aggregations and
   evaluation metrics from the pipeline's verified row-level outputs. It does
   not verify the whole project: the cleaned fields, taxonomy predictions and
   recommender rankings come from Python.
 - **Comparison rule:** counts exactly equal. The pipeline's CSV tables store
   decimals rounded to 6 places, so a decimal passes when it is within half a
-  unit of the 6th place plus 1e-9 of the stored value; medians and label
-  accuracy are compared without that allowance. Result: all 1,176 compared
-  values pass; the largest decimal difference is 4.99e-7 (rounding only).
+  unit of the 6th place plus 1e-9 of the stored value; medians are compared
+  without that allowance, and label accuracy is compared at the four decimals
+  the pipeline stores. Result: all 1,358 compared values pass (1,176 from the
+  eight query files and 182 from the country mean check); the largest decimal
+  difference is 4.99e-7 (rounding only).
 - **Checks:** `check` fails when the database's `build_info` fingerprints
   differ from the current build; the manifest also records its SHA-256.
 - **Evidence:** `sql/`, `src/job_market/database.py`, `steps/database.py`,
@@ -998,6 +1018,10 @@ check the reasoning.
 - **Timeline:** rules frozen with tag `recommender-1.0` (4 October 2026,
   18:39); labels finished with tag `relevance-labels-final` (4 October,
   23:18); scored in build `20261005T122621Z` (5 October).
+- **Approval recorded:** 11 October 2026 with `approve-recommender` (commit
+  `61f081c`). The official build `20261011T132714Z-e537465460` serves
+  `tfidf_hybrid` with status approved, and its rankings are identical to the
+  evidence build.
 - **Limits:** identical rankings show agreement on those 12 profiles and that
   extract only. The method was selected on 12 profiles; that does not show it
   is better in general.
@@ -1025,7 +1049,7 @@ check the reasoning.
   conversion tool or a file type is not).
 - **Hybrid rule:** when "hybrid" clearly describes the working arrangement,
   remote/home = yes and on-site = yes. Hybrid app, cloud, vehicle or solar =
-  no on both. A genuinely unclear meaning = unclear. "Hybrid" is no longer
+  no on both. An unclear meaning = unclear. "Hybrid" is no longer
   reported as a series, only as an audit.
 - **Split:** the 187,961 distinct title keys in the time-series window are
   split once, globally, by a seeded SHA-256 of each key (seed 20261007): 40%

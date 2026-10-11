@@ -2,133 +2,59 @@
 
 [![CI](https://github.com/manishanagda1997-debug/job-market-analysis/actions/workflows/ci.yml/badge.svg)](https://github.com/manishanagda1997-debug/job-market-analysis/actions/workflows/ci.yml)
 
-Analysis of 244,828 Upwork job postings (mostly February and March 2024) that
-answers all eight tasks of the assignment brief: which title words go with
-higher pay, which job categories are emerging, which roles will be in demand,
-how hourly rates differ by client country, how the online-hiring landscape is
-changing, and what the short-term forecast shows. It also delivers a job
-recommendation engine with a JSON API and web page, a market dashboard, an
-SQL cross-check layer and a Docker deployment (Nginx + Gunicorn + Flask).
+This project analyses 244,828 Upwork job postings to understand job demand, hourly pay, market trends and client countries. It covers all eight tasks in the assignment and includes a job recommendation system, a market dashboard, a JSON API, SQL checks and a Docker deployment.
 
-One reproducible pipeline produces every result from the raw CSV; the
-notebooks only read its verified outputs, and every number quoted in a
-notebook is checked by code in the same notebook. Continuous integration runs
-the tests, checks the committed notebooks and builds the Docker images on
-every push.
+The analysis uses one pipeline to prepare the data and save the results. Human labels help evaluate job categories, work-arrangement wording and recommendations. The notebooks show the analysis, while the [final report](reports/final_report.md) ([PDF](reports/final_report.pdf)) explains the findings in detail.
 
-**Final report:** [`reports/final_report.md`](reports/final_report.md) (also as [PDF](reports/final_report.pdf)) brings the results of all eight tasks together in one document.
+## Main results
+
+Each number in this table is recalculated from the committed output tables by `tests/test_readme.py`.
+
+<!-- key-results:start -->
+| Task | Result | Evidence |
+|---|---|---|
+| 1. Title words and pay | After adjusting for client country and job category, titles with "consultant" offer about +77% higher hourly rates and "virtual assistant" about -38% | [Notebook 04](notebooks/04_pay_keywords_and_countries.ipynb) |
+| 2. Emerging categories | 9 of 22 job functions change share significantly over 37 days; Digital Marketing gains +1.0 percentage points (+10%) and Writing & Content falls from 5.8% to 3.7% of postings (-35%) | [Notebook 05](notebooks/05_trends_and_online_hiring.ipynb) |
+| 3. High-demand roles | Web Development has the highest expected demand, about 900 jobs a day; the weekday-mean model performs better than the seasonal baseline for 20 of 23 category series in the final week (mean relative MAE 0.84). The baseline performs better for total jobs | [Notebook 06](notebooks/06_forecasts.ipynb) |
+| 4. Hourly rates by country | 91 client countries have at least 30 rated hourly jobs; the United States median offer is USD 25 per hour (mean USD 32.6) | [Notebook 04](notebooks/04_pay_keywords_and_countries.ipynb) |
+| 5. Job recommendations | Hybrid TF-IDF reaches mean nDCG@5 0.985 and strict Precision@5 0.967 over 12 blind-labelled profiles, with one more relevant result than word TF-IDF in 60 evaluated slots | [Notebook 07](notebooks/07_job_recommendations.ipynb) |
+| 6. Monthly dashboard | The dashboard draws monthly and weekly tables that a rebuild refreshes with each new extract; the current build covers 2 partial months (14 days of February and 23 days of March 2024) | [Monthly table](data/processed/monthly_market_summary.csv) |
+| 7. Online hiring | The hourly-job share falls from 58.3% to 56.1%; North American clients post about 46% of jobs with a known country; 1,260 of 229,520 postings (0.55%) have remote or home wording in the title | [Notebook 05](notebooks/05_trends_and_online_hiring.ipynb) |
+| 8. Future trends | 4 categories meet the rule for a small rise under the damped-trend model and 10 have no reliable direction; the 80% forecast ranges contain 75.0% of final-week demand values | [Notebook 06](notebooks/06_forecasts.ipynb) |
+<!-- key-results:end -->
+
+## Screenshots
 
 ![Job recommendation page: skills entered, ten matching jobs with pay, related market keywords and the filters applied](docs/images/recommender.png)
 
-## Quick start for reviewers
-
-**Route A - no setup (recommended first).** Read the notebooks on GitHub in
-order, `00` to `08` (see [Notebooks](#notebooks)). They are committed with their executed
-outputs, from one build, and CI checks that they are clean top-to-bottom runs
-of that build. The summary tables behind them are committed in
-`data/processed/*.csv` and can be opened directly. This route needs no
-download, but it cannot start the web app: the large generated files (the
-`.parquet` tables and the SQLite database) are not in the repository and are
-rebuilt from the raw CSV in Route B.
-
-**Route B - full local rebuild.** Get the source CSV ([Data setup](#data-setup)),
-create the pinned environment ([Setup](#setup)), then run:
-
-```bash
-python -m job_market rebuild        # about 5 minutes on the author's laptop
-python -m job_market run-notebooks  # re-executes the nine notebooks
-python -m job_market check          # PASS = every output matches this build
-python -m job_market serve          # web app at http://localhost:5000
-```
-
-**Route C - Docker.** After Route B's `rebuild` (or the Docker pipeline
-command), with Docker Desktop running:
-
-```bash
-docker compose up -d --build        # then open http://localhost:8080
-```
-
-The first image build takes about 15 minutes; later starts take under a minute.
-
-See [Docker](#docker) for status, logs, stopping and deployment.
-
-## Tasks 1-8 at a glance
-
-| Task | What the brief asks | Where answered | Main evidence |
-|---|---|---|---|
-| 1 | Correlation between title keywords and offered salaries | Notebook 04 (Task 1); dashboard: title words and hourly offers | `pay_keywords_hourly.csv`, `pay_keywords_budget.csv`, `pay_prediction.csv` |
-| 2 | Emerging job categories from posting frequency | Notebook 03 (categories), Notebook 05 (Task 2); dashboard: emerging and falling categories | `trend_categories.csv`, `trend_keywords.csv`, `label_evaluation_summary.csv` |
-| 3 | Predict high-demand roles: model, accuracy metrics, demand trend visual | Notebook 06; dashboard: forecast and category outlook | `forecast_model_choice.csv`, `forecast_final_evaluation.csv`, `forecast_demand_outlook.csv` |
-| 4 | Hourly rates by country: interactive map or chart | Notebook 04 (Task 4, interactive map); dashboard: country map | `pay_countries.csv`, `pay_country_sensitivity.csv` |
-| 5 | Recommendation engine: working prototype, API documentation, user interface | Notebook 07; web app `/` and the [API](#web-app-task-5) | `recommend_relevance_summary.csv`, `recommend_checks.csv` |
-| 6 | Dashboard that updates monthly with new trends | Web app `/dashboard`; [monthly refresh](#market-dashboard-task-6) | `monthly_market_summary.csv`, `monthly_category_share.csv`, `weekly_market_summary.csv` |
-| 7 | Remote-work trends, with data-backed forecasts | Notebook 05 (Task 7), Notebook 06 (signal forecasts); dashboard: online hiring signals | `remote_series_trends.csv`, `remote_signals_weekly.csv`, `forecast_signals_outlook.csv` |
-| 8 | Predict future job-market trends, with possible scenarios | Notebook 06 (category direction and forecast ranges) | `forecast_demand_outlook.csv`, `forecast_backtest_14d.csv` |
-
-All evidence files are in `data/processed/`. SQL (Notebook 08) independently
-recomputes selected aggregations and evaluation metrics from the row-level
-database and compares them with the Python pipeline.
-
-## Key results
-
-Each number below is checked against the committed output tables by
-`tests/test_readme.py`.
-
-<!-- key-results:start -->
-| Area | Result | Evidence |
-|---|---|---|
-| Data | 244,828 postings cleaned; 229,520 jobs in the reliable 37-day window (16 Feb - 23 Mar 2024) | [Notebook 01](notebooks/01_data_audit_and_cleaning.ipynb) |
-| Task 1: pay words | After adjusting for client country and job category, titles with "consultant" offer about +77% higher hourly rates and "virtual assistant" about -38% | [Notebook 04](notebooks/04_pay_keywords_and_countries.ipynb) |
-| Task 2: emerging categories | 9 job functions change share significantly; Writing & Content falls from 5.8% to 3.7% of postings (-35%) and Digital Marketing gains +1.0 percentage points (+10%) | [Notebook 05](notebooks/05_trends_and_online_hiring.ipynb) |
-| Tasks 3 and 8: forecasts | The weekday-mean model, chosen in advance by backtest, beats the seasonal-naive baseline for 20 of 23 category series in the reserved final week (mean relative MAE 0.84); for total volume the baseline is better | [Notebook 06](notebooks/06_forecasts.ipynb) |
-| Task 4: countries | 91 client countries have at least 30 rated hourly jobs; the United States median offer is $25/h | [Notebook 04](notebooks/04_pay_keywords_and_countries.ipynb) |
-| Job categories | 68.9% agreement with blind human labels (241 of 350 titles; 95% interval 63.8%-73.5%) | [Notebook 03](notebooks/03_job_categories.ipynb) |
-| Task 5: recommender | Hybrid TF-IDF: mean nDCG@5 0.985 and strict Precision@5 0.967 over 12 blind-labelled profiles (keyword baseline nDCG@5 0.953) | [Notebook 07](notebooks/07_job_recommendations.ipynb) |
-| SQL cross-checks | 8 SQL queries reproduce every compared pipeline value (counts exactly, decimals within the 6-decimal rounding of the stored tables) | [Notebook 08](notebooks/08_sql_cross_checks.ipynb) |
-<!-- key-results:end -->
-
 ![Market dashboard: headline tiles per month, weekly volume and category share charts](docs/images/dashboard.png)
 
-## Limitations
+## How the system works
 
-- **Titles only.** The data has no job descriptions or skills lists, so
-  categories, pay words and recommendations all work from short titles.
-- **A short window.** 37 reliable days (16 February - 23 March 2024). Trends
-  are changes within five weeks, and forecasts are short-range (14 days).
-- **Missing hourly rates.** About 27% of hourly jobs state no rate, and some
-  state only one end of a range. Hourly pay results use only jobs with a
-  complete rate range. On the features checked (country, weekday, title
-  words), these jobs look very similar to the rest, with only small
-  differences.
-- **Categories are imperfect.** 68.9% agreement with blind human labels;
-  every category-based result inherits that uncertainty.
-- **Associations, not causes.** A title word that goes with higher pay does
-  not make a job pay more.
-- **Old postings, no live feed.** The jobs are from 2024, so links may now
-  point to closed jobs; the dashboard refreshes when a new extract is added,
-  not automatically.
+```mermaid
+flowchart LR
+    raw["Upwork job postings"] --> clean["Cleaning and<br/>data checks"]
+    clean --> analysis["Job market<br/>analysis"]
+    clean --> recs["Job<br/>recommendations"]
+    analysis --> saved["Saved results"]
+    recs --> saved
+    labels["Human labels"] --> evaluation["Evaluation"]
+    analysis --> evaluation
+    recs --> evaluation
+    evaluation --> evalres["Evaluation results"]
+    saved --> reading["Notebooks and<br/>dashboard"]
+    evalres --> reading
+    saved --> app["Recommendation<br/>app and API"]
+    approval["Method approval"] --> app
+```
 
-## Tools used
+Human labels help write and evaluate the category and work-arrangement rules, and evaluate the job recommendations. Recommendation rankings use job titles, not the human labels. The app serves only a recommendation method with recorded approval.
 
-| Tool | Where it is used |
-|---|---|
-| Python, Pandas | The whole pipeline (`src/job_market/`) and the notebooks |
-| SQL (SQLite) | `sql/`: schema and eight queries that recompute results from row-level data (Notebook 08) |
-| scikit-learn | TF-IDF features, the category classifier (logistic regression), the pay model (ridge regression) and the recommender's TF-IDF matching |
-| Matplotlib | Static charts in the notebooks |
-| Plotly | Interactive country map (Notebook 04) and every dashboard chart, served offline |
-| Flask | Recommendation page, JSON API and dashboard (`src/job_market_web/`) |
-| Docker | Separate Nginx (web server) and Gunicorn + Flask (application server) images, Docker Compose |
+## How to run
 
-TensorFlow is not used: the available data and the project tasks do not
-require a deep-learning model. The lighter scikit-learn and statistical
-methods are easier to validate on the available data, and the hybrid TF-IDF
-recommender performs strongly in the blind relevance evaluation. Seaborn is
-not needed: Matplotlib and Plotly cover every chart.
+### 1. Get the data
 
-## Data setup
-
-The source file is the Upwork job-postings CSV supplied with the assignment:
+The source file is the Upwork CSV supplied with the assignment. It is not stored in this repository.
 
 | Item | Value |
 |---|---|
@@ -137,25 +63,15 @@ The source file is the Upwork job-postings CSV supplied with the assignment:
 | Rows | 244,828 (plus a header row) |
 | SHA-256 | `6513e9a744f15726bdb40d6435a60834e864ace08a75e1d7feb75e10ddb78b11` |
 
-The CSV is not stored in this repository (decision D-011). Download it from
-the dataset link in the assignment brief (`docs/assignment_brief.pdf`):
-https://drive.google.com/file/d/1cytIiowYuhUlvBTuC8npw9qGjMCaTQu_/view?usp=sharing.
-Place it in `data/raw/` without opening or re-saving it. A spreadsheet
-program can change the file's contents.
+Download it from the dataset link in the assignment brief: https://drive.google.com/file/d/1cytIiowYuhUlvBTuC8npw9qGjMCaTQu_/view?usp=sharing. Place it in `data/raw/` without opening or re-saving it, because a spreadsheet program can change the file. On Windows, compare the file with the table above:
 
-On Windows, run
-`certutil -hashfile data\raw\all_upwork_jobs_2024-02-07-2024-03-24.csv SHA256`
-from the project folder. Compare the result with the SHA-256 value in the
-table above.
+```bash
+certutil -hashfile data\raw\all_upwork_jobs_2024-02-07-2024-03-24.csv SHA256
+```
 
-The build records the file hash. The lineage check fails if the file differs
-from the one used for the results.
+### 2. Create the environment
 
-## Setup
-
-The pinned analysis environment of the official build is in `environment.yml`
-(Python 3.11 and exact versions of every package that can change a result).
-From a terminal (Anaconda Prompt on Windows) inside the project folder:
+From a terminal (Anaconda Prompt on Windows) in the project folder:
 
 ```bash
 conda env create -f environment.yml
@@ -163,217 +79,105 @@ conda activate jobmarket
 pip install -e . --no-deps
 ```
 
-`pip install -e .[dev]` also works in any Python 3.10+ environment, with
-compatible (not pinned) versions. Every command still runs and prints a
-WARNING for each version that differs from the pins. Official results come
-from the pinned environment; set `JOB_MARKET_STRICT=1` to turn those
-warnings into errors (continuous integration does this).
+`environment.yml` pins Python 3.11 and every package that can change a result. `pip install -e .[dev]` also works in any Python 3.10+ environment; the commands then print a warning for each version that differs from the pins.
 
-## Build and verify
+### 3. Rebuild and verify
 
 ```bash
-python -m job_market rebuild        # every generated file, from the raw CSV
-python -m pytest                    # automated tests
-python -m job_market run-notebooks  # every notebook, top to bottom, fresh kernel
-python -m job_market check          # lineage check
+python -m job_market rebuild        # every generated file from the raw CSV (about 5 minutes)
+python -m job_market run-notebooks  # runs the nine notebooks in fresh kernels
+python -m job_market check          # every output and notebook matches this build
 ```
 
-`python -m job_market verify` runs the rebuild, the notebooks and the
-lineage check in one command.
+Without the data, the notebooks can still be read on GitHub with their saved outputs, `00` to `08` in order.
 
-| Command | What it proves |
-|---|---|
-| `rebuild` | Every generated file comes from the raw CSV in one run, recorded in `data/processed/run_manifest.json`. |
-| `run-notebooks` | Every notebook runs top to bottom in a fresh kernel. |
-| `check` | Raw data, settings, code and `environment.yml` match the build; every output matches its recorded hash; no stale file exists; every notebook is a clean, error-free, top-to-bottom run of the current build whose first code cell calls `start()`. Environment differences are warnings (errors in strict mode). |
-| `check-notebooks` | The notebook part of `check` only. It needs the committed run manifest but not the raw CSV, so CI can run it. |
-
-Each command exits with code 0 on success and 1 on failure.
-
-## Web app (Task 5)
-
-After a successful `rebuild`, start the recommendation page and JSON API:
+### 4. Web app and API
 
 ```bash
 python -m job_market serve          # then open http://localhost:5000
 ```
 
-Startup takes about 20 seconds (the app verifies the build and builds the
-search index). It uses exactly the code and the evaluated method of
-Notebook 07 (hybrid word + character TF-IDF). Stop it with Ctrl+C.
-
-| Address | Returns |
-|---|---|
-| `/` | the recommendation page |
-| `/api/health` | readiness, build ID, recommender version and method, indexed jobs |
-| `/api/recommend?skills=python, sql&days=14&contract=hourly&min_hourly=30` | the 10 best-matching jobs, the filters applied in words, related market keywords |
-| `/api/recommend?skills=logo design&contract=fixed&min_budget=500` | the same, for fixed-price jobs |
-| `/api/similar/<row_id>?days=14` | the 5 jobs most like one job |
-
-Parameters: `skills` (required, at most 300 characters), `days` (7, 14, 30
-or all; default 14), `contract` (all, hourly or fixed), `min_hourly` (only
-with `contract=hourly`; a job passes when the maximum of the client's stated
-hourly range reaches it), `min_budget` (only with `contract=fixed`). Invalid
-or unknown parameters get a 400 error with a plain message; an unknown job
-ID gets 404.
-
-### Market dashboard (Task 6)
-
-The same app serves the dashboard at `http://localhost:5000/dashboard`:
-headline numbers per observed month, volume and category shares by week and
-month, the tested emerging/falling categories, pay keywords, the country map,
-forecasts and online-hiring signals. The page computes nothing: it draws the
-verified tables of the current build (the `monitor`, `trends`, `pay` and
-`forecast` steps). Charts and the map work without an internet connection.
-
-**Monthly refresh.** When a newer Upwork extract is available:
-
-1. Put the CSV in `data/raw/` and point `raw_csv` in `config/pipeline.toml` to it.
-2. Run `python -m job_market rebuild`, then `python -m job_market run-notebooks`
-   and `python -m job_market check`.
-3. Restart `python -m job_market serve`.
-
-New months and weeks appear automatically; partial months are labelled and
-compared per day and as shares. There is no automatic schedule, because the
-source has no live feed.
-
-## SQL layer
-
-`rebuild` also writes `data/processed/job_market.sqlite` (SQLite, built into
-Python; not committed because it is large and regenerable). It is deleted and
-recreated from `sql/schema.sql` on every build and holds row-level tables:
-jobs, category predictions, human labels and the recommender's ranked results,
-plus a `build_info` table of input fingerprints that `check` compares with the current build. The
-eight queries in `sql/01_*.sql` - `sql/08_*.sql` recompute selected results
-from those rows; Notebook 08 runs them and compares every value with the
-pipeline. To explore the database yourself:
-
-```bash
-python -c "import sqlite3; c = sqlite3.connect('data/processed/job_market.sqlite'); print(c.execute('SELECT COUNT(*) FROM jobs').fetchone())"
-```
-
-## Docker
-
-Two services, each with its own Dockerfile, managed by `docker-compose.yml`:
+The recommendation page is at `/` and the dashboard at `/dashboard`. The API returns JSON, for example:
 
 ```text
-Browser -> http://localhost:8080 -> nginx (web server, docker/nginx)
-                                     -> app: Gunicorn + Flask (application server, docker/app)
-                                          -> data/processed mounted read-only
+http://localhost:5000/api/recommend?skills=python%2C%20sql&contract=hourly&min_hourly=30
 ```
 
-The app image holds code and environment only; Docker builds the Linux
-runtime from the same pinned project environment specification
-(`environment.yml`) used for local development and CI. Only Nginx publishes a
-port. Gunicorn runs one worker with four threads, because each worker process
-would hold its own copy of the large search index. Nginx starts only after
-the app reports healthy at `/api/health` (verifying the build and loading the
-index takes up to a few minutes on first start). The application container
-runs as a non-root user; Nginx uses the standard image, whose master process
-starts as root while the worker processes that handle requests run as the
-unprivileged `nginx` user.
+[`docs/api.md`](docs/api.md) documents every endpoint, parameter, response field and error.
 
-The `config/` folder is mounted read-only in the app and pipeline containers,
-so both use the current project settings and recommender approval file. A
-code change needs a new image (`docker compose build`). Any edit to
-`config/pipeline.toml`, even a comment, makes the build stale, so the outputs
-need a full rebuild.
+### 5. Monthly refresh (Task 6)
 
-Prerequisites: Docker Desktop running, and a finished build in
-`data/processed` (`python -m job_market rebuild`, or the pipeline service
-below).
+The source has no live feed, so the dashboard refreshes when a new extract is added:
+
+1. Put the new CSV in `data/raw/` and point `raw_csv` in `config/pipeline.toml` to it.
+2. Run `rebuild`, `run-notebooks` and `check`.
+3. Restart the app. New months and weeks appear automatically, and partial months are labelled.
+
+### 6. Docker
+
+With Docker Desktop running and a finished build in `data/processed`:
+
+```bash
+docker compose up -d --build        # then open http://localhost:8080
+```
+
+Nginx (web server) passes requests to Gunicorn and Flask (application server), which reads `data/processed` read-only. The first image build takes about 15 minutes.
 
 | Task | Command |
 |---|---|
-| Build both images | `docker compose build` |
-| Start (then open http://localhost:8080) | `docker compose up -d` |
-| Status (app should become `healthy`) | `docker compose ps` |
+| Status (the app should become `healthy`) | `docker compose ps` |
 | Application logs | `docker compose logs -f app` |
-| Stop and remove the containers | `docker compose down` |
-| Rebuild the analytical outputs inside Docker | `docker compose --profile pipeline run --rm pipeline` |
+| Stop | `docker compose down` |
+| Rebuild the outputs inside Docker | `docker compose --profile pipeline run --rm pipeline` |
 
-The `pipeline` service is an on-demand command, not a third application: it
-reuses the app image, reads `data/raw` and `data/labels` read-only and writes
-`data/processed`. It never runs automatically when the website starts.
+## Project structure
 
-**Refresh after a new data extract:** put the CSV in `data/raw/` (and point
-`raw_csv` in `config/pipeline.toml` to it); run
-`docker compose --profile pipeline run --rm pipeline` (or `rebuild` on the
-host); run `python -m job_market run-notebooks` and `python -m job_market check`
-on the host; then `docker compose restart app`. The dashboard shows the new
-months.
-
-**Deploy on a server:** copy the repository and a finished `data/processed`
-folder to a Linux host with Docker, run `docker compose up -d --build`, and
-put the host's HTTPS proxy or firewall in front of port 8080. CI builds both
-images and checks them on every push; it cannot start the app because the
-data is not in the repository.
-
-## Notebooks
-
-| Notebook | What it does |
+| Folder or file | Contents |
 |---|---|
-| `00_build_overview` | Shows which build the notebooks use and the raw file before cleaning |
-| `01_data_audit_and_cleaning` | Audits every column, explains each cleaning rule with its evidence, and validates the master table `jobs_clean.parquet` |
-| `02_exploratory_market_analysis` | Explores market size, pay, geography, time patterns, missing-pay bias and title words before modelling |
-| `03_job_categories` | Gives every job one job-function category (rules + a guarded classifier), tunes it on 150 hand-labelled titles and reports agreement on 350 blind-labelled titles |
-| `04_pay_keywords_and_countries` | Task 1: which title words go with higher or lower pay (raw, same country, same country + category); Task 4: hourly rates offered by client country, with an interactive map |
-| `05_trends_and_online_hiring` | Task 2: which job functions and title words grow or shrink in the 37-day window (weekday-adjusted, with checks); Task 7: client geography, engagement structure and explicit work-arrangement mentions over time |
-| `06_forecasts` | Tasks 3, 8 and 7: 14-day forecasts of job demand by category, category direction (rising, stable or no reliable direction) and online-hiring signals, with backtests, a reserved final week and forecast ranges that are empirical for days 1-7 and extended for days 8-14 |
-| `07_job_recommendations` | Task 5: recommend jobs from a freelancer's skills using the latest available postings (strict pay filters, similar jobs, related market keywords), with a pooled blind relevance evaluation of three matching methods |
-| `08_sql_cross_checks` | SQL: eight queries recompute selected aggregations and evaluation metrics from the row-level SQLite database and match the Python pipeline |
+| `src/job_market/` | Pipeline, analysis steps and quality checks |
+| `src/job_market_web/` | Flask app: recommendation page, API and dashboard |
+| `notebooks/` | Analysis notebooks `00` to `08`, with saved outputs |
+| `data/processed/` | Output tables and the run manifest (the large `.parquet` and SQLite files are rebuilt, not committed) |
+| `data/labels/` | Human label sheets and the records that tie them to the source data |
+| `sql/` | SQLite schema and the eight cross-check queries |
+| `config/` | All settings (`pipeline.toml`) and the recommender approval record |
+| `reports/` | Final report, its figures and the work-arrangement audit |
+| `docs/` | Decision log, labelling guides, API reference and screenshots |
+| `docker/`, `docker-compose.yml` | App and Nginx images |
+| `tests/` | Automated tests |
 
-## Opening notebooks interactively
+The project uses Python, Pandas, SQL (SQLite), scikit-learn, Matplotlib, Plotly, Flask and Docker.
 
-Start JupyterLab from the project environment, so the default kernel is the
-project's Python. From a terminal (Anaconda Prompt on Windows) in the project
-folder:
+## Evaluation and limitations
 
-```bash
-conda activate jobmarket
-jupyter lab --port 8899 --port-retries 0
-```
+<!-- evaluation:start -->
+- **Data:** 244,828 postings are cleaned; 229,520 jobs fall in the reliable 37-day window (16 Feb to 23 Mar 2024).
+- **Job categories:** 68.9% agreement with blind human labels (241 of 350 titles; 95% interval 63.8% to 73.5%).
+- **SQL cross-checks:** 8 SQL queries and 2 extra SQL checks match all 1,358 compared pipeline values.
+<!-- evaluation:end -->
 
-A fixed port (8899) avoids landing in a Jupyter server from another project
-that already uses the default port 8888. Check that the browser address
-starts with `localhost:8899`. To confirm the kernel, run in a scratch
-notebook:
+- **Titles only.** The data has no job descriptions, so categories, pay words and recommendations work from short titles.
+- **A short window.** 37 reliable days give five-week changes and 14-day forecasts, not long-term trends.
+- **Imperfect categories.** Every category-based result carries the uncertainty of the categorisation.
+- **Missing pay.** About 27% of hourly jobs state no rate; hourly results use jobs with a complete rate range.
+- **Associations, not causes.** A title word that goes with higher pay does not make a job pay more.
+- **Forecast ranges.** The ranges reflect past forecast errors only and contain fewer final-week values than the intended 80%.
+- **One labeller.** I assign all human labels myself, so they reflect one person's judgement.
 
-```python
-import sys
-print(sys.executable)   # should point into the jobmarket environment
-```
+The [final report](reports/final_report.md) and the notebooks give the full results and their limits.
 
-Use `scratch.ipynb` (ignored by Git and by the checks) for experiments, so
-the numbered project notebooks stay clean. Stop JupyterLab with Ctrl+C in
-the terminal when finished.
+## Reproducibility
 
-## Project layout
+Each build records SHA-256 fingerprints of the raw data, settings, code, pinned environment, SQL files and recorded label inputs, and a hash of every output file. `check` confirms that all of them match the current build, that the recommender approval fits the implementation and that every notebook is a clean run of this build.
 
-```text
-config/pipeline.toml     every threshold and path, in one place
-data/raw/                source CSV, never modified (not committed)
-data/labels/             human label sheets: category dev and blind labels, recommender relevance labels
-data/interim/            temporary files of the rebuild (not committed)
-data/processed/          generated outputs and the run manifest; the CSV tables and the
-                         manifest are committed, the .parquet tables and the SQLite
-                         database are rebuilt by `python -m job_market rebuild`
-docs/decisions.md        every decision with its plain-English reason
-docs/labelling_guide.md  rules the human labellers followed
-docs/images/             screenshots used in this README
-docs/assignment_brief.pdf
-reports/                 final report (Markdown and PDF), its figures and the scripts that build them
-sql/                     SQLite schema and the eight cross-check queries
-docker/, docker-compose.yml  app (Gunicorn + Flask) and Nginx images, Compose setup
-.github/workflows/ci.yml tests, notebook check and Docker build on every push (pinned runner)
-environment.yml          pinned analysis environment of the official build
-notebooks/               narrative analysis, reading verified pipeline outputs
-src/job_market/          pipeline, analysis steps and quality gates
-src/job_market_web/      Flask app: recommendation page, JSON API and dashboard (presentation only)
-tests/                   automated tests
-```
+The official build is `20261011T132714Z-e537465460`. Two rebuilds from the same inputs produce byte-identical outputs for all 54 analytical output files; only the run manifest differs, because it records the run ID and times. Its nine notebooks run in strict mode (`JOB_MARKET_STRICT=1`) on the pinned environment, and the lineage check passes with 0 errors and 0 warnings. Continuous integration runs the tests, checks the committed notebooks and builds the Docker images on every push.
 
-## Decisions
+| Command | What it confirms |
+|---|---|
+| `rebuild` | Produces every output from the source data, settings and label files in one recorded run |
+| `run-notebooks` | Every notebook runs top to bottom in a fresh kernel |
+| `check` | Inputs, outputs, approval and notebooks all match the build |
+| `check-notebooks` | The notebook part of `check`, without the raw CSV (used by CI) |
+| `verify` | `rebuild`, `run-notebooks` and `check` in one command |
 
-Each analytical decision, with its reason and evidence, is in
-[`docs/decisions.md`](docs/decisions.md).
+Each analytical decision, with its reason and evidence, is in [`docs/decisions.md`](docs/decisions.md).
