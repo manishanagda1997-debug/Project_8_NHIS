@@ -144,13 +144,22 @@ def empirical_ranges(point: np.ndarray, scaled_errors: dict[int, np.ndarray], sc
     recovers the actual value. The ranges are correct only when the errors
     follow these directions. Beyond the backtested horizon H, the horizon-H quantiles are widened by sqrt(h / H) (a fixed
     assumption, stated in the notebook).
+
+    Errors that are not finite (from a series with an undefined seasonal scale)
+    are left out of the quantiles; with no finite error the range is undefined.
+    For additive ranges, a series whose own scale is undefined gets an undefined
+    range.
     """
     tested = max(scaled_errors)
     low, high = np.empty(horizon), np.empty(horizon)
     for h in range(1, horizon + 1):
-        base = scaled_errors[min(h, tested)]
+        base = np.asarray(scaled_errors[min(h, tested)], dtype=float)
+        finite = base[np.isfinite(base)]
         widen = np.sqrt(h / tested) if h > tested else 1.0
-        q_low, q_high = np.quantile(base, [lower, upper]) * widen
+        if finite.size == 0:
+            q_low = q_high = np.nan
+        else:
+            q_low, q_high = np.quantile(finite, [lower, upper]) * widen
         if multiplicative:
             low[h - 1], high[h - 1] = point[h - 1] * (1 + q_low), point[h - 1] * (1 + q_high)
         else:

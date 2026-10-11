@@ -215,3 +215,48 @@ def test_coverage_table_has_every_series_and_pooled_rows():
     assert pooled.loc["signals", "expected"] == FINAL * len(SIGNALS)
     signal_units = table[table["family"] == "signals"].set_index("series")["width_unit"]
     assert signal_units["hhi"] == "index units" and signal_units["hourly_share"] == "percentage points"
+
+
+def pooled_errors(seed=4):
+    rng = np.random.default_rng(seed)
+    return {h: rng.normal(0, 1, 60) for h in range(1, 8)}
+
+
+def test_ranges_without_undefined_errors_are_unchanged():
+    errors = pooled_errors()
+    low, high = empirical_ranges(np.full(14, 100.0), errors, scale=10.0, horizon=14, multiplicative=False)
+    for h in range(1, 15):                                           # the original formula, written out
+        q = np.quantile(errors[min(h, 7)], [0.1, 0.9]) * (np.sqrt(h / 7) if h > 7 else 1.0)
+        assert (low[h - 1], high[h - 1]) == (100.0 + q[0] * 10.0, 100.0 + q[1] * 10.0)
+
+
+def test_a_series_with_undefined_scale_does_not_blank_the_pooled_ranges():
+    # Mixed pool: a second series with an undefined scale adds only NaN errors.
+    clean = pooled_errors()
+    mixed = {h: np.concatenate([e, np.full(20, np.nan)]) for h, e in clean.items()}
+    expected = empirical_ranges(np.full(14, 100.0), clean, scale=10.0, horizon=14, multiplicative=False)
+    got = empirical_ranges(np.full(14, 100.0), mixed, scale=10.0, horizon=14, multiplicative=False)
+    assert np.isfinite(got[0]).all() and np.isfinite(got[1]).all()
+    np.testing.assert_array_equal(got[0], expected[0])
+    np.testing.assert_array_equal(got[1], expected[1])
+    # That series itself (additive range, undefined scale) gets an undefined range.
+    low, high = empirical_ranges(np.full(14, 5.0), mixed, scale=np.nan, horizon=14, multiplicative=False)
+    assert np.isnan(low).all() and np.isnan(high).all()
+
+
+def test_infinite_errors_are_left_out():
+    clean = pooled_errors()
+    with_inf = {h: np.concatenate([e, [np.inf, -np.inf]]) for h, e in clean.items()}
+    expected = empirical_ranges(np.full(14, 100.0), clean, scale=10.0, horizon=14, multiplicative=False)
+    got = empirical_ranges(np.full(14, 100.0), with_inf, scale=10.0, horizon=14, multiplicative=False)
+    np.testing.assert_array_equal(got[0], expected[0])
+    np.testing.assert_array_equal(got[1], expected[1])
+
+
+def test_all_undefined_errors_give_undefined_ranges_without_a_warning():
+    import warnings
+    errors = {h: np.full(30, np.nan) for h in range(1, 8)}
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")                              # any NumPy warning fails the test
+        low, high = empirical_ranges(np.full(14, 100.0), errors, scale=10.0, horizon=14, multiplicative=False)
+    assert np.isnan(low).all() and np.isnan(high).all()
