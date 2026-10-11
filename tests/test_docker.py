@@ -55,6 +55,14 @@ def test_only_nginx_is_published_and_data_is_read_only_for_the_app():
     assert "- ./data/processed:/app/data/processed\n" in pipeline        # the pipeline writes outputs
 
 
+def test_config_is_mounted_read_only_in_app_and_pipeline():
+    # The containers read the current settings and recommender approval, not
+    # the copy made when the image was built.
+    for name in ("app", "pipeline"):
+        assert "- ./config:/app/config:ro" in service_block(name)
+    assert "./config" not in service_block("nginx")
+
+
 def test_nginx_forwards_to_the_app_service():
     assert "server app:8000;" in NGINX_CONF and "proxy_pass http://jobmarket_app;" in NGINX_CONF
 

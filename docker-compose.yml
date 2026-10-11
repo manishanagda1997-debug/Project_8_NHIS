@@ -22,6 +22,7 @@ services:
       - "8000"                       # internal only; Nginx is the single public entry
     volumes:
       - ./data/processed:/app/data/processed:ro
+      - ./config:/app/config:ro      # current settings and recommender approval (read-only)
     healthcheck:
       test: ["CMD", "/opt/conda/bin/python", "-c",
              "import sys, urllib.request; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=5).status == 200 else 1)"]
@@ -55,5 +56,6 @@ services:
     volumes:
       - ./data/raw:/app/data/raw:ro
       - ./data/labels:/app/data/labels:ro
+      - ./config:/app/config:ro
       - ./data/interim:/app/data/interim
       - ./data/processed:/app/data/processed

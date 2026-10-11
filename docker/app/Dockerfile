@@ -29,6 +29,7 @@ RUN micromamba install --yes --name base --file /app/environment.yml \
     && micromamba clean --all --yes
 
 # 2. The project: code, settings and SQL (no data, notebooks or tests; see .dockerignore).
+# docker-compose.yml mounts config/ read-only over this copy at run time.
 COPY --chown=$MAMBA_USER:$MAMBA_USER config /app/config
 COPY --chown=$MAMBA_USER:$MAMBA_USER sql /app/sql
 COPY --chown=$MAMBA_USER:$MAMBA_USER src /app/src

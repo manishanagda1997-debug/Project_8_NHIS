@@ -265,6 +265,12 @@ runs as a non-root user; Nginx uses the standard image, whose master process
 starts as root while the worker processes that handle requests run as the
 unprivileged `nginx` user.
 
+The `config/` folder is mounted read-only in the app and pipeline containers,
+so both use the current project settings and recommender approval file. A
+code change needs a new image (`docker compose build`). Any edit to
+`config/pipeline.toml`, even a comment, makes the build stale, so the outputs
+need a full rebuild.
+
 Prerequisites: Docker Desktop running, and a finished build in
 `data/processed` (`python -m job_market rebuild`, or the pipeline service
 below).
