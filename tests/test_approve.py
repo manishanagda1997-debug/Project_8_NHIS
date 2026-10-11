@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import os
 
 import pandas as pd
 import pytest
@@ -165,3 +166,74 @@ def test_an_unreadable_written_approval_is_removed(mini_project, monkeypatch):
     code, text = run(mini_project)
     assert code == 1 and "was removed" in text
     assert not approval_path(mini_project).exists()
+
+
+def test_failure_to_create_the_file_never_deletes_an_existing_one(mini_project, monkeypatch):
+    historical_build(mini_project)
+
+    def create_then_yes(_prompt):
+        approval_path(mini_project).write_text("someone else", encoding="utf-8")
+        return "yes"
+
+    def refuse(*_args, **_kwargs):
+        raise PermissionError("access denied")
+
+    monkeypatch.setattr(ap, "open", refuse, raising=False)          # creation fails before any file is made
+    lines = []
+    code = ap.approve(mini_project, confirm=create_then_yes, out=lines.append)
+    assert code == 1 and "cannot create" in "\n".join(lines)
+    assert approval_path(mini_project).read_text(encoding="utf-8") == "someone else"
+
+
+def test_a_changed_scope_after_the_summary_stops_the_write(mini_project, monkeypatch):
+    historical_build(mini_project)
+    scopes = iter([{"code_sha256": "1" * 64}, {"code_sha256": "2" * 64}])
+    monkeypatch.setattr(pv, "current_scope", lambda _settings: next(scopes))
+    code, text = run(mini_project)
+    assert code == 1 and "changed after the summary" in text
+    assert not approval_path(mini_project).exists()
+
+
+def test_a_write_failure_after_creation_removes_only_the_new_file(mini_project, monkeypatch):
+    historical_build(mini_project)
+    real_open = open
+
+    class FailingWrite:
+        def __init__(self, handle):
+            self.handle = handle
+
+        def fileno(self):
+            return self.handle.fileno()
+
+        def write(self, _text):
+            self.handle.write("partial")
+            self.handle.flush()
+            raise OSError("disk full")
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *exc):
+            self.handle.close()
+            return False
+
+    monkeypatch.setattr(ap, "open", lambda *a, **k: FailingWrite(real_open(*a, **k)), raising=False)
+    code, text = run(mini_project)
+    assert code == 1 and "writing the approval failed and the new file was removed" in text
+    assert not approval_path(mini_project).exists()                 # no partial file is left behind
+
+
+def test_a_replaced_file_is_not_removed_after_a_failed_read_back(mini_project, monkeypatch):
+    historical_build(mini_project)
+
+    def replace_then_fail(settings):
+        target = settings.root / pv.APPROVAL_FILE
+        other = target.with_name("other.toml")
+        other.write_text("someone else", encoding="utf-8")
+        os.replace(other, target)                                    # a different file now stands at the path
+        raise pv.ApprovalError("cannot read")
+
+    monkeypatch.setattr(pv, "load_approval", replace_then_fail)
+    code, text = run(mini_project)
+    assert code == 1 and "left in place because another file now stands at that path" in text
+    assert approval_path(mini_project).read_text(encoding="utf-8") == "someone else"

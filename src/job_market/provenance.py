@@ -223,8 +223,9 @@ def approval_text(settings: Settings, method: str, evidence: dict[str, str]) -> 
 def write_approval(settings: Settings, method: str, evidence: dict[str, str]) -> Path:
     """Write the approval record for ``method`` against the current implementation.
 
-    A deliberate act by a person, after reviewing the evidence. The
-    ``approve-recommender`` command adds the checks and never overwrites.
+    A deliberate act by a person, after reviewing the evidence. This function
+    replaces an existing file; ``python -m job_market approve-recommender``
+    (``approve.py``) is the checked route and never replaces an approval.
     """
     path = settings.root / APPROVAL_FILE
     path.write_text(approval_text(settings, method, evidence), encoding="utf-8", newline="\n")

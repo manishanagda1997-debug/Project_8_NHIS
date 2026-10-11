@@ -21,6 +21,7 @@ again if anything fails. Any other answer writes nothing.
 
 from __future__ import annotations
 
+import os
 from typing import Any, Callable
 
 import pandas as pd
@@ -130,6 +131,7 @@ def prepare(settings: Settings) -> dict[str, Any]:
         ("label sources", labels_dir / provenance.LABEL_SOURCES_FILE),
         ("historical record", labels_dir / provenance.HISTORICAL_RANKINGS_FILE), ("historical rankings", rankings_path))}
     return {"method": winner, "current_build": manifest["run_id"], "evidence": evidence, "snapshot": snapshot,
+            "scope": provenance.current_scope(settings),
             "ndcg_at_5": metrics.get("recommend_winner_ndcg_at_5"), "rows": len(items)}
 
 
@@ -151,24 +153,53 @@ def summary(prepared: dict[str, Any]) -> list[str]:
 
 
 def write_exclusive(settings: Settings, method: str, evidence: dict[str, str]):
-    """Create the approval file without ever replacing one, then read it back; remove it if anything fails."""
+    """Create the approval file without ever replacing one, then read it back.
+
+    Cleanup removes only the file this call created, recognised by its device
+    and file number, and reports what it did.
+    """
     path = settings.root / provenance.APPROVAL_FILE
     text = provenance.approval_text(settings, method, evidence)
     try:
-        with open(path, "x", encoding="utf-8", newline="\n") as handle:
-            handle.write(text)
+        handle = open(path, "x", encoding="utf-8", newline="\n")     # exclusive: fails if any file exists
     except FileExistsError as error:
         raise ApproveError(f"{provenance.APPROVAL_FILE.as_posix()} already exists; it is never replaced") from error
-    except OSError:
-        path.unlink(missing_ok=True)
-        raise
+    except OSError as error:                                            # nothing was created: nothing to remove
+        raise ApproveError(f"cannot create {provenance.APPROVAL_FILE.as_posix()}: {error}") from error
+
+    # The identity of the file this call created (device and file number), taken from the open handle.
+    created = os.fstat(handle.fileno())
+
+    def remove_own_file() -> str:
+        """Remove the file only while it is still the one this call created; say what happened.
+
+        Plain Python cannot delete "by handle", so a replacement in the instant
+        between this check and the removal cannot be ruled out completely.
+        """
+        try:
+            now = os.stat(path)
+            if (now.st_dev, now.st_ino) != (created.st_dev, created.st_ino):
+                return "was left in place because another file now stands at that path"
+            path.unlink()
+            return "was removed"
+        except FileNotFoundError:
+            return "is already gone"
+        except OSError as error:
+            return f"could not be removed ({error}); delete it by hand"
+
+    try:
+        with handle:
+            handle.write(text)
+    except OSError as error:
+        outcome = remove_own_file()
+        raise ApproveError(f"writing the approval failed and the new file {outcome}: {error}") from error
     try:
         loaded = provenance.load_approval(settings)
         if loaded is None or loaded["approved_method"] != method:
             raise ApproveError("the written approval could not be read back")
     except (provenance.ApprovalError, ApproveError) as error:
-        path.unlink(missing_ok=True)
-        raise ApproveError(f"the written approval is not valid and was removed: {error}") from error
+        outcome = remove_own_file()
+        raise ApproveError(f"the written approval is not valid and the new file {outcome}: {error}") from error
     return path
 
 
@@ -186,7 +217,7 @@ def approve(settings: Settings, confirm: Callable[[str], str] = input, out: Call
             out("Cancelled. Nothing was written.")
             return 1
         again = prepare(settings)                       # nothing may change between the summary and the write
-        if again["snapshot"] != prepared["snapshot"] or again["evidence"] != prepared["evidence"]:
+        if any(again[key] != prepared[key] for key in ("method", "current_build", "evidence", "snapshot", "scope")):
             raise ApproveError("the build or the evidence changed after the summary; nothing was written")
         path = write_exclusive(settings, prepared["method"], prepared["evidence"])
     except ApproveError as error:
