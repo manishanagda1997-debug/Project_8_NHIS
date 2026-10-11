@@ -413,6 +413,9 @@ def outlook_rows(data: DashboardData) -> list[dict]:
             for r in table.itertuples()]
 
 
+FLIPPED = {"rising": "falling", "falling": "rising"}
+
+
 def signal_rows(data: DashboardData) -> list[dict]:
     table = data.get("forecast_signals_outlook.csv")
     if table is None:
@@ -423,8 +426,11 @@ def signal_rows(data: DashboardData) -> list[dict]:
     for r in table.itertuples():
         label, is_share = names.get(r.series, (r.series, True))
         fmt = (lambda v: f"{100 * v:.1f}%") if is_share else (lambda v: f"{1 / v:.2f}")
+        direction = str(r.direction)
+        if r.series == "hhi":          # shown as 1 / HHI: a rising concentration means fewer effective countries
+            direction = FLIPPED.get(direction, direction)
         rows.append({"signal": label, "recent": fmt(r.recent_value), "forecast": fmt(r.forecast_1_14),
-                     "direction": str(r.direction).capitalize()})
+                     "direction": direction.capitalize()})
     return rows
 
 

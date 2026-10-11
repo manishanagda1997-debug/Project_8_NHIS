@@ -13,7 +13,9 @@ pytest.importorskip("flask")
 from job_market.pipeline import run_pipeline  # noqa: E402
 from job_market_web import create_app  # noqa: E402
 from job_market_web.build import checked_manifest  # noqa: E402
-from job_market_web.dashboard import DashboardData, clean_json, context, headline_tiles, load_dashboard  # noqa: E402
+from job_market_web.dashboard import (  # noqa: E402
+    DashboardData, clean_json, context, headline_tiles, load_dashboard, signal_rows,
+)
 from job_market_web.service import RecommenderService  # noqa: E402
 
 TITLES = ["WordPress website developer", "Logo design for startup", "Python data analyst", "Video editor for YouTube",
@@ -150,3 +152,14 @@ def test_blind_agreement_is_hidden_when_not_scored_or_the_row_is_missing():
     for status, rows in (("labels belong to another extract: x", ROWS), (None, ROWS), ("scored", ROWS[1:])):
         page = blind_page(status, rows)
         assert UNAVAILABLE in page and "sampled titles" not in page and "68.9" not in page
+
+
+def test_effective_countries_direction_is_the_reverse_of_the_hhi_direction():
+    # The row shows 1 / HHI, so the HHI's rising and falling swap; the other labels stay.
+    cases = [("hhi", "rising", "Falling"), ("hhi", "falling", "Rising"), ("hhi", "stable", "Stable"),
+             ("hhi", "no reliable direction", "No reliable direction"), ("hourly_share", "rising", "Rising")]
+    for series, direction, shown in cases:
+        table = pd.DataFrame({"series": [series], "recent_value": [0.2], "forecast_1_14": [0.25],
+                              "direction": [direction]})
+        rows = signal_rows(DashboardData(build_id="x", tables={"forecast_signals_outlook.csv": table}))
+        assert rows[0]["direction"] == shown
