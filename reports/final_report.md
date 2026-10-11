@@ -81,7 +81,7 @@ The forecasts expect all three signals to stay about where they are over the nex
 **Task 8: What does the near future look like?**
 
 - **Central outlook:** about 6,100 jobs a day in the next week.
-- **80% empirical range:** the first-week range is about 5,930 to 6,310 jobs a day, based on the forecast errors from backtesting.
+- **80% empirical range:** the first-week range is about 5,930 to 6,300 jobs a day, based on the forecast errors from backtesting.
 - **Trend-continuation scenario:** a modest continuing rise is supported for Digital Marketing, Video, Design and, marginally, Business & Project Management. For major Task 2 movers such as Writing and AI & ML, the trend model does not beat the baseline, so the outlook is "no reliable direction".
 
 The trend-continuation result is an alternative scenario, not the selected forecast. The full forecast horizon is 14 days, and uncertainty is wider in the second week.
@@ -111,7 +111,7 @@ Each number in this table is checked against the committed result tables by `tes
 | Task 5: candidate pool | 82,565 jobs in the 14-day pool after keeping the newest posting of each possible-repost chain | Notebook 07 |
 | Task 6: dashboard | Weekday-standardised volume 6,348 jobs a day in Feb 2024 and 6,171 in Mar 2024 (-2.8%) | Dashboard |
 | Task 7: online hiring | Hourly share falls from 58.3% to 56.1% over the window | Notebook 05 |
-| Task 8: outlook | Central outlook about 6,100 jobs a day; 80% empirical range 5,930-6,310 for days 1-7 | Notebook 06 |
+| Task 8: outlook | Central outlook about 6,100 jobs a day; 80% empirical range 5,930-6,300 for days 1-7 | Notebook 06 |
 | Job categories | 68.9% agreement with blind human labels (241 of 350 titles) | Notebook 03 |
 | SQL cross-checks | 8 SQL queries reproduce every compared pipeline value | Notebook 08 |
 <!-- key-numbers:end -->
