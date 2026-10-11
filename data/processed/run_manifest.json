@@ -1,5 +1,36 @@
 {
   "config": {
+    "arrangement": {
+      "candidate_patterns": [
+        "anywhere|work from anywhere",
+        "home based|from home|at home",
+        "in office|office based|in the office",
+        "relocate|relocation",
+        "days a week|days per week",
+        "local to|located in|based in|must live|must reside",
+        "gmt \\d+|utc \\d+",
+        "overlap|night shift|day shift|us time|uk time|eastern time|pacific time|central time|australian time"
+      ],
+      "dev_candidates": 40,
+      "dev_on_site": 40,
+      "dev_remote_home": 60,
+      "dev_time_zone": 40,
+      "dev_unmatched": 40,
+      "development_share": 0.4,
+      "eval_s2": 100,
+      "eval_s4": 40,
+      "eval_s5": 60,
+      "eval_seed": 20261009,
+      "hybrid_audit_pattern": "hybrid",
+      "pilot_titles": 30,
+      "quarantine_file": "data/labels/arrangement_eval_quarantine.csv",
+      "quarantine_sha256": "e2f6c5c5504286a98e2eb7553b8dc24df719be4f8d1506d1ff4f3d8b88ae6df8",
+      "rules_fingerprint": "0e9a15c656088e92d88d659f7cc5b2a4a7bb4c10a49ca042b62a4dbc08f79d14",
+      "rules_version": "1.0",
+      "seed": 20261007,
+      "simulation_draws": 100000,
+      "simulation_seed": 20261010
+    },
     "categorize": {
       "categorizer_version": "1.0",
       "classifier_c": 4.0,
@@ -58,6 +89,7 @@
       "dev_joined_titles": 20,
       "dev_random": 110,
       "dev_short_titles": 20,
+      "historical_source_sha256": "6513e9a744f15726bdb40d6435a60834e864ace08a75e1d7feb75e10ddb78b11",
       "seed": 20261003
     },
     "paths": {
@@ -359,10 +391,17 @@
     "proxy_title_keys_shared_with_training": 0,
     "raw_columns": 8,
     "raw_rows": 244828,
+    "recommend_approval_ref": "1570666f51a563e3240102b12a1968b3ad41c5c80ff67aa941d63b4eaf3755c1",
+    "recommend_approval_status": "approved",
     "recommend_filter_violations": 0,
+    "recommend_historical_rankings": "identical to build 20261005T122621Z-90e95d23f3",
     "recommend_indexed_jobs": 229520,
+    "recommend_method_status": "chosen by the relevance test on this data",
     "recommend_pool_jobs": 82565,
+    "recommend_related_status": "generated with tfidf_hybrid",
+    "recommend_served_method": "tfidf_hybrid",
     "recommend_winner": "tfidf_hybrid",
+    "recommend_winner_mismatch": false,
     "recommend_winner_ndcg_at_5": 0.9846,
     "recommend_winner_reason": "nDCG@5 effectively tied; highest strict Precision@5",
     "recommend_zero_result_cases": 0,
@@ -387,7 +426,7 @@
     "window_jobs": 229520
   },
   "environment": {
-    "executable": "python",
+    "executable": "python.exe",
     "implementation": "CPython",
     "packages": {
       "flask": "3.0.3",
@@ -406,7 +445,7 @@
       "scipy": "1.14.1"
     },
     "pins_file": "environment.yml",
-    "platform": "Linux-6.18.33.2-microsoft-standard-WSL2-x86_64-with-glibc2.36",
+    "platform": "Windows-10-10.0.26200-SP0",
     "python": "3.11.16"
   },
   "environment_matches_pins": true,
@@ -520,9 +559,10 @@
     "2024-03-24"
   ],
   "fingerprints": {
-    "code_sha256": "db2e777a74536baad42f4c968342fe6874ab97b5a749ee3af60beb1dae9fa063",
-    "config_sha256": "8a4708189feab82d6754a718cc89406495cdd8654c2c927c910e329d036fa24f",
+    "code_sha256": "2d9ca399b8efda43f82fe72267dfe73802feafbe3642c9042e542156af9cb2bf",
+    "config_sha256": "8f6ef339a0af8323a48c70108969ccbe398b8b81871f153137e61cd5c6c326ab",
     "environment_sha256": "16395497efe48498ffe44d037ec2020318fdbc12dca3fd624ff97cdb6db099ce",
+    "labels_sha256": "bae40ce5a7629948355dcb0fb38432aa890df2c4131f4c02ec214a10963af2a2",
     "source_sha256": "6513e9a744f15726bdb40d6435a60834e864ace08a75e1d7feb75e10ddb78b11",
     "sql_sha256": "fa0482c4817833d1654a25e7068d93bf261d49ed3a03ae2b40fa5066adb20396"
   },
@@ -541,10 +581,10 @@
       "sha256": "e0b856e875048ac0468bdd7783028da2603718923cb6c9b2f3439acea5746d43"
     },
     {
-      "bytes": 38798999,
+      "bytes": 38859219,
       "path": "data/processed/jobs_clean.parquet",
       "rows": 244828,
-      "sha256": "d9e3af84f2a7c4a69c6e0f26d02df3f72c4e087b9e3c1ee636940094c6bf10cb"
+      "sha256": "f0302e02f4dda4a3119b969b0653efb2a9ff40c9ed54373265d5326fd10f98d7"
     },
     {
       "bytes": 2784,
@@ -571,10 +611,10 @@
       "sha256": "f94c6171261976f7014fa8dd56d665fa907a4ecd72af58664ec1d6dd19d3a900"
     },
     {
-      "bytes": 4873890,
+      "bytes": 4854627,
       "path": "data/processed/job_categories.parquet",
       "rows": 244828,
-      "sha256": "93c5ca18201898c372a37380042b0faff7b0e0ea8a55bbf2df3b2c1ea3c28a9d"
+      "sha256": "afd1cfdab99558612df25fbe4b55a50ce1a4d3d64e70af79a4326b7f3e07292f"
     },
     {
       "bytes": 1721,
@@ -600,10 +640,10 @@
       "sha256": "a1302994d11854a7fb2fe2e12714af445c842c84d798bcbae4ea1b46ccfa51ed"
     },
     {
-      "bytes": 94709,
+      "bytes": 94697,
       "path": "data/processed/label_evaluation_items.csv",
       "rows": 500,
-      "sha256": "4c96f36d7c1e7f5c274bffa941a78fc70f7cbe490bd1cff52464480503110663"
+      "sha256": "2882289b5a09320014bdb037368159ff1fb04498cd6ba15b2abfcde0bb01d727"
     },
     {
       "bytes": 695,
@@ -642,22 +682,22 @@
       "sha256": "363bf3eed63c2bebc0db278dcf58cb2c257ae436f052c897c29f0efd5dad6e48"
     },
     {
-      "bytes": 7100,
+      "bytes": 9857,
       "path": "data/processed/pay_countries.csv",
       "rows": 91,
-      "sha256": "f8f22ff1d872f1ff5616980eb8a82bea7ef6e51389150e49b5ecc2ebd6a4a46d"
+      "sha256": "dbfdbe3b089b9686f3c4f85286e678432b7e1591f2930cf9256f74d340f1fa85"
     },
     {
-      "bytes": 16131,
+      "bytes": 20538,
       "path": "data/processed/pay_country_sensitivity.csv",
       "rows": 455,
-      "sha256": "2d449359c3e74094d2d37dd724cdb24d28506bd5f96790712055e483456c7b01"
+      "sha256": "0894800c1ef01d665651aea58f17ee22889653985629617f7647e471153e3aa2"
     },
     {
       "bytes": 349,
       "path": "data/processed/pay_prediction.csv",
       "rows": 4,
-      "sha256": "204d763d29b6eddf7a4e5965dc50bfed9015bae5be3633ea867e80ddb6a0fb00"
+      "sha256": "44488f725673fa57444a8cb1ef350d188be99104acb939d8a9f5ca40c676606c"
     },
     {
       "bytes": 36388,
@@ -708,10 +748,10 @@
       "sha256": "7afd199c298a8d580a8607c8cb04e92a5fc8876f21fcb09f53ff983cb71dcd62"
     },
     {
-      "bytes": 3939,
+      "bytes": 3140,
       "path": "data/processed/remote_signals_weekly.csv",
-      "rows": 48,
-      "sha256": "89eb8622a31c6ac83f22a0ae22ad5c2f956aae64ebbf687b10391519fdaa6e1b"
+      "rows": 36,
+      "sha256": "bbfbfc0a1a03bb3f91b8aa2fc9ffeacab00b8860e22c44989b187f48b048fdc4"
     },
     {
       "bytes": 521,
@@ -744,22 +784,28 @@
       "sha256": "10625133760a0a8513370edb5fd050b46343064fc063ec57b6e35b1561dfbdc7"
     },
     {
-      "bytes": 23684,
+      "bytes": 2772,
+      "path": "data/processed/forecast_final_coverage.csv",
+      "rows": 29,
+      "sha256": "bc30c41072f69a98b4b8a43d6c14297167c45b16310f441e84bd23a34e66dd47"
+    },
+    {
+      "bytes": 23650,
       "path": "data/processed/forecast_demand_daily.csv",
       "rows": 336,
-      "sha256": "622b5053678383db2ef7956f61aad62456ee01447ac8e261773531061f487632"
+      "sha256": "50ee1349ae1049f531e37407f91cc4262cb315689f373ac4c92be12625af5422"
     },
     {
-      "bytes": 4405,
+      "bytes": 4402,
       "path": "data/processed/forecast_demand_outlook.csv",
       "rows": 24,
-      "sha256": "73f2fd30bdaeebbf60e737ddd598a88625238a1fe1514caffd540fe277cc0bb5"
+      "sha256": "a43e6d88fcc8566a2ea254fdc78bf6f981e7690abe18694df4fb55446ead5314"
     },
     {
-      "bytes": 2243,
+      "bytes": 2241,
       "path": "data/processed/forecast_signals_daily.csv",
       "rows": 42,
-      "sha256": "995fde05d9f04eb753e00e01b1cde13b57cc6db965036427227ecbe161668efb"
+      "sha256": "1334772e351c121991cdce8b9341df5455b24d9efbef4e3243206cfacca5721d"
     },
     {
       "bytes": 372,
@@ -768,10 +814,10 @@
       "sha256": "ee5b2694cfac4e9910821b86f4352b7f6f14dff66b6d767aa8bde9dc1ae6e01d"
     },
     {
-      "bytes": 27298557,
+      "bytes": 27337700,
       "path": "data/processed/recommend_jobs.parquet",
       "rows": 229520,
-      "sha256": "72f7d4a9465d2d3ab0e68fa2e4279e3fee734907f73f83158d8406b6a35ec72c"
+      "sha256": "8e04beaeba27bde7d08b8202331983406b910c8ebdf78bd1303b937d55007003"
     },
     {
       "bytes": 9340,
@@ -843,13 +889,13 @@
       "bytes": 58388480,
       "path": "data/processed/job_market.sqlite",
       "rows": 244828,
-      "sha256": "7373dc81c0a9412ca27f0b1e077bdb885bcf541093ac0eb7a5cc60b425badb6a"
+      "sha256": "c3159630baa0db9b4781c1ffe530d70ee26b9ebd66fd2541cee31a789d93b40c"
     }
   ],
   "project_version": "1.0.0",
-  "run_finished_utc": "2026-10-05T12:38:51Z",
-  "run_id": "20261005T122621Z-90e95d23f3",
-  "run_started_utc": "2026-10-05T12:26:21Z",
+  "run_finished_utc": "2026-10-11T13:32:39Z",
+  "run_id": "20261011T132714Z-e537465460",
+  "run_started_utc": "2026-10-11T13:27:14Z",
   "source": {
     "bytes": 50577682,
     "columns": [
@@ -900,7 +946,7 @@
           "sha256": "e0b856e875048ac0468bdd7783028da2603718923cb6c9b2f3439acea5746d43"
         }
       ],
-      "seconds": 5.341
+      "seconds": 4.744
     },
     {
       "description": "Clean titles, add time, pay, quality, repeat and eligibility columns; keep every raw row.",
@@ -916,10 +962,10 @@
       "name": "clean",
       "outputs": [
         {
-          "bytes": 38798999,
+          "bytes": 38859219,
           "path": "data/processed/jobs_clean.parquet",
           "rows": 244828,
-          "sha256": "d9e3af84f2a7c4a69c6e0f26d02df3f72c4e087b9e3c1ee636940094c6bf10cb"
+          "sha256": "f0302e02f4dda4a3119b969b0653efb2a9ff40c9ed54373265d5326fd10f98d7"
         },
         {
           "bytes": 2784,
@@ -946,7 +992,7 @@
           "sha256": "f94c6171261976f7014fa8dd56d665fa907a4ecd72af58664ec1d6dd19d3a900"
         }
       ],
-      "seconds": 13.201
+      "seconds": 7.955
     },
     {
       "description": "Give every job one job-function category: keyword rules first, a TF-IDF classifier for the rest.",
@@ -978,10 +1024,10 @@
       "name": "categorize",
       "outputs": [
         {
-          "bytes": 4873890,
+          "bytes": 4854627,
           "path": "data/processed/job_categories.parquet",
           "rows": 244828,
-          "sha256": "93c5ca18201898c372a37380042b0faff7b0e0ea8a55bbf2df3b2c1ea3c28a9d"
+          "sha256": "afd1cfdab99558612df25fbe4b55a50ce1a4d3d64e70af79a4326b7f3e07292f"
         },
         {
           "bytes": 1721,
@@ -1007,7 +1053,7 @@
           "sha256": "a1302994d11854a7fb2fe2e12714af445c842c84d798bcbae4ea1b46ccfa51ed"
         }
       ],
-      "seconds": 165.769
+      "seconds": 141.628
     },
     {
       "description": "Score the job categories against the development and blind human labels.",
@@ -1022,10 +1068,10 @@
       "name": "evaluate",
       "outputs": [
         {
-          "bytes": 94709,
+          "bytes": 94697,
           "path": "data/processed/label_evaluation_items.csv",
           "rows": 500,
-          "sha256": "4c96f36d7c1e7f5c274bffa941a78fc70f7cbe490bd1cff52464480503110663"
+          "sha256": "2882289b5a09320014bdb037368159ff1fb04498cd6ba15b2abfcde0bb01d727"
         },
         {
           "bytes": 695,
@@ -1046,7 +1092,7 @@
           "sha256": "6480da504e9a9b3791288f15a9cda3410226ab897fd35b6c358ca15cfe04bd77"
         }
       ],
-      "seconds": 1.052
+      "seconds": 1.21
     },
     {
       "description": "Keyword-pay associations (Task 1) and client-country hourly rates (Task 4).",
@@ -1078,25 +1124,25 @@
           "sha256": "363bf3eed63c2bebc0db278dcf58cb2c257ae436f052c897c29f0efd5dad6e48"
         },
         {
-          "bytes": 7100,
+          "bytes": 9857,
           "path": "data/processed/pay_countries.csv",
           "rows": 91,
-          "sha256": "f8f22ff1d872f1ff5616980eb8a82bea7ef6e51389150e49b5ecc2ebd6a4a46d"
+          "sha256": "dbfdbe3b089b9686f3c4f85286e678432b7e1591f2930cf9256f74d340f1fa85"
         },
         {
-          "bytes": 16131,
+          "bytes": 20538,
           "path": "data/processed/pay_country_sensitivity.csv",
           "rows": 455,
-          "sha256": "2d449359c3e74094d2d37dd724cdb24d28506bd5f96790712055e483456c7b01"
+          "sha256": "0894800c1ef01d665651aea58f17ee22889653985629617f7647e471153e3aa2"
         },
         {
           "bytes": 349,
           "path": "data/processed/pay_prediction.csv",
           "rows": 4,
-          "sha256": "204d763d29b6eddf7a4e5965dc50bfed9015bae5be3633ea867e80ddb6a0fb00"
+          "sha256": "44488f725673fa57444a8cb1ef350d188be99104acb939d8a9f5ca40c676606c"
         }
       ],
-      "seconds": 92.016
+      "seconds": 60.715
     },
     {
       "description": "Emerging categories and keywords (Task 2); geography, engagement and work-arrangement signals (Task 7).",
@@ -1156,10 +1202,10 @@
           "sha256": "7afd199c298a8d580a8607c8cb04e92a5fc8876f21fcb09f53ff983cb71dcd62"
         },
         {
-          "bytes": 3939,
+          "bytes": 3140,
           "path": "data/processed/remote_signals_weekly.csv",
-          "rows": 48,
-          "sha256": "89eb8622a31c6ac83f22a0ae22ad5c2f956aae64ebbf687b10391519fdaa6e1b"
+          "rows": 36,
+          "sha256": "bbfbfc0a1a03bb3f91b8aa2fc9ffeacab00b8860e22c44989b187f48b048fdc4"
         },
         {
           "bytes": 521,
@@ -1168,7 +1214,7 @@
           "sha256": "bd6c801ddeae6f1182d9367d0d7f5ccfc85318d08741a8676ea43bc79e5c2a99"
         }
       ],
-      "seconds": 30.973
+      "seconds": 30.207
     },
     {
       "description": "Short-horizon demand forecasts (Tasks 3, 8) and online-hiring signal forecasts (Task 7).",
@@ -1207,22 +1253,28 @@
           "sha256": "10625133760a0a8513370edb5fd050b46343064fc063ec57b6e35b1561dfbdc7"
         },
         {
-          "bytes": 23684,
+          "bytes": 2772,
+          "path": "data/processed/forecast_final_coverage.csv",
+          "rows": 29,
+          "sha256": "bc30c41072f69a98b4b8a43d6c14297167c45b16310f441e84bd23a34e66dd47"
+        },
+        {
+          "bytes": 23650,
           "path": "data/processed/forecast_demand_daily.csv",
           "rows": 336,
-          "sha256": "622b5053678383db2ef7956f61aad62456ee01447ac8e261773531061f487632"
+          "sha256": "50ee1349ae1049f531e37407f91cc4262cb315689f373ac4c92be12625af5422"
         },
         {
-          "bytes": 4405,
+          "bytes": 4402,
           "path": "data/processed/forecast_demand_outlook.csv",
           "rows": 24,
-          "sha256": "73f2fd30bdaeebbf60e737ddd598a88625238a1fe1514caffd540fe277cc0bb5"
+          "sha256": "a43e6d88fcc8566a2ea254fdc78bf6f981e7690abe18694df4fb55446ead5314"
         },
         {
-          "bytes": 2243,
+          "bytes": 2241,
           "path": "data/processed/forecast_signals_daily.csv",
           "rows": 42,
-          "sha256": "995fde05d9f04eb753e00e01b1cde13b57cc6db965036427227ecbe161668efb"
+          "sha256": "1334772e351c121991cdce8b9341df5455b24d9efbef4e3243206cfacca5721d"
         },
         {
           "bytes": 372,
@@ -1231,15 +1283,22 @@
           "sha256": "ee5b2694cfac4e9910821b86f4352b7f6f14dff66b6d767aa8bde9dc1ae6e01d"
         }
       ],
-      "seconds": 2.01
+      "seconds": 1.496
     },
     {
       "description": "Job recommendations: index, label-free checks and the blind relevance evaluation (Task 5).",
       "metrics": {
+        "recommend_approval_ref": "1570666f51a563e3240102b12a1968b3ad41c5c80ff67aa941d63b4eaf3755c1",
+        "recommend_approval_status": "approved",
         "recommend_filter_violations": 0,
+        "recommend_historical_rankings": "identical to build 20261005T122621Z-90e95d23f3",
         "recommend_indexed_jobs": 229520,
+        "recommend_method_status": "chosen by the relevance test on this data",
         "recommend_pool_jobs": 82565,
+        "recommend_related_status": "generated with tfidf_hybrid",
+        "recommend_served_method": "tfidf_hybrid",
         "recommend_winner": "tfidf_hybrid",
+        "recommend_winner_mismatch": false,
         "recommend_winner_ndcg_at_5": 0.9846,
         "recommend_winner_reason": "nDCG@5 effectively tied; highest strict Precision@5",
         "recommend_zero_result_cases": 0,
@@ -1250,10 +1309,10 @@
       "name": "recommend",
       "outputs": [
         {
-          "bytes": 27298557,
+          "bytes": 27337700,
           "path": "data/processed/recommend_jobs.parquet",
           "rows": 229520,
-          "sha256": "72f7d4a9465d2d3ab0e68fa2e4279e3fee734907f73f83158d8406b6a35ec72c"
+          "sha256": "8e04beaeba27bde7d08b8202331983406b910c8ebdf78bd1303b937d55007003"
         },
         {
           "bytes": 9340,
@@ -1292,7 +1351,7 @@
           "sha256": "fbbb8aeffbf71f598bee55c09b92897808df30bc7a82f86bfd7cc62d9571022e"
         }
       ],
-      "seconds": 81.063
+      "seconds": 60.891
     },
     {
       "description": "Monthly and weekly market tables for the dashboard (Task 6).",
@@ -1335,7 +1394,7 @@
           "sha256": "2660dc97502c5dc2187957a9c837960e43400bd10ea1775bcc2aba54ed99ccbd"
         }
       ],
-      "seconds": 2.41
+      "seconds": 2.39
     },
     {
       "description": "SQLite database of row-level tables for the SQL cross-checks.",
@@ -1353,10 +1412,10 @@
           "bytes": 58388480,
           "path": "data/processed/job_market.sqlite",
           "rows": 244828,
-          "sha256": "7373dc81c0a9412ca27f0b1e077bdb885bcf541093ac0eb7a5cc60b425badb6a"
+          "sha256": "c3159630baa0db9b4781c1ffe530d70ee26b9ebd66fd2541cee31a789d93b40c"
         }
       ],
-      "seconds": 354.276
+      "seconds": 12.787
     }
   ],
   "taxonomy_version": "1.0"

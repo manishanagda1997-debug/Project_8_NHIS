@@ -1,0 +1,30 @@
+family,model,series,expected,valid,undefined,inside,coverage,mean_width,width_unit,mean_width_in_unit,relative_width
+demand,weekday_mean,total,7,7,0,7,1.0,438.602754,jobs per day,438.602754,0.072093
+demand,weekday_mean,web_development,7,7,0,6,0.857143,109.522262,jobs per day,109.522262,0.121788
+demand,weekday_mean,mobile_development,7,7,0,5,0.714286,41.096534,jobs per day,41.096534,0.252791
+demand,weekday_mean,software_it,7,7,0,5,0.714286,64.418816,jobs per day,64.418816,0.137647
+demand,weekday_mean,ai_ml,7,7,0,3,0.428571,17.774251,jobs per day,17.774251,0.193198
+demand,weekday_mean,data_analytics,7,7,0,2,0.285714,26.096299,jobs per day,26.096299,0.17201
+demand,weekday_mean,design_creative,7,7,0,6,0.857143,104.282454,jobs per day,104.282454,0.145966
+demand,weekday_mean,video_animation,7,7,0,4,0.571429,66.98735,jobs per day,66.98735,0.162816
+demand,weekday_mean,photography,7,7,0,7,1.0,24.555179,jobs per day,24.555179,0.415184
+demand,weekday_mean,writing_content,7,7,0,7,1.0,134.077441,jobs per day,134.077441,0.547255
+demand,weekday_mean,translation_transcription,7,7,0,7,1.0,64.72704,jobs per day,64.72704,0.72263
+demand,weekday_mean,digital_marketing,7,7,0,5,0.714286,90.823339,jobs per day,90.823339,0.140407
+demand,weekday_mean,sales_lead_generation,7,7,0,6,0.857143,51.781632,jobs per day,51.781632,0.203979
+demand,weekday_mean,admin_virtual_assistance,7,7,0,7,1.0,130.892459,jobs per day,130.892459,0.582484
+demand,weekday_mean,customer_service,7,7,0,5,0.714286,25.788075,jobs per day,25.788075,0.348487
+demand,weekday_mean,accounting_finance,7,7,0,4,0.571429,32.774485,jobs per day,32.774485,0.212035
+demand,weekday_mean,legal,7,7,0,6,0.857143,27.329195,jobs per day,27.329195,0.390417
+demand,weekday_mean,engineering_architecture,7,7,0,6,0.857143,39.24719,jobs per day,39.24719,0.369261
+demand,weekday_mean,audio_music,7,7,0,4,0.571429,20.342784,jobs per day,20.342784,0.235371
+demand,weekday_mean,ecommerce_operations,7,7,0,4,0.571429,27.123712,jobs per day,27.123712,0.248516
+demand,weekday_mean,business_project_management,7,7,0,4,0.571429,42.432171,jobs per day,42.432171,0.211105
+demand,weekday_mean,education_tutoring,7,7,0,5,0.714286,20.137301,jobs per day,20.137301,0.321096
+demand,weekday_mean,hr_recruiting,7,7,0,5,0.714286,16.130389,jobs per day,16.130389,0.532607
+demand,weekday_mean,other_unclear,7,7,0,6,0.857143,96.165888,jobs per day,96.165888,0.124752
+signals,weekday_mean,hourly_share,7,7,0,5,0.714286,0.020391,percentage points,2.039097,0.035964
+signals,weekday_mean,north_america_share,7,7,0,6,0.857143,0.030408,percentage points,3.040835,0.065424
+signals,weekday_mean,hhi,7,7,0,5,0.714286,0.021043,index units,0.021043,0.109757
+demand,weekday_mean,pooled,168,168,0,126,0.75,,,,
+signals,weekday_mean,pooled,21,21,0,16,0.761905,,,,
