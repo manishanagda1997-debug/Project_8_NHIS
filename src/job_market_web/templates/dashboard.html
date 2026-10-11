@@ -35,7 +35,7 @@
   .card h2 { font-size: 16px; margin: 0 0 4px; }
   .card .what { font-size: 13px; color: var(--muted); margin: 0 0 10px; max-width: 900px; }
   .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-  .row2 > section.card { margin-bottom: 0; }
+  .row2 > section.card { margin-bottom: 0; min-width: 0; }   /* lets a wide table scroll instead of widening the column */
   .rowwrap { margin-bottom: 18px; }
   .chart { width: 100%; min-height: 320px; }
   .badge { display: inline-block; font-size: 12px; padding: 1px 8px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
@@ -44,12 +44,14 @@
   th { text-align: left; font-size: 12px; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .04em; padding: 6px 8px; border-bottom: 1px solid var(--line); }
   td { padding: 7px 8px; border-bottom: 1px solid #f0eee9; }
   td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .table-scroll { overflow-x: auto; }   /* a table wider than its card scrolls inside the card, not the page */
   select { padding: 6px 8px; border: 1px solid #cfccc5; border-radius: 7px; font: inherit; background: #fff; }
   .controls { display: flex; gap: 10px; align-items: center; margin-bottom: 6px; font-size: 13px; color: var(--muted); }
   .na { color: var(--muted); font-size: 14px; padding: 20px 0; }
   footer { color: var(--muted); font-size: 13px; border-top: 1px solid var(--line); padding: 16px 0 28px; }
   @media (max-width: 960px) { .tiles { grid-template-columns: 1fr 1fr; } .row2 { grid-template-columns: 1fr; } .row2 > section.card { margin-bottom: 18px; } }
-  @media (max-width: 560px) { .tiles { grid-template-columns: 1fr; } .wrap { padding: 0 12px; } }
+  @media (max-width: 560px) { .tiles { grid-template-columns: 1fr; } .wrap { padding: 0 12px; }
+    table { font-size: 13px; } th, td { padding: 6px 5px; } th.num { white-space: normal; } }
 </style>
 <script src="/static/plotly.min.js"></script>
 </head>
@@ -126,10 +128,12 @@
       {% if page.hidden_countries %}<p class="what">Too small to draw at this map scale: {{ page.hidden_countries | join(", ") }} (rates in Notebook 04).</p>{% endif %}
       {% else %}<p class="na">Not available in this build.</p>{% endif %}
       {% if page.countries %}
+      <div class="table-scroll">
       <table style="margin-top:10px">
         <thead><tr><th>Top client countries (share of jobs with a known country)</th>{% for m in page.countries.months %}<th class="num">{{ m }}</th>{% endfor %}</tr></thead>
         <tbody>{% for r in page.countries.rows %}<tr><td>{{ r.country }}</td>{% for v in r.cells %}<td class="num">{{ v }}</td>{% endfor %}</tr>{% endfor %}</tbody>
       </table>
+      </div>
       {% endif %}
     </section>
   </div>
@@ -145,10 +149,12 @@
       <h2>Category outlook (next 7 days)</h2>
       <p class="what">Expected jobs per day by category, ranked; neighbouring ranks with overlapping ranges are similarly high-demand. Direction is shown only when a trend model beat the seasonal baseline; otherwise "No reliable direction".</p>
       {% if page.outlook %}
+      <div class="table-scroll">
       <table>
         <thead><tr><th>Category</th><th class="num">Last 7 days</th><th class="num">Forecast</th><th class="num">Range</th><th>Direction</th></tr></thead>
         <tbody>{% for r in page.outlook %}<tr><td>{{ r.category }}</td><td class="num">{{ r.recent }}</td><td class="num">{{ r.forecast }}</td><td class="num">{{ r.range }}</td><td>{{ r.direction }}</td></tr>{% endfor %}</tbody>
       </table>
+      </div>
       {% else %}<p class="na">Not available in this build.</p>{% endif %}
     </section>
     <section class="card">
@@ -156,10 +162,12 @@
       <p class="what">Daily hourly share and North American client share, observed and forecast (dashed, shaded period). Upwork is an online marketplace with no remote/on-site field, so these describe how online hiring is structured, not a remote-work share.</p>
       {% if 'signals' in page.figures %}<div class="chart" id="fig-signals"></div>{% else %}<p class="na">Not available in this build.</p>{% endif %}
       {% if page.signals %}
+      <div class="table-scroll">
       <table style="margin-top:10px">
         <thead><tr><th>Signal</th><th class="num">Last 7 days</th><th class="num">Next 14 days</th><th>Direction</th></tr></thead>
         <tbody>{% for r in page.signals %}<tr><td>{{ r.signal }}</td><td class="num">{{ r.recent }}</td><td class="num">{{ r.forecast }}</td><td>{{ r.direction }}</td></tr>{% endfor %}</tbody>
       </table>
+      </div>
       {% endif %}
     </section>
   </div>

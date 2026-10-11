@@ -163,3 +163,29 @@ def test_effective_countries_direction_is_the_reverse_of_the_hhi_direction():
                               "direction": [direction]})
         rows = signal_rows(DashboardData(build_id="x", tables={"forecast_signals_outlook.csv": table}))
         assert rows[0]["direction"] == shown
+
+
+def test_every_dashboard_table_scrolls_inside_its_card():
+    import re
+
+    months = pd.DataFrame({"month": ["2024-03"], "label": ["Mar 2024 (23 days)"], "first_day": ["2024-03-01"],
+                           "last_day": ["2024-03-23"], "days_observed": [23], "partial": [True], "jobs": [100],
+                           "jobs_per_day": [4.3], "jobs_per_day_weekday_std": [4.2], "hourly_share_pct": [55.0],
+                           "median_hourly_rate": [22.5], "effective_countries": [5.1]})
+    countries = pd.DataFrame({"month": ["2024-03"], "country": ["India"], "rank": [1], "share_pct": [6.5]})
+    outlook = pd.DataFrame({"series": ["web_development"], "rank_1_7": [1], "recent_jobs_per_day": [899.0],
+                            "forecast_jobs_per_day_1_7": [897.0], "low_1_7": [846.0], "high_1_7": [951.0],
+                            "direction": ["rising"]})
+    signals = pd.DataFrame({"series": ["hhi"], "recent_value": [0.19], "forecast_1_14": [0.19], "direction": ["stable"]})
+    data = DashboardData(build_id="x", tables={"monthly_market_summary.csv": months, "monthly_country_share.csv": countries,
+                                               "forecast_demand_outlook.csv": outlook,
+                                               "forecast_signals_outlook.csv": signals})
+    html = create_app(service=tiny_service(), dashboard=data).test_client().get("/dashboard").data.decode("utf-8")
+    tables = re.findall(r"<table\b", html)
+    wrapped = re.findall(r'<div class="table-scroll">\s*<table\b', html)
+    assert len(tables) == 3 and len(wrapped) == 3
+    assert ".table-scroll { overflow-x: auto; }" in html
+    assert ".row2 > section.card { margin-bottom: 0; min-width: 0; }" in html     # grid columns may shrink
+    empty = create_app(service=tiny_service(), dashboard=DashboardData(build_id="x", tables={
+        "monthly_market_summary.csv": months})).test_client().get("/dashboard").data.decode("utf-8")
+    assert "table-scroll\">" not in empty                              # no empty wrappers without data
