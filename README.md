@@ -138,10 +138,18 @@ The source file is the Upwork job-postings CSV supplied with the assignment:
 | SHA-256 | `6513e9a744f15726bdb40d6435a60834e864ace08a75e1d7feb75e10ddb78b11` |
 
 The CSV is not stored in this repository (decision D-011). Download it from
-the dataset link in the assignment brief (`docs/assignment_brief.pdf`) and
-place it in `data/raw/` without opening or re-saving it (a spreadsheet
-program can change its bytes). The build records the file hash, and the
-lineage check fails if the file differs from the one used for the results.
+the dataset link in the assignment brief (`docs/assignment_brief.pdf`):
+https://drive.google.com/file/d/1cytIiowYuhUlvBTuC8npw9qGjMCaTQu_/view?usp=sharing.
+Place it in `data/raw/` without opening or re-saving it. A spreadsheet
+program can change the file's contents.
+
+On Windows, run
+`certutil -hashfile data\raw\all_upwork_jobs_2024-02-07-2024-03-24.csv SHA256`
+from the project folder. Compare the result with the SHA-256 value in the
+table above.
+
+The build records the file hash. The lineage check fails if the file differs
+from the one used for the results.
 
 ## Setup
 
