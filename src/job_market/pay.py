@@ -250,9 +250,18 @@ def country_groups(country: pd.Series, keep: set[str]) -> pd.Series:
 
 
 def weighted_median(sorted_values: np.ndarray, weights: np.ndarray) -> float:
-    """Median of values (already sorted) that each count ``weights`` times."""
+    """Median of values (already sorted) that each count ``weights`` times.
+
+    Same definition as ``np.median``: when exactly half of the weight lies at or
+    below a value, the median is the average of that value and the next one.
+    """
     cumulative = np.cumsum(weights)
-    return float(sorted_values[np.searchsorted(cumulative, cumulative[-1] / 2.0)])
+    half = cumulative[-1] / 2.0
+    i = int(np.searchsorted(cumulative, half))
+    if cumulative[i] == half:                        # even total weight: two middle values
+        j = i + 1 + int(np.argmax(weights[i + 1:] > 0))
+        return float((sorted_values[i] + sorted_values[j]) / 2.0)
+    return float(sorted_values[i])
 
 
 def bootstrap_median(

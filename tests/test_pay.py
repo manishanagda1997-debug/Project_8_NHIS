@@ -88,6 +88,42 @@ def test_weighted_and_bootstrap_median():
     assert low < np.median(values) < high
 
 
+@pytest.mark.parametrize("values, weights, expected", [
+    ([10, 20, 30], [1, 1, 1], 20),            # odd total
+    ([10, 20, 30, 40], [1, 1, 1, 1], 25),     # even total: average of the two middle values
+    ([10, 20, 30], [1, 0, 1], 20),            # zero weight between positive weights
+    ([10, 20, 30], [1, 0, 5], 30),
+    ([10, 20, 30, 40], [1, 1, 0, 2], 30),     # the data are 10, 20, 40, 40
+    ([15, 15, 20, 20], [1, 1, 1, 1], 17.5),   # repeated values
+    ([15, 20, 25], [2, 2, 0], 17.5),
+])
+def test_weighted_median_cases(values, weights, expected):
+    values, weights = np.array(values, dtype=float), np.array(weights, dtype=float)
+    assert weighted_median(values, weights) == expected
+    assert expected == np.median(np.repeat(values, weights.astype(int)))
+
+
+def test_weighted_median_matches_numpy_median():
+    rng = np.random.default_rng(11)
+    for _ in range(500):
+        n = int(rng.integers(1, 40))
+        values = np.sort(rng.choice([10.0, 12.5, 15.0, 20.0, 22.5, 25.0, 30.0, 50.0], n))   # round rates repeat
+        weights = rng.integers(0, 4, n).astype(float)
+        if weights.sum() == 0:
+            weights[int(rng.integers(0, n))] = 1.0
+        assert weighted_median(values, weights) == np.median(np.repeat(values, weights.astype(int)))
+        assert weighted_median(values, np.ones(n)) == np.median(values)
+
+
+def test_bootstrap_median_is_reproducible_with_a_fixed_seed():
+    rng = np.random.default_rng(5)
+    values = rng.choice([15.0, 20.0, 22.5, 25.0, 30.0], 200)
+    clusters = rng.integers(0, 60, 200)
+    first = bootstrap_median(values, clusters, 400, np.random.default_rng(42))
+    second = bootstrap_median(values, clusters, 400, np.random.default_rng(42))
+    assert first == second
+
+
 def test_country_effects_recover_known_differences():
     rng = np.random.default_rng(3)
     n = 3000
