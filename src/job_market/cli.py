@@ -11,6 +11,7 @@
     python -m job_market make-arrangement-dev  write the remaining development titles after the pilot (once)
     python -m job_market make-arrangement-eval  write the evaluation and diagnostic sheets (once, after rules 1.0)
     python -m job_market score-arrangement-eval  score the frozen arrangement labels (once, after the labels tag)
+    python -m job_market approve-recommender  approve the evaluated recommender for serving (after review)
     python -m job_market serve            start the web app (recommendations and API) on http://127.0.0.1:5000
 
 Every command exits with code 0 on success and 1 on failure, so the same
@@ -56,6 +57,9 @@ def main(argv: list[str] | None = None) -> int:
                    help="write the evaluation and diagnostic sheets and their record (refuses to overwrite)")
     sub.add_parser("score-arrangement-eval",
                    help="score the frozen arrangement evaluation and diagnostic labels (refuses to overwrite results)")
+    sub.add_parser("approve-recommender",
+                   help="check the build and evidence, then write config/recommender_approval.toml after 'yes' "
+                        "(never replaces an existing approval)")
     serve = sub.add_parser("serve", help="start the web app on http://127.0.0.1:5000")
     serve.add_argument("--host", default="127.0.0.1", help="address to listen on (0.0.0.0 inside Docker)")
     serve.add_argument("--port", type=int, default=5000)
@@ -257,6 +261,10 @@ def main(argv: list[str] | None = None) -> int:
         (out_dir / "scoring_record.json").write_text(json.dumps(meta, indent=1) + "\n", encoding="utf-8", newline="\n")
         print(f"wrote {settings.relative(out_dir)}: results, observed counts, groups, diagnostic counts, record")
         return 0
+    if args.command == "approve-recommender":
+        from .approve import approve
+
+        return approve(settings)
     if args.command == "make-label-sheets":
         from .labels import draw_samples, write_label_sheet
         from .notebook import start

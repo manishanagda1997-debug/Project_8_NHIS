@@ -206,12 +206,8 @@ def load_approval(settings: Settings) -> dict[str, Any] | None:
     return record
 
 
-def write_approval(settings: Settings, method: str, evidence: dict[str, str]) -> Path:
-    """Write the approval record for ``method`` against the current implementation.
-
-    A deliberate act by a person, after reviewing the evidence; the scope is
-    taken from the project as it is now, the evidence is supplied.
-    """
+def approval_text(settings: Settings, method: str, evidence: dict[str, str]) -> str:
+    """The approval record for ``method``: scope from the project as it is now, evidence as supplied."""
     scope = current_scope(settings)
     lines = ["# Recommender serving approval (decision D-040). Written after review of the evidence.",
              "# [scope] must match the running implementation; [evidence] records why the",
@@ -221,8 +217,17 @@ def write_approval(settings: Settings, method: str, evidence: dict[str, str]) ->
              f"settings_sha256 = {json.dumps(scope['settings_sha256'])}", "", "[scope.libraries]"]
     lines += [f"{json.dumps(name)} = {json.dumps(version)}" for name, version in scope["libraries"].items()]
     lines += ["", "[evidence]"] + [f"{key} = {json.dumps(str(value))}" for key, value in evidence.items()]
+    return "\n".join(lines) + "\n"
+
+
+def write_approval(settings: Settings, method: str, evidence: dict[str, str]) -> Path:
+    """Write the approval record for ``method`` against the current implementation.
+
+    A deliberate act by a person, after reviewing the evidence. The
+    ``approve-recommender`` command adds the checks and never overwrites.
+    """
     path = settings.root / APPROVAL_FILE
-    path.write_text("\n".join(lines) + "\n", encoding="utf-8", newline="\n")
+    path.write_text(approval_text(settings, method, evidence), encoding="utf-8", newline="\n")
     return path
 
 
