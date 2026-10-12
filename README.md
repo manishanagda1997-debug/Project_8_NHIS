@@ -85,11 +85,11 @@ pip install -e . --no-deps
 
 ```bash
 python -m job_market rebuild        # every generated file from the raw CSV (about 5 minutes)
-python -m job_market run-notebooks  # runs the nine notebooks in fresh kernels
+python -m job_market run-notebooks  # runs the ten notebooks in fresh kernels
 python -m job_market check          # every output and notebook matches this build
 ```
 
-Without the data, the notebooks can still be read on GitHub with their saved outputs, `00` to `08` in order.
+Without the data, the notebooks can still be read on GitHub with their saved outputs, `00` to `09` in order.
 
 ### 4. Web app and API
 
@@ -136,7 +136,7 @@ Nginx (web server) passes requests to Gunicorn and Flask (application server), w
 |---|---|
 | `src/job_market/` | Pipeline, analysis steps and quality checks |
 | `src/job_market_web/` | Flask app: recommendation page, API and dashboard |
-| `notebooks/` | Analysis notebooks `00` to `08`, with saved outputs |
+| `notebooks/` | Analysis notebooks `00` to `09`, with saved outputs |
 | `data/processed/` | Output tables and the run manifest (the large `.parquet` and SQLite files are rebuilt, not committed) |
 | `data/labels/` | Human label sheets and the records that tie them to the source data |
 | `sql/` | SQLite schema and the eight cross-check queries |
@@ -170,7 +170,7 @@ The [final report](reports/final_report.md) and the notebooks give the full resu
 
 Each build records SHA-256 fingerprints of the raw data, settings, code, pinned environment, SQL files and recorded label inputs, and a hash of every output file. `check` confirms that all of them match the current build, that the recommender approval fits the implementation and that every notebook is a clean run of this build.
 
-The official build is `20261011T132714Z-e537465460`. Two rebuilds from the same inputs produce byte-identical outputs for all 54 analytical output files; only the run manifest differs, because it records the run ID and times. Its nine notebooks run in strict mode (`JOB_MARKET_STRICT=1`) on the pinned environment, and the lineage check passes with 0 errors and 0 warnings. Continuous integration runs the tests, checks the committed notebooks and builds the Docker images on every push.
+The official build is `20261011T132714Z-e537465460`. Two rebuilds from the same inputs produce byte-identical outputs for all 54 analytical output files; only the run manifest differs, because it records the run ID and times. Its ten notebooks run in strict mode (`JOB_MARKET_STRICT=1`) on the pinned environment, and the lineage check passes with 0 errors and 0 warnings. Continuous integration runs the tests, checks the committed notebooks and builds the Docker images on every push.
 
 | Command | What it confirms |
 |---|---|

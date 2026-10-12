@@ -165,7 +165,7 @@ On the blind set, the system agrees with my label for 68.9% of titles (241 of 35
 - **Sensitivity checks:** for the main pay and trend analyses, I repeat the results under alternative reasonable choices, such as removing possible reposts, removing the three gap days and, for pay, removing extreme values.
 - **Fixed rules first:** I fix model choices, thresholds and evaluation rules before the final evaluation, and I run the final evaluation once.
 
-**Evidence:** Notebooks 01, 02 and 03; `cleaning_log.csv`, `eligibility_counts.csv`, `label_evaluation_summary.csv`, `docs/decisions.md`.
+**Evidence:** Notebooks 01, 02 and 03, and Notebook 09 (category agreement over time); `cleaning_log.csv`, `eligibility_counts.csv`, `label_evaluation_summary.csv`, `docs/decisions.md`.
 
 ## 4. Task 1: Keywords and pay
 
@@ -367,7 +367,7 @@ Invalid parameters return a 400 error with a plain message; an unknown job retur
 
 *Limit:* matching uses titles only. The evaluation has 12 profiles and one judge, and most judged titles are relevant (115 of 122 get label 2). It shows strong title-level relevance on these 12 profiles, but with a margin of one result it cannot separate the methods with high confidence. The postings are from 2024, and there is no click or application data for learning from behaviour.
 
-**Evidence:** Notebook 07; `recommend_relevance_summary.csv`, `recommend_relevance_by_profile.csv`, `recommend_checks.csv`, `recommend_pool_sizes.csv`, `recommend_related_keywords.csv`; `src/job_market_web/`.
+**Evidence:** Notebook 07, and Notebook 09 (relevance-label distribution); `recommend_relevance_summary.csv`, `recommend_relevance_by_profile.csv`, `recommend_checks.csv`, `recommend_pool_sizes.csv`, `recommend_related_keywords.csv`; `src/job_market_web/`.
 
 ## 9. Task 6: Monthly market dashboard
 
@@ -528,7 +528,7 @@ The application image holds code and the pinned environment only. The verified o
 
 **The official build.** The results in this report come from build `20261011T132714Z-e537465460`. Two rebuilds with the same recorded inputs produce byte-identical analytical outputs across all 54 files. The run manifests differ because they record separate run IDs and times.
 
-All nine notebooks run in strict mode with the pinned environment. The final project check reports 0 errors and 0 warnings. The build also records the recommender approval reference, linking the served hybrid method to its approval evidence (decision D-040).
+All ten notebooks run in strict mode with the pinned environment. The final project check reports 0 errors and 0 warnings. The build also records the recommender approval reference, linking the served hybrid method to its approval evidence (decision D-040).
 
 **Cross-platform check.** I rebuild the official project outputs inside a Linux Docker container and compare them with the Windows build. All six input fingerprints match. Of the 54 analytical output files, 49 are byte-identical. Two Parquet files contain the same data but differ in their compressed bytes.
 
