@@ -181,6 +181,7 @@ def test_every_dashboard_table_scrolls_inside_its_card():
                                                "forecast_demand_outlook.csv": outlook,
                                                "forecast_signals_outlook.csv": signals})
     html = create_app(service=tiny_service(), dashboard=data).test_client().get("/dashboard").data.decode("utf-8")
+    assert "846 to 951" in html
     tables = re.findall(r"<table\b", html)
     wrapped = re.findall(r'<div class="table-scroll">\s*<table\b', html)
     assert len(tables) == 3 and len(wrapped) == 3

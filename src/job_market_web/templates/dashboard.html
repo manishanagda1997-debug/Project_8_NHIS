@@ -140,7 +140,7 @@
 
   <section class="card">
     <h2>Forecast: total jobs per day</h2>
-    <p class="what">Notebook 06. {% if page.forecast_period %}<b>Observed through {{ p.data_through }}.</b> <b>Forecast: {{ page.forecast_period.start }} to {{ page.forecast_period.end }}</b> (shaded): expected jobs, not collected jobs. Days 1-7 are the primary forecast; days 8-14 an extended outlook with more uncertainty.{% endif %} The band is an 80% empirical range from backtest errors.</p>
+    <p class="what">Notebook 06. {% if page.forecast_period %}<b>Observed through {{ p.data_through }}.</b> <b>Forecast: {{ page.forecast_period.start }} to {{ page.forecast_period.end }}</b> (shaded): expected jobs, not collected jobs. Days 1 to 7 are the main forecast. Days 8 to 14 provide an extended outlook with more uncertainty.{% endif %} The first-week range aims to cover 80% of outcomes and uses past forecast errors. The second-week range is wider and has no separate coverage test.</p>
     {% if 'forecast_total' in page.figures %}<div class="chart" id="fig-forecast_total"></div>{% else %}<p class="na">Not available in this build.</p>{% endif %}
   </section>
 

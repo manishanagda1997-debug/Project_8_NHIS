@@ -352,14 +352,14 @@ def fig_forecast_total(data: DashboardData) -> dict | None:
          "hovertemplate": "%{x|%a %d %b}<br>%{y:,} jobs observed<extra></extra>"},
         {"type": "scatter", "mode": "lines", "x": total["date"].tolist(), "y": total["high"].round(0).tolist(),
          "line": {"width": 0}, "showlegend": False, "hoverinfo": "skip"},
-        {"type": "scatter", "mode": "lines", "name": "80% empirical range", "x": total["date"].tolist(),
+        {"type": "scatter", "mode": "lines", "name": "Forecast range", "x": total["date"].tolist(),
          "y": total["low"].round(0).tolist(), "fill": "tonexty", "fillcolor": LIGHT_ORANGE, "line": {"width": 0},
          "hoverinfo": "skip"},
         {"type": "scatter", "mode": "lines+markers", "name": "Forecast (expected jobs)", "x": total["date"].tolist(),
          "y": total["forecast"].round(0).tolist(), "line": {"color": ORANGE, "width": 2, "dash": "dash"},
          "marker": {"size": 6}, "customdata": total[["low", "high", "horizon"]].round(0).values.tolist(),
          "hovertemplate": "%{x|%a %d %b} (day %{customdata[2]})<br>Forecast %{y:,.0f} jobs"
-                          "<br>Range %{customdata[0]:,.0f} - %{customdata[1]:,.0f}<extra></extra>"},
+                          "<br>Range %{customdata[0]:,.0f} to %{customdata[1]:,.0f}<extra></extra>"},
     ]
     start, end = total["date"].min(), total["date"].max()
     return {"data": traces, "layout": layout(shapes=[forecast_shape(start, end)],
@@ -389,7 +389,7 @@ def fig_signals(data: DashboardData) -> dict | None:
                                "x": part["date"].tolist(), "y": (100 * part["forecast"]).round(2).tolist(),
                                "line": {"color": color, "width": 2, "dash": "dash"},
                                "customdata": (100 * part[["low", "high"]]).round(1).values.tolist(),
-                               "hovertemplate": "%{x|%d %b}: forecast %{y:.1f}% (range %{customdata[0]} - "
+                               "hovertemplate": "%{x|%d %b}: forecast %{y:.1f}% (range %{customdata[0]} to "
                                                 "%{customdata[1]})<extra>" + label + "</extra>"})
     shapes = []
     if end is not None:
@@ -408,7 +408,7 @@ def outlook_rows(data: DashboardData) -> list[dict]:
     table = table[table["series"] != "total"].sort_values("rank_1_7")
     return [{"category": name_of(r.series), "recent": f"{r.recent_jobs_per_day:,.0f}",
              "forecast": f"{r.forecast_jobs_per_day_1_7:,.0f}",
-             "range": f"{r.low_1_7:,.0f} - {r.high_1_7:,.0f}",
+             "range": f"{r.low_1_7:,.0f} to {r.high_1_7:,.0f}",
              "direction": str(r.direction).capitalize() if isinstance(r.direction, str) else "No reliable direction"}
             for r in table.itertuples()]
 
