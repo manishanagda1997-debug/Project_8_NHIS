@@ -514,7 +514,7 @@ I build the project so that anyone can rerun it and check the results.
 1. **test:** installs the pinned environment in strict mode, runs all tests and checks the committed notebooks;
 2. **docker:** validates the Compose file, builds both images, and runs smoke checks on them.
 
-The Docker CI job checks the images and configuration without loading the full dataset. The complete application is tested locally with a verified build, outside CI.
+The Docker CI job checks the images and configuration without loading the full dataset. I test the complete application locally with the official build through Docker: the recommendation page, the dashboard and the API, on a computer and on a phone.
 
 **Independent SQL checks.** The pipeline also writes a SQLite database. The eight cross-check queries start from row-level jobs, category predictions, human labels and recommender rankings rather than from pre-calculated summary results. They recompute selected results, including the time window, monthly and weekly volumes, category and country shares, country medians, label accuracy, and the recommender's nDCG@5 and Precision@5. Notebook 08 also recomputes the mean hourly offer by country and the recommender means. All 1,358 compared values match: counts and medians exactly, label accuracy to the four decimals stored by the pipeline, and other decimals within the 6-decimal rounding of the stored tables. SQL reproduces selected aggregations and evaluation metrics; it does not re-verify the whole project, because the cleaned fields, the categories and the rankings come from Python.
 
@@ -529,7 +529,9 @@ The application image holds code and the pinned environment only. The verified o
 
 All nine notebooks run in strict mode with the pinned environment. The final project check reports 0 errors and 0 warnings. The build also records the recommender approval reference, linking the served hybrid method to its approval evidence (decision D-040).
 
-**Cross-platform check.** An earlier build was tested on Windows and inside a Linux Docker container. Two analytical files showed small floating-point differences; the other compared analytical files matched byte for byte. This comparison has not yet been repeated for the official build.
+**Cross-platform check.** I rebuild the official project outputs inside a Linux Docker container and compare them with the Windows build. All six input fingerprints match. Of the 54 analytical output files, 49 are byte-identical. Two Parquet files contain the same data but differ in their compressed bytes.
+
+Three other files contain small numerical differences. Classifier probabilities differ by at most 0.000016, without changing any assigned category. Three pay-model error measures also differ slightly, including an R² difference of 0.000006. The saved rankings, forecasts and main analysis tables remain unchanged, and every number stated in this report is the same on both builds.
 
 **Evidence:** `src/job_market/`, `config/pipeline.toml`, `data/processed/run_manifest.json`, `tests/`, `.github/workflows/ci.yml`, `sql/`, Notebook 08, `docker/`, `docker-compose.yml`, `docs/decisions.md`.
 

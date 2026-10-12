@@ -84,6 +84,15 @@ why, and where the evidence lives.
   On 11 October 2026 the official build `20261011T132714Z-e537465460` was
   rebuilt a second time from the same inputs, and all 54 output files are
   byte-identical.
+  On 12 October 2026, the official project outputs were rebuilt inside a
+  Linux Docker container and compared with the Windows build. All six input
+  fingerprints matched. Of the 54 analytical files, 49 were byte-identical.
+  Two Parquet files, `jobs_clean.parquet` and `recommend_jobs.parquet`,
+  contained identical data but differed in their compressed bytes. Three
+  files, `job_categories.parquet`, `label_evaluation_items.csv` and
+  `pay_prediction.csv`, contained small floating-point differences. No
+  assigned category, recommendation ranking, forecast or main reported
+  finding changed.
 - **Evidence:** `src/job_market/io.py`, `.gitattributes`, tests
   `test_rebuild_is_byte_identical` and
   `test_git_keeps_hashed_files_byte_identical` (runs `git check-attr`).
