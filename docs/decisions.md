@@ -93,6 +93,15 @@ why, and where the evidence lives.
   `pay_prediction.csv`, contained small floating-point differences. No
   assigned category, recommendation ranking, forecast or main reported
   finding changed.
+  On 13 October 2026, a fresh clone with a new environment created from
+  `environment.yml` reproduced 53 of the 54 analytical output files byte for
+  byte. The new environment installed Python 3.11.17 instead of 3.11.16,
+  because the configuration pins Python only to version 3.11. The remaining
+  file, `job_market.sqlite`, had a different binary layout, but a comparison
+  confirmed that its tables and rows contained identical data. The SQLite
+  library versions also differed (3.54.0 against 3.53.4), which may explain
+  the file-level difference. All nine notebooks ran successfully, and the
+  project check reported 0 errors and 0 warnings.
 - **Evidence:** `src/job_market/io.py`, `.gitattributes`, tests
   `test_rebuild_is_byte_identical` and
   `test_git_keeps_hashed_files_byte_identical` (runs `git check-attr`).
