@@ -72,7 +72,7 @@ def test_data():
     c = counts()
     start, end = pd.Timestamp(c["timeseries_window_start"]), pd.Timestamp(c["timeseries_window_end"])
     expect("Data", f"{c['raw_rows']:,} postings", f"{c['window_jobs']:,} jobs", f"{c['window_days']}-day",
-           f"{start.day} {start:%b} - {end.day} {end:%b %Y}")
+           f"{start.day} {start:%b} to {end.day} {end:%b %Y}")
 
 
 def test_pay_words():
@@ -103,8 +103,13 @@ def test_forecast_test():
     final = csv("forecast_final_evaluation.csv")
     cats = final[(final["family"] == "demand") & (final["series"] != "total") & (final["model"] == "weekday_mean")]
     assert bool(cats["chosen"].all())
+    total = final[(final["family"] == "demand") & (final["series"] == "total")].set_index("model")["relative_mae"]
+    assert total.idxmin() == "seasonal_naive"                      # "the baseline performs better for total jobs"
+    development = csv("forecast_backtest_by_series.csv")
+    dev_total = development[(development["family"] == "demand") & (development["series"] == "total")].set_index("model")["mae"]
+    assert dev_total["seasonal_naive"] < dev_total["weekday_mean"]   # ... in development as well
     expect("Tasks 3 and 8: forecast test", f"{int((cats['relative_mae'] < 1).sum())} of {len(cats)} category series",
-           f"mean Relative MAE {cats['relative_mae'].mean():.2f}")
+           f"mean Relative MAE {cats['relative_mae'].mean():.2f}", "the baseline performs better for total jobs")
 
 
 def test_countries():
@@ -114,7 +119,8 @@ def test_countries():
     minimum = int(settings["pay"]["min_country_jobs"])
     assert c["jobs"].min() >= minimum
     expect("Task 4: countries", f"{len(c)} client countries", f"at least {minimum} rated hourly jobs",
-           f"${us['median_rate']:g}/h", f"adjusted index {signed(us['adjusted_index_pct'])}%")
+           f"median USD {us['median_rate']:g} per hour", f"mean USD {us['mean_rate']:.1f}",
+           f"adjusted index {signed(us['adjusted_index_pct'])}%")
 
 
 def test_recommender():
@@ -122,6 +128,13 @@ def test_recommender():
     assert bool(s.loc["tfidf_hybrid", "winner"])
     expect("Task 5: recommender", f"nDCG@5 {s.loc['tfidf_hybrid', 'mean_ndcg']:.3f}",
            f"Precision@5 {s.loc['tfidf_hybrid', 'mean_precision']:.3f}", f"{int(s.loc['tfidf_hybrid', 'profiles'])} blind")
+    items = csv("recommend_relevance_items.csv")
+    relevant = items[items["relevance"] == 2].groupby("method").size()
+    slots = items.groupby("method").size()
+    assert (slots == 60).all(), slots                              # 12 profiles x 5 results per method
+    assert int(relevant["tfidf_hybrid"] - relevant["tfidf_word"]) == 1
+    slots = 60
+    expect("Task 5: recommender", f"one more relevant result than word TF-IDF in {slots} evaluated slots")
 
 
 def test_pool():
@@ -139,13 +152,20 @@ def test_dashboard():
 def test_online_hiring():
     s = csv("remote_series_trends.csv").set_index("series").loc["hourly_share"]
     assert s["change_high"] < 0                                       # a significant fall
-    expect("Task 7: online hiring", f"from {s['start']:.1f}% to {s['end']:.1f}%")
+    signals = csv("remote_signals_weekly.csv")
+    remote = signals[signals["signal"] == "remote / home wording"]
+    assert int(remote["jobs"].sum()) == counts()["window_jobs"] == 229520
+    expect("Task 7: online hiring", f"from {s['start']:.1f}% to {s['end']:.1f}%",
+           f"remote or home wording in {int(remote['title_mentions'].sum()):,} of {int(remote['jobs'].sum()):,} postings")
 
 
 def test_outlook():
     o = csv("forecast_demand_outlook.csv").set_index("series").loc["total"]
     expect("Task 8: outlook", f"about {nearest(o['forecast_jobs_per_day_1_7'], 100):,} jobs a day",
-           f"{nearest(o['low_1_7'], 10):,}-{nearest(o['high_1_7'], 10):,} for days 1-7")
+           f"{nearest(o['low_1_7'], 10):,} to {nearest(o['high_1_7'], 10):,} for days 1 to 7")
+    coverage = csv("forecast_final_coverage.csv")
+    pooled = coverage[(coverage["series"] == "pooled") & (coverage["family"] == "demand")].iloc[0]
+    expect("Task 8: outlook", f"ranges built the same way contain {100 * pooled['coverage']:.1f}% of final-week demand values")
 
 
 def test_categories():
@@ -158,7 +178,8 @@ def test_sql_claims_in_executed_notebook():
     text = "".join("".join(o.get("data", {}).get("text/plain", "")) for o in notebook["cells"][-1].get("outputs", []))
     assert re.search(r"all compared values pass\s+True", text)
     assert re.search(r"eight query files\s+True", text)
-    expect("SQL cross-checks", "8 SQL queries reproduce every compared pipeline value")
+    assert re.search(r"1,358 compared values in total\s+True", text)
+    expect("SQL cross-checks", "8 SQL queries and 2 extra SQL checks match all 1,358 compared pipeline values")
 
 
 @pytest.mark.parametrize("image", sorted(set(re.findall(r"!\[[^\]]+\]\(((?!https?://)[^)]+)\)", REPORT))))

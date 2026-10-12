@@ -68,7 +68,7 @@ def f1_daily_volume() -> Path:
     ax.scatter(gaps["date"], jobs.reindex(gaps["date"]).to_numpy() + 250, marker="v", s=28, color=INK, zorder=3)
     ax.set_ylabel("Jobs per day")
     ax.grid(axis="x", visible=False)
-    ax.legend(handles=[Patch(color=BLUE, label="Monday-Friday"), Patch(color=BLUE_LIGHT, label="Saturday-Sunday"),
+    ax.legend(handles=[Patch(color=BLUE, label="Monday to Friday"), Patch(color=BLUE_LIGHT, label="Saturday and Sunday"),
                        plt.Line2D([], [], marker="v", ls="", color=INK, label="Day with a small intraday gap")],
               loc="upper left", bbox_to_anchor=(0, 1.16), ncol=3)
     ax.xaxis.set_major_locator(matplotlib.dates.WeekdayLocator(byweekday=matplotlib.dates.MO))
@@ -91,7 +91,7 @@ def f2_pay_keywords(per_side: int = 12) -> Path:
                 fmt="none", ecolor=INK, elinewidth=0.9, capsize=2)
     ax.set_yticks(list(y), top["keyword"])
     ax.axvline(0, color=MUTED, lw=0.9)
-    ax.set_xlabel("Difference in hourly offer vs. jobs in the same country and category (%)")
+    ax.set_xlabel("Difference in hourly offer compared with jobs in the same country and category (%)")
     ax.grid(axis="y", visible=False)
     ax.legend(handles=[Patch(color=BLUE, label="Higher offers"), Patch(color=ORANGE, label="Lower offers")],
               loc="lower right")
@@ -127,7 +127,7 @@ def f4_category_outlook() -> Path:
                 xerr=[o["forecast_jobs_per_day_1_7"] - o["low_1_7"], o["high_1_7"] - o["forecast_jobs_per_day_1_7"]],
                 fmt="none", ecolor=INK, elinewidth=0.9, capsize=2)
     ax.set_yticks(list(y), [NAMES[s] for s in o["series"]])
-    ax.set_xlabel("Forecast jobs per day, 24-30 March 2024 (80% empirical range)")
+    ax.set_xlabel("Forecast jobs per day, 24 to 30 March 2024 (intended 80% range)")
     ax.grid(axis="y", visible=False)
     ax.legend(handles=[Patch(color=BLUE, label="Job function"), Patch(color=GREY, label="Other / Unclear (not ranked)")],
               loc="lower right")
@@ -141,7 +141,7 @@ def f5_country_rates(top_n: int = 15) -> Path:
     left.errorbar(c["median_rate"], y, xerr=[c["median_rate"] - c["median_low"], c["median_high"] - c["median_rate"]],
                   fmt="o", color=BLUE, ecolor=MUTED, elinewidth=1, capsize=2, markersize=6)
     left.set_yticks(list(y), c["country"])
-    left.set_xlabel("Median hourly offer ($)")
+    left.set_xlabel("Median hourly offer (USD)")
     left.set_title("Median offer", fontsize=10)
     idx = c["adjusted_index_pct"]
     right.barh(y, idx, color=[BLUE if v > 0 else ORANGE for v in idx], height=0.66)
@@ -157,7 +157,7 @@ def f5_country_rates(top_n: int = 15) -> Path:
 
 def f6_recommender_eval() -> Path:
     s = read("recommend_relevance_summary.csv")
-    labels = {"keyword": "Keyword overlap", "tfidf_word": "Word TF-IDF", "tfidf_hybrid": "Hybrid TF-IDF (winner)"}
+    labels = {"keyword": "Keyword overlap", "tfidf_word": "Word TF-IDF", "tfidf_hybrid": "Hybrid TF-IDF (selected)"}
     s = s.set_index("method").loc[["keyword", "tfidf_word", "tfidf_hybrid"]]
     y = range(len(s))
     fig, axes = plt.subplots(1, 2, figsize=(8, 2.7), sharey=True, gridspec_kw={"wspace": 0.1})
@@ -171,8 +171,8 @@ def f6_recommender_eval() -> Path:
         ax.grid(axis="y", visible=False)
     margin = s["mean_ndcg"].max() - 0.02
     axes[0].axvline(margin, color=MUTED, ls="--", lw=1)
-    axes[0].annotate("tie margin", (margin, 2.3), xytext=(-4, 0), textcoords="offset points",
-                     ha="right", fontsize=8, color=MUTED)
+    axes[0].annotate("tie margin: 0.02 below\nthe best nDCG@5", (margin, 2.25), xytext=(-5, 0),
+                     textcoords="offset points", ha="right", va="center", fontsize=8.5, color=INK)
     axes[0].set_yticks(list(y), [labels[m] for m in s.index])
     axes[0].set_ylim(-0.5, 2.6)
     return save(fig, "f6_recommender_eval.png")
@@ -180,8 +180,11 @@ def f6_recommender_eval() -> Path:
 
 def signal_panel(ax, observed: pd.Series, forecast: pd.DataFrame, ylabel: str) -> None:
     ax.plot(observed.index, 100 * observed, color=BLUE, lw=2, label="Observed")
-    ax.fill_between(forecast["date"], 100 * forecast["low"], 100 * forecast["high"], color=BLUE_LIGHT, alpha=0.6,
-                    lw=0, label="Forecast range")
+    first, second = forecast[forecast["horizon"] <= 7], forecast[forecast["horizon"] >= 7]
+    ax.fill_between(first["date"], 100 * first["low"], 100 * first["high"], color=BLUE_LIGHT, alpha=0.8,
+                    lw=0, label="Intended 80% range (days 1 to 7)")
+    ax.fill_between(second["date"], 100 * second["low"], 100 * second["high"], color=BLUE_LIGHT, alpha=0.4,
+                    lw=0, hatch="///", edgecolor="white", label="Extended range (days 8 to 14)")
     ax.plot(forecast["date"], 100 * forecast["forecast"], color=BLUE, lw=2, ls="--", label="Forecast")
     ax.axvline(forecast["date"].min(), color=MUTED, lw=0.8, ls=":")
     ax.set_ylabel(ylabel)
@@ -195,7 +198,7 @@ def f7_online_signals() -> Path:
     signal_panel(top, daily["hourly_share"], fc[fc["series"] == "hourly_share"], "Hourly share of jobs (%)")
     signal_panel(bottom, daily["north_america_share"], fc[fc["series"] == "north_america_share"],
                  "North American clients (%)")
-    top.legend(loc="upper left", bbox_to_anchor=(0, 1.2), ncol=3)
+    top.legend(loc="upper left", bbox_to_anchor=(0, 1.3), ncol=2)
     return save(fig, "f7_online_signals.png")
 
 
@@ -207,9 +210,9 @@ def f8_total_outlook() -> Path:
     fig, ax = plt.subplots(figsize=(8, 3.4))
     ax.plot(daily.index, daily.to_numpy(), color=BLUE, lw=2, label="Observed")
     ax.fill_between(first["date"], first["low"], first["high"], color=BLUE_LIGHT, alpha=0.8, lw=0,
-                    label="80% empirical range (days 1-7)")
+                    label="Intended 80% range (days 1 to 7)")
     ax.fill_between(second["date"], second["low"], second["high"], color=BLUE_LIGHT, alpha=0.4, lw=0,
-                    hatch="///", edgecolor="white", label="Extended range (days 8-14)")
+                    hatch="///", edgecolor="white", label="Extended range (days 8 to 14)")
     ax.plot(fc["date"], fc["forecast"], color=BLUE, lw=2, ls="--", label="Central forecast")
     ax.axvline(fc["date"].min(), color=MUTED, lw=0.8, ls=":")
     ax.set_ylabel("Jobs per day")

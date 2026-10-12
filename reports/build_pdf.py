@@ -42,6 +42,11 @@ em { color: #3f3e3b; }
 code { font-family: Consolas, "DejaVu Sans Mono", monospace; font-size: 8.6pt; background: #f3f2ee; padding: 0 2px; }
 blockquote { margin: 6pt 0; padding: 4pt 10pt; border-left: 3px solid #2a78d6; background: #f6f8fc; }
 a { color: #1f5fae; text-decoration: none; }
+.keep { break-inside: avoid; page-break-inside: avoid; }
+/* A heading reserves space below itself, so it moves to the next page instead of ending a page alone. */
+h2, h3 { break-inside: avoid; }
+h2::after { content: ""; display: block; height: 45mm; margin-bottom: -45mm; }
+h3::after { content: ""; display: block; height: 35mm; margin-bottom: -35mm; }
 """
 
 
@@ -52,8 +57,34 @@ def to_html(markdown_text: str) -> str:
     except ImportError:
         import mistune
         body = mistune.create_markdown(plugins=["table"], escape=False)(markdown_text)
+    body = keep_together(body)
     return (f"<!doctype html><html lang='en'><head><meta charset='utf-8'><title>Final report</title>"
             f"<style>{CSS}</style></head><body>{body}</body></html>")
+
+
+def keep_together(body: str) -> str:
+    """Layout only: keep blocks together that a reader expects on one page.
+
+    A figure stays with its caption and the conclusion stays in one piece;
+    headings keep space below them through the stylesheet. The text itself is
+    not changed.
+    """
+    import re
+
+    def wrap(match: "re.Match[str]") -> str:
+        return f'<div class="keep">{match.group(0)}</div>'
+
+    last = body.rfind("<h2>")
+    if last != -1:
+        body = body[:last] + '<div class="keep">' + body[last:] + "</div>"
+        head, tail = body[:last], body[last:]
+    else:
+        head, tail = body, ""
+    head = re.sub(r"<p><img[^>]*></p>\s*<p><em>.*?</em></p>", wrap, head, flags=re.S)
+    # A table stays with the heading or short lead-in line that introduces it.
+    head = re.sub(r"<h3>[^<]*</h3>\s*<p>(?:(?!</p>).)*</p>\s*(?:<!--.*?-->\s*)?<table>.*?</table>", wrap, head, flags=re.S)
+    head = re.sub(r"<p><strong>[^<]*</strong></p>\s*<table>.*?</table>", wrap, head, flags=re.S)
+    return head + tail
 
 
 def find_browser() -> str:
