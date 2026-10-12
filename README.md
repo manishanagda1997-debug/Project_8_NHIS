@@ -4,7 +4,7 @@
 
 This project analyses 244,828 Upwork job postings to understand job demand, hourly pay, market trends and client countries. It covers all eight tasks in the assignment and includes a job recommendation system, a market dashboard, a JSON API, SQL checks and a Docker deployment.
 
-The analysis uses one pipeline to prepare the data and save the results. Human labels help evaluate job categories, work-arrangement wording and recommendations. The notebooks show the analysis, while the [final report](reports/final_report.md) ([PDF](reports/final_report.pdf)) explains the findings in detail.
+The analysis uses one pipeline to prepare the data and save the results. Human labels help evaluate job categories, work-arrangement wording and recommendations. The notebooks show the analysis, while the [final report](reports/final_report.md) ([PDF](reports/final_report.pdf)) explains the findings in detail. Its Section 14 sets out what the results mean for job seekers, clients and market analysts.
 
 ## Main results
 
