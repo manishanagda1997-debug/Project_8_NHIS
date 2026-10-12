@@ -1,8 +1,7 @@
 # Decision register
 
 Every decision that shapes a result has an entry here: what the project does,
-why, and where the evidence lives. Entries use plain English so any reader can
-check the reasoning.
+why, and where the evidence lives.
 
 ## Foundation
 
