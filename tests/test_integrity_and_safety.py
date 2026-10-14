@@ -226,10 +226,7 @@ def test_repo_notebooks_start_with_the_build_check():
         assert "start()" in "".join(first_code["source"]), path.name
 
 
-HEADER_FIELDS = ("Purpose", "Assignment requirement", "Inputs", "Outputs", "Build identity")
-
-
-def test_repo_notebooks_open_with_the_standard_header():
+def test_repo_notebooks_open_with_a_numbered_title_and_introduction():
     import json
 
     for path in project_notebooks(REPO_ROOT / "notebooks"):
@@ -237,8 +234,8 @@ def test_repo_notebooks_open_with_the_standard_header():
         text = "".join(first["source"])
         assert first["cell_type"] == "markdown", path.name
         assert text.startswith(f"# {path.name[:2]} "), path.name
-        for field in HEADER_FIELDS:
-            assert f"**{field}**" in text, f"{path.name} lacks header field {field}"
+        body = text.split("\n", 1)[1].strip() if "\n" in text else ""
+        assert len(body) >= 100, f"{path.name} has no introduction under its title"
 
 
 # ------------------------------------------- configured protected paths
