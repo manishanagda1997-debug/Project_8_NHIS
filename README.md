@@ -181,3 +181,19 @@ The official build is `20261011T132714Z-e537465460`. Two rebuilds from the same 
 | `verify` | `rebuild`, `run-notebooks` and `check` in one command |
 
 Each analytical decision, with its reason and evidence, is in [`docs/decisions.md`](docs/decisions.md).
+
+---
+
+**Author Name**
+ Manisha Nagda
+
+
+
+
+
+
+
+
+
+
+
